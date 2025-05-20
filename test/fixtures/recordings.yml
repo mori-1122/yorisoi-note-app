@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  visit: one
+  file_path: MyString
+  memo: MyText
+  recorded_at: 2025-05-21 02:54:39
+
+two:
+  user: two
+  visit: two
+  file_path: MyString
+  memo: MyText
+  recorded_at: 2025-05-21 02:54:39
