@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_22_014735) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_24_173959) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -100,7 +100,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_22_014735) do
     t.boolean "has_recording"
     t.boolean "has_document"
     t.integer "memo_id"
-    t.bigint "department_id", null: false
+    t.bigint "department_id" ##患者が診察直後にすぐ記録したいケースや、診療科を忘れてしまうケースを考慮し、`visits` テーブルの `department_id` カラムは NULL を許容する設計
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["department_id"], name: "index_visits_on_department_id"
