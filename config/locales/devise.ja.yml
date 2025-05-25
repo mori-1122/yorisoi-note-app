@@ -1,0 +1,141 @@
+ja:
+  activerecord:
+    attributes:
+      user:
+        confirmation_sent_at: 確認メール送信日時
+        confirmation_token: メール確認トークン
+        confirmed_at: メール確認日時
+        created_at: 登録日
+        current_password: 今のパスワード
+        current_sign_in_at: 最近のログイン日時
+        current_sign_in_ip: 最近のログインIP
+        email: メールアドレス
+        encrypted_password: 暗号化されたパスワード
+        failed_attempts: ログイン失敗回数
+        last_sign_in_at: 最終ログイン日時
+        last_sign_in_ip: 最終ログインIP
+        locked_at: ロックされた日時
+        password: パスワード
+        password_confirmation: パスワード（確認）
+        remember_created_at: ログイン記憶開始日時
+        remember_me: ログイン状態を保存する
+        reset_password_sent_at: パスワードリセットメール送信日時
+        reset_password_token: パスワードリセット用トークン
+        sign_in_count: ログイン回数
+        unconfirmed_email: 確認されていないメールアドレス
+        unlock_token: アカウントロック解除トークン
+        updated_at: 更新日
+    models:
+      user: ユーザー
+  devise:
+    confirmations:
+      confirmed: メールアドレスの確認が完了しました。
+      new:
+        resend_confirmation_instructions: 確認メールを再送する
+      send_instructions: メールアドレス確認のご案内をお送りしました。届かない場合は迷惑メールもご確認ください。
+      send_paranoid_instructions: 登録済みのメールアドレスであれば、確認メールをお送りしています。
+    failure:
+      already_authenticated: すでにログイン済みです。
+      inactive: アカウントがまだ有効になっていません。確認メールのリンクをクリックしてください。
+      invalid: メールアドレスまたはパスワードが間違っています。
+      last_attempt: 次に間違えるとアカウントが一時停止されます。
+      locked: アカウントがロックされています。サポートにご連絡ください。
+      not_found_in_database: 入力内容が見つかりませんでした。
+      timeout: 操作が一定時間なかったため、自動的にログアウトしました。
+      unauthenticated: 続けるにはログインが必要です。
+      unconfirmed: メールアドレスの確認が必要です。届いたメールをご確認ください。
+    mailer:
+      confirmation_instructions:
+        action: メールアドレスを確認する
+        greeting: "%{recipient}さんへ"
+        instruction: 以下のリンクをクリックして、メールアドレスの確認を完了してください。
+        subject: 【マイナース】メールアドレス確認のお願い
+      email_changed:
+        greeting: こんにちは、%{recipient}さん
+        message: ご登録のメールアドレスが %{email} に変更されました。
+        subject: メールアドレス変更のお知らせ
+      password_change:
+        greeting: "%{recipient}さんへ"
+        message: パスワードが変更されました。
+        subject: パスワードが更新されました
+      reset_password_instructions:
+        action: パスワードを再設定する
+        greeting: "%{recipient}さんへ"
+        instruction: パスワード再設定をご希望とのことで、このメールをお送りしています。下のリンクから再設定をお願いいたします。
+        instruction_2: 心当たりがない場合は、このメールを破棄してください。
+        instruction_3: 上記リンクから新しいパスワードを設定するまでは変更は完了しません。
+        subject: 【マイナース】パスワード再設定のご案内
+      unlock_instructions:
+        action: アカウントロックを解除する
+        greeting: "%{recipient}さんへ"
+        instruction: 下のリンクをクリックしてアカウントのロックを解除してください。
+        message: 複数回のログイン失敗によりアカウントがロックされています。
+        subject: アカウントのロック解除について
+    omniauth_callbacks:
+      failure: "%{kind}アカウントによるログインに失敗しました（理由：%{reason}）"
+      success: "%{kind}アカウントでのログインに成功しました。"
+    passwords:
+      edit:
+        change_my_password: パスワードを変更する
+        change_your_password: パスワードの変更
+        confirm_new_password: 新しいパスワード（確認）
+        new_password: 新しいパスワード
+      new:
+        forgot_your_password: パスワードを忘れましたか？
+        send_me_reset_password_instructions: パスワード再設定メールを送信
+      no_token: このページにアクセスできません。パスワード再設定メールのリンクからアクセスしてください。
+      send_instructions: 数分以内にパスワード再設定用のメールをお送りします。
+      send_paranoid_instructions: 登録されているメールアドレスであれば、再設定用のメールをお送りしています。
+      updated: パスワードが変更されました。
+      updated_not_active: パスワードが変更されましたが、アカウントはまだ有効になっていません。
+    registrations:
+      destroyed: アカウントを削除しました。またのご利用をお待ちしております。
+      edit:
+        are_you_sure: 本当に削除してもよろしいですか？
+        cancel_my_account: アカウントを削除する
+        currently_waiting_confirmation_for_email: "%{email} の確認待ちです"
+        leave_blank_if_you_don_t_want_to_change_it: 変更しない場合は空欄のままで構いません
+        title: アカウント情報の編集
+        update: 更新する
+        we_need_your_current_password_to_confirm_your_changes: 変更を反映するには、現在のパスワードの入力が必要です
+      new:
+        sign_up: はじめてのご利用登録
+      signed_up: ご登録ありがとうございます！
+      signed_up_but_inactive: アカウントを有効化するには、確認メールのリンクをクリックしてください。
+      signed_up_but_locked: アカウントがロックされており、ログインできません。
+      signed_up_but_unconfirmed: メールを送信しました。確認リンクをクリックしてアカウントを有効にしてください。
+      update_needs_confirmation: メールアドレスの変更を確認するために、確認メールを送信しました。
+      updated: アカウント情報を更新しました。
+      updated_but_not_signed_in: アカウントは更新されましたが、パスワードが変更されたため再度ログインが必要です。
+    sessions:
+      already_signed_out: すでにログアウトしています。
+      new:
+        sign_in: ログイン
+      signed_in: ログインに成功しました。
+      signed_out: ログアウトしました。またのご利用をお待ちしています。
+    shared:
+      links:
+        back: 戻る
+        didn_t_receive_confirmation_instructions: 確認メールが届いていませんか？
+        didn_t_receive_unlock_instructions: アカウントロック解除メールが届いていませんか？
+        forgot_your_password: パスワードを忘れましたか？
+        sign_in: ログイン
+        sign_in_with_provider: "%{provider}でログイン"
+        sign_up: 新規登録
+      minimum_password_length: "（%{count}文字以上）"
+    unlocks:
+      new:
+        resend_unlock_instructions: ロック解除メールを再送する
+      send_instructions: アカウントのロック解除メールを送信しました。
+      send_paranoid_instructions: 登録済みのアカウントがあれば、ロック解除メールを送信しています。
+      unlocked: アカウントのロックが解除されました。
+  errors:
+    messages:
+      already_confirmed: はすでに確認済みです。ログインしてください。
+      confirmation_period_expired: の有効期限が切れました。%{period} 以内に確認してください。再リクエストをお願いします。
+      expired: の有効期限が切れました。再度リクエストをお願いします。
+      not_found: は見つかりませんでした。
+      not_locked: はロックされていません。
+      not_saved:
+        one: 入力内容にエラーがあるため保存できませんでした。
+        other: 入力内容に%{count}件のエラーがあるため保存できませんでした。
