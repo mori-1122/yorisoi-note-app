@@ -1,0 +1,38 @@
+.flash-message {
+  position: fixed;  // 画面の固定位置に表示（スクロールしても見える）
+  top: 3.5rem;
+  right: 20px;
+  transform: translate-X(-50%);
+  z-index: 9998; // 前面に表示
+  max-width: 340px;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1); // 影付きで浮き上がらせる
+  animation: fadeOut 8s forwards; // アニメーションで5秒後に消える
+  color: rgb(236, 114, 114);
+}
+
+  .flash-notice {
+    background-color: #f48fb1; // ピンク（成功・通知）
+    border: 1px solid #f06292;
+  }
+
+  .flash-alert, .flash-error {
+    background-color: #f8d7da; // 警告系（赤み）
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+
+  .flash-success {
+    background-color: #81d4fa; // 水色（成功系）
+    border: 1px solid #4fc3f7;
+  }
+
+// フェードアウトのアニメーション定義
+@keyframes fadeOut {
+    0%   { opacity: 1; }  // 最初は表示
+    80%  { opacity: 1; }  // 80%の間は表示状態のまま
+    100% { opacity: 0; display: none; } // 最後に透明にして非表示にする
+  }

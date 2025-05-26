@@ -1,0 +1,12 @@
+@import "bootstrap/scss/bootstrap"; //全体のスタイル
+@import "bootstrap-icons/font/bootstrap-icons"; //ブートストラップアイコン
+@import "base"; //ベースを読み込んだ
+@import "buttons"; //ボタンのスタイル
+@import "login"; //ログインスタイル
+@import "flash"; //フラッシュ
+@import "reset_password_mail"; //メールのリセット
+
+
+.text-pink { //マイナースカラーにする
+    color: #f48fb1;
+}
