@@ -49,7 +49,7 @@ ja:
         action: メールアドレスを確認する
         greeting: "%{recipient}さんへ"
         instruction: 以下のリンクをクリックして、メールアドレスの確認を完了してください。
-        subject: 【マイナース】メールアドレス確認のお願い
+        subject: 【よりそいノート】メールアドレス確認のお願い
       email_changed:
         greeting: こんにちは、%{recipient}さん
         message: ご登録のメールアドレスが %{email} に変更されました。
@@ -64,7 +64,7 @@ ja:
         instruction: パスワード再設定をご希望とのことで、このメールをお送りしています。下のリンクから再設定をお願いいたします。
         instruction_2: 心当たりがない場合は、このメールを破棄してください。
         instruction_3: 上記リンクから新しいパスワードを設定するまでは変更は完了しません。
-        subject: 【マイナース】パスワード再設定のご案内
+        subject: 【よりそいノート】パスワード再設定のご案内
       unlock_instructions:
         action: アカウントロックを解除する
         greeting: "%{recipient}さんへ"
