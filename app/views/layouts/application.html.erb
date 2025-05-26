@@ -12,17 +12,31 @@
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New&display=swap" rel="stylesheet">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <%# ログインユーザー表示 %>
+    <% if user_signed_in? %>
+      <div class="login-user-banner">
+        <p>こんにちは、<strong><%= current_user.name %></strong>さん</p>
+        <%= link_to 'ログアウト', destroy_user_session_path, data: {turbo_method: :delete}, class: 'btn btn-pink btn-sm' %>
+      </div>
+    <% end %>
+      <% flash.each do |key, message| %>
+        <div class="flash-message flash-<%= key %>alert alert-dismissible fade show" role="alert" >
+          <%= message %>
+        </div>
+      <% end %>
     <%= yield %>
   </body>
 </html>
