@@ -1,21 +1,20 @@
 <div class="container d-flex align-items-center justify-content-center min-vh-100">
-<div class="card shadow p-4 login-card">
-<div class="text-center mb-4">
-<h2 class="text-pink">パスワード再設定</h2>
-<p class="text-muted">ご登録のメールアドレスを入力してください</p>
-</div>
+  <div class="card shadow p-4 login-card">
+    <div class="text-center mb-4">
+      <h2 class="text-pink">パスワード再設定</h2>
+      <p class="text-muted">ご登録のメールアドレスを入力してください</p>
+    </div>
 
-<%= render "devise/shared/error_messages", resource: resource %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+    <%= form_with model:resource, url: password_path(resource_name), method: :post, local: true, data: { turbo: false } do |f| %>
+      <div class="mb-3">
+        <%= f.label :email, 'メールアドレス', class: 'form-label' %>
+        <%= f.email_field :email, autofocus: true, class: 'form-control', required: true %>
+      </div>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, data: { turbo: false } }) do |f| %>
-<div class="mb-3">
-<%= f.label :email, 'メールアドレス', class: 'form-label' %>
-<%= f.email_field :email, autofocus: true, class: 'form-control', required: true %>
-</div>
-
-<div class="d-grid">
-<%= f.submit "再設定用メールを送信", class: "btn btn-pink btn-lg" %>
-</div>
-<% end %>
-</div>
+      <div class="d-grid">
+        <%= f.submit "再設定用メールを送信", class: "btn btn-pink btn-lg" %>
+      </div>
+    <% end %>
+  </div>
 </div>

@@ -1,25 +1,44 @@
-<h2>Change your password</h2>
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
+  <div class="card shadow p-4 login-card w-100">
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-  <%= f.hidden_field :reset_password_token %>
-
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+    <% if resource.errors.any? %>
+      <div class="alert alert-danger">
+        <ul class="mb-0">
+          <% resource.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
     <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
-  </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+    <div class="text-center mb-4">
+      <h2 class="text-pink">パスワード再設定</h2>
+      <p>新しいパスワードを設定してください</p>
+    </div>
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
+    <%= form_with model: resource, url: password_path(resource_name), method: :put, local: true, data: { turbo: false } do |form| %>
+      <%= form.hidden_field :reset_password_token, value: params[:reset_password_token] %>
 
-<%= render "devise/shared/links" %>
+      <div class="mb-3">
+        <%= form.label :password, '新しいパスワード', class: 'form-label' %>
+        <%= form.password_field :password, class: 'form-control', required: true, autocomplete: 'new-password' %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :password_confirmation, 'パスワード(確認用)', class: 'form-label' %>
+        <%= form.password_field :password_confirmation, class: 'form-control', required: true, autocomplete: 'new-password' %>
+      </div>
+
+      <div class="d-grid">
+        <%= form.submit 'パスワードを変更する', class: "btn btn-pink btn-lg" %>
+      </div>
+    <% end %>
+
+    <hr class="my-4">
+
+    <div class="text-center">
+      <%= link_to 'ログインページに戻る', new_user_session_path, class: "btn btn-outline-secondary w-100" %>
+    </div>
+
+  </div>
+</div>
