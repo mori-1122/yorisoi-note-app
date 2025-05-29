@@ -1,0 +1,10 @@
+@import "bootstrap/scss/bootstrap"; //全体のスタイル
+@import "bootstrap-icons/font/bootstrap-icons"; //ブートストラップアイコン
+@import "base"; //ベースを読み込んだ
+@import "buttons"; //ボタンのスタイル
+@import "login"; //ログインスタイル
+@import "flash"; //フラッシュ
+
+.text-pink {
+    color: #f48fb1;
+}

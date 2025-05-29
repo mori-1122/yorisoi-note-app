@@ -1,0 +1,19 @@
+.btn-pink {
+    background-color: #f48fb1;
+    color: white;
+
+    &:hover {
+        background-color:  #ec6c9a;
+        color: white;
+    }
+}
+
+.btn-violet {
+    background-color: #e38bf2;
+    color: white;
+
+    &:hover {
+        background-color: #b941cf;
+        color: white;
+    }
+}
