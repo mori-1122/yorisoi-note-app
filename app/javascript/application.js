@@ -2,3 +2,7 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import * as bootstrap from "bootstrap"
+import jquery from "jquery"
+window.$ = jquery
+import Rails from "@rails/ujs"
+Rails.start()
