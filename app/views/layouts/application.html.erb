@@ -18,12 +18,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New&display=swap" rel="stylesheet">
-    <!-- FullCalendar-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <%# cdnからでないと、カレンダーが正常に読み込まれない %>
+    
+    <!-- CDNから読み込み -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+    <%# <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.9/index.global.min.js"></script> %>
+
+
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "/js/calendar.js" %>
+    <%= javascript_include_tag "/js/locales-all.global.js"%>
+
   </head>
 
   <body>
@@ -31,7 +39,7 @@
     <% if user_signed_in? %>
       <div class="login-user-banner">
         <p>こんにちは、<strong><%= current_user.name %></strong>さん</p>
-        <%= link_to 'ログアウト', destroy_user_session_path, data: {turbo_method: :delete}, class: 'btn btn-pink btn-sm' %>
+        <%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'btn btn-pink btn-sm' %>
       </div>
     <% end %>
       <% flash.each do |key, message| %>
@@ -42,3 +50,6 @@
     <%= yield %>
   </body>
 </html>
+
+
+
