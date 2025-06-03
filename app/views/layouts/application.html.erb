@@ -19,18 +19,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <%# cdnからでないと、カレンダーが正常に読み込まれない %>
-    
+
     <!-- CDNから読み込み -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
     <%# <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.9/index.global.min.js"></script> %>
-
-
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <%= javascript_include_tag "/js/calendar.js" %>
-    <%= javascript_include_tag "/js/locales-all.global.js"%>
+    <%= javascript_include_tag "/js/locales-all.global.js" %>
 
   </head>
 
@@ -43,13 +41,10 @@
       </div>
     <% end %>
       <% flash.each do |key, message| %>
-        <div class="flash-message flash-<%= key %>alert alert-dismissible fade show" role="alert" >
+        <div class="flash-message flash-<%= key %>alert alert-dismissible fade show" role="alert">
           <%= message %>
         </div>
       <% end %>
     <%= yield %>
   </body>
 </html>
-
-
-

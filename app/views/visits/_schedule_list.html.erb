@@ -1,14 +1,11 @@
 <% if visits.any? %> <%# 一つ以上予定があったら %>
   <% visits.each do |visit| %> <%#  visitの各要素をを１つずつ処理%>
     <div class="visits-item mb-2 p-2 "> <%# 予定の表示用ボックスを作成する %>
-        <%= visit.hospital_name%><br><%# 病院名を表示 %>
-        <span class="text-muted"><%=visit.visit_date.strftime("%Y年%m月%d日") %></span>: <%# 通院日を日本語の日付形式で表示（薄い文字色） %>
+        <%= visit.hospital_name %><br><%# 病院名を表示 %>
+        <span class="text-muted"><%= visit.visit_date.strftime("%Y年%m月%d日") %></span>: <%# 通院日を日本語の日付形式で表示（薄い文字色） %>
         <%= visit.purpose %> <%# 目的 %>
     </div>
   <% end %>
 <% else %>
     <p class="text-muted">予定がありません。</p> <%# 予定がない場合の表示 %>
 <% end %>
-
-
-

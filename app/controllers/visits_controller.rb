@@ -5,7 +5,7 @@ class VisitsController < ApplicationController
   end
 
   def create # ユーザーが新しい予定（Visit）を登録したときに呼び出される
-    @visit = current_user.visits.build(visit_params) # 現在ログインしているユーザー（current_user）に紐づく Visit モデルの新しいインスタンスを作成
+    @visit = current_user.visits.build(visit_params) # 現在ログインしているユーザー（current_user）に紐づくVisitモデルの新しいインスタンスを作成
     if @visit.save # 作成した予定をデータベースに保存
       render json: { status: "予定が作成されました", visit: @visit } # 予定の作成に成功したら、status: 'created' と作成された予定（@visit）の情報をJSON形式で返す
     else
