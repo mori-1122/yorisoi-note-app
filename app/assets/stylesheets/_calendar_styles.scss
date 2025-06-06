@@ -1,5 +1,5 @@
 #calendar {
-    max-width: 900px;
+    max-width: 100%;
     margin: 0 auto;
     background-color: #fff0f5;
     border-radius: 12px;
@@ -8,7 +8,7 @@
 }
 
 #schedule-list {
-    max-width: 900px;
+    max-width: 100%;
     background-color: #fff7fb;
     margin: 0 auto;
     border: 1px solid #f8bbd0;
@@ -29,3 +29,14 @@
     }
 }
 
+.bg-pink-light {
+    background-color: #fce4ec; // very light pink
+  }
+  
+  .border-pink {
+    border: 1px solid #f48fb1; // soft pink border
+  }
+  
+  .text-pink {
+    color: #f06292; // pink text
+  }

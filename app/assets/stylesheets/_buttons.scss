@@ -17,3 +17,14 @@
         color: white;
     }
 }
+
+.btn-outline-pink {
+    color: #f06292;
+    border-color: #f06292;
+    background-color: transparent;
+  
+    &:hover {
+      background-color: #f8bbd0;
+      color: white;
+    }
+  }
