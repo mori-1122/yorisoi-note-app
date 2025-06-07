@@ -1,12 +1,48 @@
-<div class="visit-form-box"> <%# visit-form-box というCSSクラスを持つボックス %>
-    <h2>受診の予定を追加</h2>
-    <%= form_with url: visits_path, method: :post, local: false, html: { id: "visit-form" } do |f| %> <%# form_withヘルパーを使って、Ajaxのフォームを作成。送信先URLは /visits（VisitsController#create）で、HTTPメソッドはPOST。local:false → Ajax送信を有効にする。フォームのIDは "visit-form"%>
-      <%= f.hidden_field :visit_date, id: "visit_date" %><%# visit[visit_date] という名前の非表示（hidden）入力フィールドを生成。日付は、カレンダーから%>
+<div class="visit-form-box">
+  <div class="card-shadow p-4">
+  <h2 class="text-center text-pink mb-4 mt-5">
+    <%= @visit.persisted? ? "受診の予定を編集" : "受診の予定を追加" %>
+  </h2>
 
-      <%= f.label :hospital_name, "医療機関名" %><%# hospital_name 入力欄に対応するラベル「医療機関名」を表示 %>
-      <%= f.select :hospital_name, ##hospital_name を選ぶための <select> メニューを生成
-            options_for_select(["病院A", "クリニックB"]), ##ドロップダウンにする
-            { prompt: "医療機関を選択" },
-            { class: "form-select", id: "hospital_name" } %>
+  <%= form_with model: @visit, local: true do |f| %>
+    <%= f.hidden_field :visit_date %>
+
+    <div class="form-group">
+      <%= f.label :hospital_name, "医療機関名" %>
+      <%= f.select :hospital_name, options_for_select(["AA病院", "よりそいクリニック"], @visit.hospital_name), { prompt: "医療機関を選択"}, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :doctor_name, "医師名" %>
+      <%= f.select :doctor_name, options_for_select(["〇〇先生", "△△先生"], @visit.doctor_name), { prompt: "医師を選択"}, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :department_id, "診療科" %>
+      <%= f.collection_select :department_id,
+            @departments, :id, :name,
+            { prompt: "診療科を選択" },
+            { class: "form-control" } %>
+    </div>
+    <div class="form-group">
+      <%= f.label :purpose, "目的" %>
+      <%= f.select :purpose, options_for_select(["診察", "検査", "リハビリ"], @visit.purpose), { prompt: "目的を選択"}, class: "form-control" %>
+    </div>
+
+    <div class="form-group form-check">
+      <%= f.check_box :has_recording, class: "form-check-input" %>
+      <%= f.label :has_recording, "録音あり", class: "form-check-label" %>
+    </div>
+
+    <div class="form-group form-check">
+      <%= f.check_box :has_document, class: "form-check-input" %>
+      <%= f.label :has_document, "資料あり", class: "form-check-label" %>
+    </div>
+
+    <div class="form-group mt-3">
+      <%= f.submit @visit.persisted? ? "更新" : "保存", class: "btn btn-violet"%>
+      <%= link_to "キャンセル", root_path, class: "btn btn-pink" %>
+    </div>
     <% end %>
+  </div>
 </div>
