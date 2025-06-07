@@ -1,14 +1,18 @@
 <div class="container my-5 mt-5">
-    <h1 class="text-center mb-4 text-pink">マイカレンダー</h1>
+  <h1 class="text-center text-pink ">受診カレンダー</h1>
 
-    <div id="visit-form-container" class="mb-4">
-        <%= render partial: "form" %>
-    </div>
+    <%# 予約追加フォーム %>
+  <div id="visit-form-container" class="mb-4">
+    <turbo-frame id="visit_form">
+      <%# フォームは日付クリックで差し込み %>
+    </turbo-frame>
+  </div>
     <%# フルカレンダー %>
-    <div id="calendar" class="mb-5 shadow bg-white p-3"></div>
+    <div id="calendar" class="mb-5 shadow bg-white p-3">
+    </div>
 
     <%# 予定一覧 %>
     <div id="schedule-list" class="schedule-list overflow-auto bg-light rounded shadow">
-      <p class="text-muted mb-0">日付をクリックすると予定が表示されます</p>
+      <%= render partial: "visits/schedule_list", locals: { visits: @visits }%>
     </div>
 </div>
