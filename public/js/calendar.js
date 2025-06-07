@@ -1,6 +1,6 @@
 $(function () { //ページの読み込みが完了したとき中の処理を実行する
     const el = document.getElementById("calendar"); //elが見つからなかった、fullcalendarが読み込まれない場合
-    if (!el || typeof FullCalendar === "undefined") { 
+    if (!el || typeof FullCalendar === "undefined") {
         return; //処理終了
     }
 
@@ -9,9 +9,9 @@ $(function () { //ページの読み込みが完了したとき中の処理を�
         locale: "ja", //日本語
         dateClick: function(info) { //日付をクリックしたときに呼ばれる関数
           const clickDate = info.dateStr //文字列が入り
+          window.location.href = `/visits/new?date=${clickDate}`;
           console.log("クリックされた日付:", clickDate); //出力
 
-    // ajax,getリクエスト
     $.ajax({ //clickDateをパラメータとして/visits/by_dateにGETリクエストを送る
         url: "/visits/by_date", //railsのコントローラーに送る
         type: "GET", //getリクエスト
@@ -24,15 +24,7 @@ $(function () { //ページの読み込みが完了したとき中の処理を�
           $("#schedule-list").html("<p class='flash-error text-center'>予定の取得ができません。</p>");
         }
       });
-
-    //   axios.post("/logs", {
-    //     event: "click",
-    //     date: clickDate
-    //   }).then(response => {
-    //     console.log("記録されました")
-    //   })
-    // axiosを使ってみたかったが、一旦ストップ
     }
-    });
+  });
   calendar.render();
 });
