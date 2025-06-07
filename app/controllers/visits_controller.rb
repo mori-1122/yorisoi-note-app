@@ -1,29 +1,83 @@
 class VisitsController < ApplicationController
-  before_action :authenticate_user!
-  def index
-    # 表示
+  before_action :authenticate_user!# #ユーザーがログインしていないとアクセスできない
+  before_action :set_visit, only: [ :edit, :update, :destroy ]
+
+    def index # #通院予定の一覧ページを表示
+      selected_date = params[:date].presence || Date.today # #URLにdate=2025-06-07みたいなパラメータがついていたらその日付、なければ今日の日付を使う
+      @visit = Visit.new(visit_date: selected_date) # #フォーム用visitインスタンス
+      @departments = Department.all # #プルダウンに診療科一覧を取得
+      @visits = current_user.visits.where(visit_date: selected_date) # #今日の予定（または次に近い予定）を表示するための取得処理
+      if @visits.blank?
+        next_date = current_user.visits.where("visit_date > ?", selected_date).minimum(:visit_date)
+        if next_date
+          @visit.visit_date = next_date # #フォームに反映
+          @visits = current_user.visits.where(visit_date: next_date)
+        end
+      end
+  end
+
+  def new
+    selected_date = params[:date].presence || Date.today
+    @visit = Visit.new(visit_date: selected_date)
+    @departments = Department.all # #プルダウンに診療科一覧を取得
+    @visits = current_user.visits.where(visit_date: selected_date)
   end
 
   def create # ユーザーが新しい予定（Visit）を登録したときに呼び出される
-    @visit = current_user.visits.build(visit_params) # 現在ログインしているユーザー（current_user）に紐づくVisitモデルの新しいインスタンスを作成
-    if @visit.save # 作成した予定をデータベースに保存
-      render json: { status: "予定が作成されました", visit: @visit } # 予定の作成に成功したら、status: 'created' と作成された予定（@visit）の情報をJSON形式で返す
+      @visit = current_user.visits.build(visit_params) # 現在ログインしているユーザー（current_user）に紐づくVisitモデルの新しいインスタンスを作成
+
+      respond_to do |format|
+        if @visit.save
+          format.html do
+            redirect_to visits_path(date: @visit.visit_date), notice: "予定を保存しました"
+          end
+        else
+          format.html do
+            @departments = Department.all
+            render :new, status: :unprocessable_entity
+          end
+        end
+      end
+    end
+
+  def edit
+    @visit = current_user.visits.find(params[:id])
+    @departments = Department.all
+  end
+
+  def update
+    @visit = current_user.visits.find(params[:id])
+    if @visit.update(visit_params)
+      redirect_to visits_path, notice: "予定を更新しました"
     else
-      render json: { status: "作成し直して下さい", errors: @visit.errors.full_messages }, status: :unprocessable_entity # 保存に失敗した場合、status:'error'とエラーメッセージ
+      @departments = Department.all
+      render :edit, status: :unprocessable_entity
     end
   end
 
+  def destroy
+    @visit = current_user.visits.find(params[:id])
+    visit_date = @visit.visit_date
+    @visit.destroy
+    redirect_to visits_path(date: visit_date), notice: "予定を削除しました"
+  end
+
   def by_date
-    @visits = current_user.visits.where(visit_date: params[:date])
-    render partial: "visits/schedule_list", locals: { visits: @visits }
+    @visits = current_user.visits.where(visit_date: params[:date]) # #ログインユーザーの予定だけ取得
+    render partial: "visits/schedule_list", locals: { visits: @visits } # #カレンダーの下などに表示する部分テンプレートを返す
   end
 
   private # 安全にユーザーからの入力を処理する
 
-  def visit_params
+  def set_visit
+    @visit = current_user.visits.find(params[:id])
+  end
+
+  def visit_params # #通院予定（Visit）登録時に受け付けるパラメータを制限（セキュリティ対策）
     params.require(:visit).permit(
       :visit_date,
       :hospital_name,
+      :doctor_name,
       :purpose,
       :has_recording,
       :has_document,
