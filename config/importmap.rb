@@ -6,9 +6,7 @@ pin "@hotwired/stimulus", to: "stimulus.min.js"
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
 pin "bootstrap", to: "bootstrap.bundle.min.js"
-# pin "jquery", to: "https://ga.jspm.io/npm:jquery@3.6.3/dist/jquery.js"
 pin "axios" # @1.9.0
 pin "#lib/adapters/http.js", to: "#lib--adapters--http.js.js" # @1.9.0
 pin "#lib/platform/node/classes/FormData.js", to: "#lib--platform--node--classes--FormData.js.js" # @1.9.0
 pin "#lib/platform/node/index.js", to: "#lib--platform--node--index.js.js" # @1.9.0
-# pin "@rails/ujs", to: "@rails-ujs-js"

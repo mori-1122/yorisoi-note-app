@@ -62,7 +62,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
-  gem 'erb_lint'
+  gem "erb_lint"
 end
 
 group :test do

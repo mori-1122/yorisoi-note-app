@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   root to: "home#index" # #トップページ（/）にアクセス
 
 
-  resources :visits, only: [ :index, :new, :create, :edit, :update, :destroy] do # #visitsリソースに関するルート
+  resources :visits, only: [ :index, :new, :create, :edit, :update, :destroy ] do # #visitsリソースに関するルート
     collection do
       get "by_date"
     end

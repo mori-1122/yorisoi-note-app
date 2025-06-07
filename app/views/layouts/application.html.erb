@@ -23,6 +23,7 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>  <%# ここを消すとレイアウトがおかしくなる %>
     <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "application", type: "module", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "/js/calendar.js" %>
     <%= javascript_include_tag "/js/locales-all.global.js" %>
 
