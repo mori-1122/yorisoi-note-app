@@ -8,13 +8,17 @@
 }
 
 #schedule-list {
-    max-width: 100%;
+    max-width: 98%;
     background-color: #fff7fb;
     margin: 0 auto;
     border: 1px solid #f8bbd0;
     border-radius: 8px;
     padding: 1rem;
-    // overflow-y: visible;
+
+    p {
+      margin: 0 auto;
+      text-align: center;
+    }
 
     .visit-item {
         background-color: #fff;
@@ -32,7 +36,7 @@
 .bg-pink-light {
     background-color: #fce4ec; // very light pink
   }
-  
+
   .border-pink {
     border: 1px solid #f48fb1; // soft pink border
   }
