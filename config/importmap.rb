@@ -11,4 +11,3 @@ pin "axios" # @1.9.0
 pin "#lib/adapters/http.js", to: "#lib--adapters--http.js.js" # @1.9.0
 pin "#lib/platform/node/classes/FormData.js", to: "#lib--platform--node--classes--FormData.js.js" # @1.9.0
 pin "#lib/platform/node/index.js", to: "#lib--platform--node--index.js.js" # @1.9.0
-# pin "@rails/ujs", to: "@rails-ujs-js"
