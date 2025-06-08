@@ -2,4 +2,5 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 
-import * as bootstrap from "bootstrap"
+// FIXME: ここでエラーが発生しているため一時的にコメントアウト
+// import * as bootstrap from "bootstrap"

@@ -1,10 +1,11 @@
-@import "bootstrap/scss/bootstrap"; //全体のスタイル
-@import "bootstrap-icons/font/bootstrap-icons"; //ブートストラップアイコン
-@import "base"; //ベースを読み込んだ
-@import "buttons"; //ボタンのスタイル
-@import "login"; //ログインスタイル
-@import "flash"; //フラッシュ
-@import "calendar_styles"; //カレンダー
+// FIXME: 読み込めていない
+/* @use "bootstrap/scss/bootstrap"; //全体のスタイル */
+/* @use "bootstrap-icons/font/bootstrap-icons"; //ブートストラップアイコン */
+@use "base"; //ベースを読み込んだ
+@use "buttons"; //ボタンのスタイル
+@use "login"; //ログインスタイル
+@use "flash"; //フラッシュ
+@use "calendar_styles"; //カレンダー
 
 .text-pink {
     color: #f48fb1;
