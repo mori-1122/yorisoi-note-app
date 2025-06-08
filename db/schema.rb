@@ -103,7 +103,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_03_234720) do
     t.boolean "has_recording"
     t.boolean "has_document"
     t.integer "memo_id"
-    t.bigint "department_id"
+    t.bigint "department_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "doctor_name"
