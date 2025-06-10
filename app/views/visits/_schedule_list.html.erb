@@ -8,8 +8,8 @@
           </div>
           <div class="mt-2">
             <%= link_to '編集', main_app.edit_visit_path(visit), class: "btn btn-sm btn-outline-pink me-2"%>
-            <%= link_to '削除', main_app.visit_path(visit), data: { turbo_method: "delete", turbo_confirm: '本当に削除しますか？' }, class: "btn btn-sm btn-outline-pink "%>
-      </div>
+            <%= button_to '削除', visit_path(visit), method: :delete, data: { turbo_confirm: '本当に削除しますか？' }, class: "btn btn-sm btn-outline-pink" %>
+
     </div>
   <% end %>
 <% else %>
