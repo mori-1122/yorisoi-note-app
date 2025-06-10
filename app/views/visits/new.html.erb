@@ -1,10 +1,6 @@
-<h1>予定を追加する</h1>
 <%= render "form", visit: @visit, departments: @departments %>
 
-<%# visit_dateの予定を取得する%>
-<div id="schedule-list" class="schedule-list overflow-auto bg-light rounded shadow mt-5">
-  <% visits = current_user.visits.where(visit_date: @visit.visit_date)%>
-  <%= render partial: "visits/schedule_list", locals: { visits: visits } %>
+<div id="schedule-list" class="overflow-auto bg-light shadow">
+    <%= render partial: "visits/schedule_list", locals: { visits: current_user.visits.where(visit_date: @visit.visit_date) }%>
 </div>
-
 

@@ -11,8 +11,9 @@
     <div id="calendar" class="mb-5 shadow bg-white p-3">
     </div>
 
-    <%# 予定一覧 %>
-    <div id="schedule-list" class="schedule-list overflow-auto bg-light rounded shadow">
-      <%= render partial: "visits/schedule_list", locals: { visits: @visits }%>
-    </div>
-</div>
+    <% unless controller.action_name == "new "%>
+      <div id="schedule-list" class="schedule-list overflow-auto bg-light rounded shadow">
+        <%= render partial: "visits/schedule_list", locals: { visits: @visits}%>
+      </div>
+    <% end %>
+  </div>
