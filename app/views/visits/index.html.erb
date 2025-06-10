@@ -1,19 +1,20 @@
+
 <div class="container my-5 mt-5">
-  <h1 class="text-center text-pink ">受診カレンダー</h1>
+  <h1 class="text-center text-pink">受診カレンダー</h1>
 
-    <%# 予約追加フォーム %>
+  <%# 予約追加フォーム %>
   <div id="visit-form-container" class="mb-4">
-    <turbo-frame id="visit_form">
-      <%# フォームは日付クリックで差し込み %>
-    </turbo-frame>
+    <turbo-frame id="visit_form"></turbo-frame>
   </div>
-    <%# フルカレンダー %>
-    <div id="calendar" class="mb-5 shadow bg-white p-3">
-    </div>
 
-    <% unless controller.action_name == "new "%>
-      <div id="schedule-list" class="schedule-list overflow-auto bg-light rounded shadow">
-        <%= render partial: "visits/schedule_list", locals: { visits: @visits}%>
-      </div>
-    <% end %>
+  <%# フルカレンダー %>
+  <div id="calendar" class="mb-5 shadow bg-white p-3">
   </div>
+
+  <%# カレンダーの下に予定一覧を表示 %>
+  <% unless controller.action_name == "new" %>
+    <div id="schedule-list" class="schedule-list overflow-auto bg-light rounded shadow">
+      <%= render partial: "visits/schedule_list", locals: { visits: @visits } %>
+    </div>
+  <% end %>
+</div>
