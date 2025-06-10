@@ -118,6 +118,9 @@ GEM
     crass (1.0.6)
     cssbundling-rails (1.4.3)
       railties (>= 6.0.0)
+    dartsass-rails (0.5.1)
+      railties (>= 6.0.0)
+      sass-embedded (~> 1.63)
     date (3.4.1)
     debug (1.10.0)
       irb (~> 1.10)
@@ -149,15 +152,23 @@ GEM
     erubi (1.13.1)
     et-orbi (1.2.11)
       tzinfo
-    ffi (1.17.2-aarch64-linux)
-    ffi (1.17.2-arm-linux)
-    ffi (1.17.2-arm64-darwin)
-    ffi (1.17.2-x86_64-linux)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    google-protobuf (4.31.1)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.31.1-aarch64-linux-gnu)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.31.1-arm64-darwin)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.31.1-x86_64-linux-gnu)
+      bigdecimal
+      rake (>= 13)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.1.0)
@@ -337,8 +348,14 @@ GEM
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
     rubyzip (2.4.1)
-    sassc (2.4.0)
-      ffi (~> 1.9)
+    sass-embedded (1.89.1-aarch64-linux-gnu)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.89.1-arm-linux-gnueabihf)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.89.1-arm64-darwin)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.89.1-x86_64-linux-gnu)
+      google-protobuf (~> 4.31)
     securerandom (0.4.1)
     selenium-webdriver (4.32.0)
       base64 (~> 0.2)
@@ -424,6 +441,7 @@ DEPENDENCIES
   brakeman
   capybara
   cssbundling-rails
+  dartsass-rails
   debug
   devise
   devise-i18n
@@ -439,7 +457,6 @@ DEPENDENCIES
   rails (~> 8.0.2)
   rails-i18n
   rubocop-rails-omakase
-  sassc
   selenium-webdriver
   solid_cable
   solid_cache
