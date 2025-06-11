@@ -1,2 +1,2 @@
-@import 'bootstrap/scss/bootstrap';
-@import 'bootstrap-icons/font/bootstrap-icons';
+@use "bootstrap/scss/bootstrap" as *; // Sass モジュール対応
+@import "bootstrap-icons/font/bootstrap-icons"; // CSS 読み込みのまま維持

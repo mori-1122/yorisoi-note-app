@@ -1,10 +1,14 @@
-@import "bootstrap/scss/bootstrap"; //全体のスタイル
-@import "bootstrap-icons/font/bootstrap-icons"; //ブートストラップアイコン
-@import "base"; //ベースを読み込んだ
-@import "buttons"; //ボタンのスタイル
-@import "login"; //ログインスタイル
-@import "flash"; //フラッシュ
+@use "base";
+@use "buttons";
+@use "login";
+@use "flash";
+@use "calendar_styles";
+
 
 .text-pink {
-    color: #f48fb1;
+  color: #f48fb1;
+}
+
+.text-center.text-pink {
+  padding-top: 2rem;
 }

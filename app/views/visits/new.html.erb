@@ -1,0 +1,5 @@
+<%= render "form", visit: @visit, departments: @departments %>
+
+<div id="schedule-list" class="overflow-auto bg-light shadow">
+    <%= render partial: "visits/schedule_list", locals: { visits: current_user.visits.where(visit_date: @visit.visit_date) } %>
+</div>

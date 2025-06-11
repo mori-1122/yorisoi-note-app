@@ -1,0 +1,46 @@
+#calendar {
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: #fff0f5;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 10px rgba(244, 143, 177, 0.2);
+}
+
+#schedule-list {
+    max-width: 98%;
+    background-color: #fff7fb;
+    margin: 0 auto;
+    border: 1px solid #f8bbd0;
+    border-radius: 8px;
+    padding: 1rem;
+
+    p {
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .visit-item {
+        background-color: #fff;
+        border-left: 4px solid #f48fb1;
+        padding: 0.5rem 1rem;
+        margin-bottom: 0.5rem;
+        width: 100%;
+        margin-bottom: 0.5rem;
+        display: block;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        border-radius: 4px;
+    }
+}
+
+.bg-pink-light {
+    background-color: #fce4ec; // very light pink
+  }
+
+  .border-pink {
+    border: 1px solid #f48fb1; // soft pink border
+  }
+  
+  .text-pink {
+    color: #f06292; // pink text
+  }
