@@ -2,9 +2,10 @@
   <% visits.each do |visit| %> <%#  visitの各要素をを１つずつ処理%>
     <div class="visits-item mb-3 p-3 rounded shadow-sm bg-pink-light border-pink">
       <div> <%# 予定の表示用ボックスを作成する %>
-       <strong><%= visit.hospital_name %></strong><br><%# 病院名を表示 %>
-        <span class="text-muted"><%= visit.visit_date.strftime("%Y年%m月%d日") %></span>: <%# 通院日を日本語の日付形式で表示（薄い文字色） %>
-        <%= visit.purpose %> <%# 目的 %>
+        <strong><%= visit.hospital_name %></strong><br><%# 病院名を表示 %>
+        <span class="text-muted"><strong>受診予定日：</strong><%= visit.visit_date.strftime("%Y年%m月%d日") %></span><br> <%# 通院日を日本語の日付形式で表示（薄い文字色） %>
+        <span class="text-muted"><strong>受診時間：</strong><%= visit.appointed_at.strftime("%-H時%M分") %></span><br>
+        <strong>受診目的：</strong><%= visit.purpose %> <%# 目的 %>
       </div>
         <div class="mt-2">
           <%= link_to '編集', main_app.edit_visit_path(visit), class: "btn btn-sm btn-outline-pink me-2" %>

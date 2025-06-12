@@ -9,12 +9,12 @@
 
     <div class="form-group">
       <%= f.label :hospital_name, "医療機関名" %>
-      <%= f.select :hospital_name, options_for_select(["AA病院", "よりそいクリニック"], @visit.hospital_name), { prompt: "医療機関を選択"}, class: "form-control" %>
+      <%= f.select :hospital_name, options_for_select(["AA病院", "よりそいクリニック", "〇〇医療センター"], @visit.hospital_name), { prompt: "医療機関を選択"}, class: "form-control" %>
     </div>
 
     <div class="form-group">
-      <%= f.label :doctor_name, "医師名" %>
-      <%= f.select :doctor_name, options_for_select(["〇〇先生", "△△先生"], @visit.doctor_name), { prompt: "医師を選択"}, class: "form-control" %>
+      <%= f.label :appointed_at, "予約時間" %>
+      <%= f.time_field :appointed_at, class: "form-control" %>
     </div>
 
     <div class="form-group">
