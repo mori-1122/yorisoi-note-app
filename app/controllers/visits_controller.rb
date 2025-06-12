@@ -70,7 +70,7 @@ class VisitsController < ApplicationController
     params.require(:visit).permit(
       :visit_date,
       :hospital_name,
-      :doctor_name,
+      :appointed_at,
       :purpose,
       :has_recording,
       :has_document,
