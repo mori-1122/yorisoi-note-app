@@ -9,6 +9,7 @@ one:
   has_document: false
   memo_id: 1
   department: one
+  appointed_at: 2025-05-22 09:00:00
 
 two:
   user: two
@@ -19,3 +20,4 @@ two:
   has_document: false
   memo_id: 1
   department: two
+  appointed_at: 2025-05-22 14:00:00
