@@ -1,6 +1,15 @@
 <div class="visit-form-box">
   <div class="card-shadow p-4">
-  <h2 class="text-center text-pink mb-4 mt-5">
+
+    <%# 戻るボタン %>
+    <div class="d-flex justify-content-start pt-5">
+      <%= link_to visits_path(date: @visit.visit_date), class: "btn btn-outline-secondary d-flex align-items-center" do %>
+        <i class="bi bi-arrow-left-circle-fill me-2"></i>
+         戻る
+      <% end %>
+    </div>
+
+  <h2 class="text-center text-pink mb-3 mt-2">
     <%= @visit.persisted? ? "受診の予定を編集" : "受診の予定を追加" %>
   </h2>
 
