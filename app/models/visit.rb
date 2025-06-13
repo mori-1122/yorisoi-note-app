@@ -8,6 +8,14 @@ class Visit < ApplicationRecord
   # 必須項目のバリデーション
   validates :visit_date, :hospital_name, :purpose, :appointed_at, presence: true
 
+  # 重複登録のバリデーション
+  validates :hospital_name, uniqueness: {
+    scope: [ :user_id, :visit_date ],
+    message: "は、すでに他の予定と重複して登録されています。"
+  }
+
+  validates :department_id, presence: true # #重複表示の修正
+
   # 予約時間は未来でなければならない
   validate :appointed_at_must_be_in_the_future
 
