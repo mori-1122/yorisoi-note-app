@@ -8,8 +8,8 @@
         <span class="text-muted"><strong>受診時間：</strong><%= visit.appointed_at.strftime("%-H時%M分") %></span><br>
         <strong>受診目的：</strong><%= visit.purpose %> <%# 目的 %>
       </div>
-        <div class="mt-2">
-          <%= link_to '編集', main_app.edit_visit_path(visit), class: "btn btn-sm btn-outline-pink me-2" %>
+        <div class="action-buttons mt-2">
+          <%= link_to '編集', edit_visit_path(visit), class: "btn btn-sm btn-outline-pink" %>
           <%= button_to '削除', visit_path(visit), method: :delete, data: { turbo_confirm: '本当に削除しますか？' }, class: "btn btn-sm btn-outline-pink" %>
         </div>
       </div>
