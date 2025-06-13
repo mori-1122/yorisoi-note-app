@@ -16,14 +16,13 @@ class Visit < ApplicationRecord
 
   validates :department_id, presence: true # #重複表示の修正
 
-  # 予約時間は未来でなければならない
-  validate :appointed_at_must_be_in_the_future
+  validate :visit_date_cannot_be_in_the_past
 
   private
 
-  def appointed_at_must_be_in_the_future
-    if appointed_at.present? && appointed_at < Time.current
-      errors.add(:appointed_at, "は今日より後の日時を指定してください")
+  def visit_date_cannot_be_in_the_past
+    if visit_date.present? && appointed_at < Date.current
+      errors.add(:visit_date, "は今日より後の日時を指定してください")
     end
   end
 end
