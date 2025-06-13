@@ -17,21 +17,16 @@ class VisitsController < ApplicationController
   end
 
   def create # ユーザーが新しい予定（Visit）を登録したときに呼び出される
-      @visit = current_user.visits.build(visit_params) # 現在ログインしているユーザー（current_user）に紐づくVisitモデルの新しいインスタンスを作成
-
-      respond_to do |format|
-        if @visit.save
-          format.html do
-            redirect_to visits_path(date: @visit.visit_date), notice: "予定を保存しました"
-          end
-        else
-          format.html do
-            @departments = Department.all
-            render :new, status: :unprocessable_entity
-          end
-        end
-      end
+    @visit = current_user.visits.build(visit_params) # 現在ログインしているユーザー（current_user）に紐づくVisitモデルの新しいインスタンスを作成
+    if @visit.save
+        redirect_to visits_path(date: @visit.visit_date), notice: "予定を保存しました"
+    else
+      flash.now[:alert] = @visit.errors.full_messages.uniq.join(",")
+      @departments = Department.all
+      @visits = current_user.visits.where(visit_date: @visit.visit_date)
+      render :new, status: :unprocessable_entity
     end
+  end
 
   def edit
     @visit = current_user.visits.find(params[:id])
@@ -66,7 +61,7 @@ class VisitsController < ApplicationController
     @visit = current_user.visits.find(params[:id])
   end
 
-  def visit_params # #通院予定（Visit）登録時に受け付けるパラメータを制限（セキュリティ対策）
+  def visit_params # #通院予定（Visit）登録時に受け付けるパラメータを制限（セキュリティ対策） 情報を抜き出す
     params.require(:visit).permit(
       :visit_date,
       :hospital_name,
