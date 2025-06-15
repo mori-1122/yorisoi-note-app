@@ -21,7 +21,7 @@ class Visit < ApplicationRecord
   private
 
   def visit_date_cannot_be_in_the_past
-    if visit_date.present? && appointed_at < Date.current
+    if visit_date.present? && appointed_at.present? && appointed_at < Date.current
       errors.add(:visit_date, "は今日より後の日時を指定してください")
     end
   end
