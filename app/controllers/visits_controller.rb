@@ -12,6 +12,7 @@ class VisitsController < ApplicationController
   def new
     selected_date = params[:date].presence || Date.today
     @visit = Visit.new(visit_date: selected_date)
+    @visit.build_memo # #Visitに紐づく空のMemoを作成
     @departments = Department.all # #プルダウンに診療科一覧を取得
     @visits = current_user.visits.where(visit_date: selected_date)
   end
@@ -30,6 +31,7 @@ class VisitsController < ApplicationController
 
   def edit
     @visit = current_user.visits.find(params[:id])
+    @visit.build_memo unless @visit.memo.present? # #すでにメモが存在しないときだけ、新しいメモを仮で作っておく
     @departments = Department.all
   end
 
@@ -70,7 +72,8 @@ class VisitsController < ApplicationController
       :has_recording,
       :has_document,
       :memo_id,
-      :department_id
+      :department_id,
+      memo_attributes: [ :content ]
     )
   end
 end
