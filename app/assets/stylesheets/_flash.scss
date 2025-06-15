@@ -2,8 +2,8 @@
   position: fixed;  // 画面の固定位置に表示（スクロールしても見える）
   top: 3.5rem;
   right: 20px;
-  transform: translate-X(-50%);
   z-index: 9998; // 前面に表示
+  transform: translateX(-50%);
   max-width: 340px;
   padding: 1rem 1.25rem;
   border-radius: 12px;
