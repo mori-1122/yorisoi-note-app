@@ -14,6 +14,17 @@
   </h2>
 
   <%= form_with model: @visit, local: true do |f| %>
+    <% if @visit.errors.any? %>
+      <div class="alert alert-danger">
+        <h4 class="mb-2">入力内容に誤りがあります</h4>
+        <ul class="mb-0">
+          <% @visit.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
     <%= f.hidden_field :visit_date %>
 
     <div class="form-group">
@@ -37,6 +48,13 @@
       <%= f.label :purpose, "目的" %>
       <%= f.select :purpose, options_for_select(["診察", "検査", "リハビリ"], @visit.purpose), { prompt: "目的を選択"}, class: "form-control" %>
     </div>
+
+    <%= f.fields_for :memo do |mf| %>
+      <div class="form-group">
+        <%= mf.label :content, "メモ" %>
+        <%= mf.text_area :content, class: "form-control" %>
+      </div>
+    <% end %>
 
     <div class="form-group form-check">
       <%= f.check_box :has_recording, class: "form-check-input" %>

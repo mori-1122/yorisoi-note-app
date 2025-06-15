@@ -6,7 +6,16 @@
         <%# <span class="text-muted"><strong>診療科：</strong><%= visit.department&.name || %>
         <span class="text-muted"><strong>受診予定日：</strong><%= visit.visit_date.strftime("%Y年%m月%d日") %></span><br> <%# 通院日を日本語の日付形式で表示（薄い文字色） %>
         <span class="text-muted"><strong>受診時間：</strong><%= visit.appointed_at.strftime("%-H時%M分") %></span><br>
-        <strong>受診目的：</strong><%= visit.purpose %> <%# 目的 %>
+        <strong>受診目的：</strong><%= visit.purpose %><br> <%# 目的 %>
+
+        <% if visit.memo&.content.present? %>
+          <div class="mt-2">
+            <strong>メモ：</strong>
+            <span class="d-block text-muted"><%= simple_format(visit.memo.content) %></span>
+          </div>
+          <% else %>
+            <div class="mt-2 text-muted"><strong>メモ：</strong>(未登録)</div>
+          <% end %>
       </div>
         <div class="action-buttons mt-2">
           <%= link_to '編集', edit_visit_path(visit), class: "btn btn-sm btn-outline-pink" %>
