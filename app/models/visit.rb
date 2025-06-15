@@ -1,9 +1,11 @@
 class Visit < ApplicationRecord
   belongs_to :user
   belongs_to :department
-  has_one :memo
+  has_one :memo, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_many :recordings, dependent: :destroy
+
+  accepts_nested_attributes_for :memo # #Visitと一緒に関連するMemoもフォームでまとめて登録・更新できるようにする
 
   # 必須項目のバリデーション
   validates :visit_date, :hospital_name, :purpose, :appointed_at, presence: true

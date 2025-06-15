@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_11_043657) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_15_195652) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -33,12 +33,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_11_043657) do
   end
 
   create_table "memos", force: :cascade do |t|
-    t.bigint "user_id", null: false
     t.bigint "visit_id", null: false
     t.text "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_memos_on_user_id"
     t.index ["visit_id"], name: "index_memos_on_visit_id"
   end
 
@@ -113,7 +111,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_11_043657) do
 
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "visits"
-  add_foreign_key "memos", "users"
   add_foreign_key "memos", "visits"
   add_foreign_key "notifications", "users"
   add_foreign_key "question_selections", "questions"
