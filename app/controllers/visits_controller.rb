@@ -22,7 +22,6 @@ class VisitsController < ApplicationController
     if @visit.save
         redirect_to visits_path(date: @visit.visit_date), notice: "予定を保存しました"
     else
-      flash.now[:alert] = @visit.errors.full_messages.uniq.join(",") # #エラーメッセージをその場で表示する uniq.join(",") で重複を排除
       @departments = Department.all # #フォームのセレクトボックスなどで使う「診療科（Department）」一覧を再度取得
       @visits = current_user.visits.where(visit_date: @visit.visit_date) # #その日付の通院予定一覧を再取得
       render :new, status: :unprocessable_entity
