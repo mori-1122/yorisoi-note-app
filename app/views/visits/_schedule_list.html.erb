@@ -8,16 +8,28 @@
         <span class="text-muted"><strong>受診時間：</strong><%= visit.appointed_at.strftime("%-H時%M分") %></span><br>
         <strong>受診目的：</strong><%= visit.purpose %><br> <%# 目的 %>
 
+        <%# メモ %>
         <% if visit.memo&.content.present? %>
-          <div class="mt-2">
+        <div class="mt-2">
             <strong>メモ：</strong>
-            <span class="d-block text-muted"><%= simple_format(visit.memo.content) %></span>
+            <div class="memo-content text-muted">
+              <%= simple_format(visit.memo.content) %>
+              </div>
           </div>
           <% else %>
             <div class="mt-2 text-muted"><strong>メモ：</strong>(未登録)</div>
           <% end %>
       </div>
-        <div class="action-buttons mt-2">
+
+      <%# 録音、資料 %>
+      <div class="mt-2 text-muted small">
+          <strong>録音：</strong>
+          <%= visit.has_recording? ? "あり" : "なし" %><br>  <%# 条件式 ? 真のときの値 : 偽のときの値 %>
+          <strong>資料：</strong>
+          <%= visit.has_document? ? "あり" : "なし" %>
+        </div>
+
+      <div class="action-buttons mt-2">
           <%= link_to '編集', edit_visit_path(visit), class: "btn btn-sm btn-outline-pink" %>
           <%= button_to '削除', visit_path(visit), method: :delete, data: { turbo_confirm: '本当に削除しますか？' }, class: "btn btn-sm btn-outline-pink" %>
         </div>
