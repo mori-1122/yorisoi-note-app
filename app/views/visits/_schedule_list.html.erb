@@ -9,11 +9,11 @@
         <strong>受診目的：</strong><%= visit.purpose %><br> <%# 目的 %>
 
         <%# メモ %>
-        <% if visit.memo&.content.present? %>
+        <% if visit.memo.present? %>
         <div class="mt-2">
             <strong>メモ：</strong>
             <div class="memo-content text-muted">
-              <%= simple_format(visit.memo.content) %>
+              <%= simple_format(visit.memo) %>
               </div>
           </div>
           <% else %>
