@@ -92,7 +92,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_17_033333) do
     t.string "purpose", null: false
     t.boolean "has_recording"
     t.boolean "has_document"
-    t.integer "memo_id"
     t.bigint "department_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

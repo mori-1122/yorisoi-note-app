@@ -49,12 +49,10 @@
       <%= f.select :purpose, options_for_select(["診察", "検査", "リハビリ"], @visit.purpose), { prompt: "目的を選択"}, class: "form-control" %>
     </div>
 
-    <%= f.fields_for :memo do |mf| %>
       <div class="form-group">
-        <%= mf.label :content, "メモ" %>
-        <%= mf.text_area :content, class: "form-control" %>
+        <%= f.label :memo, "メモ" %>
+        <%= f.text_area :memo, class: "form-control" %>
       </div>
-    <% end %>
 
     <div class="form-group form-check">
       <%= f.check_box :has_recording, class: "form-check-input" %>
