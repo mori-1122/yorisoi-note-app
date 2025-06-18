@@ -14,6 +14,7 @@
     border: 1px solid #f8bbd0;
     border-radius: 8px;
     padding: 1rem;
+    margin-bottom: 1rem;
 
     p {
       margin: 0 auto;
@@ -43,4 +44,8 @@
   
   .text-pink {
     color: #f06292; // pink text
+  }
+
+  .memo-content p{
+    text-align: left !important;
   }

@@ -6,7 +6,20 @@ ja:
         restrict_dependent_destroy:
           has_one: "%{record}が存在しているので削除できません"
           has_many: "%{record}が存在しているので削除できません"
+        models:
+        visit:
+          attributes:
+            hospital_name:
+              taken: "は同じ受診日、時間、目的ですでに登録されています。"
+    models:
+      visit: 通院予定
     attributes:
+      visit:
+        department: 診療科
+        department_id: 診療科
+        hospital_name: 医療機関名
+        appointed_at: 予約時間
+        purpose: 受診目的
       article:
         title: 'タイトル'
         content: '内容'

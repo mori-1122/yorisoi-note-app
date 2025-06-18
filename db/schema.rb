@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_03_234720) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_17_051310) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -30,16 +30,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_03_234720) do
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["visit_id"], name: "index_documents_on_visit_id"
-  end
-
-  create_table "memos", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "visit_id", null: false
-    t.text "content", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_memos_on_user_id"
-    t.index ["visit_id"], name: "index_memos_on_visit_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -102,19 +92,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_03_234720) do
     t.string "purpose", null: false
     t.boolean "has_recording"
     t.boolean "has_document"
-    t.integer "memo_id"
-    t.bigint "department_id", null: false
+    t.bigint "department_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "doctor_name"
+    t.datetime "appointed_at", null: false
+    t.text "memo"
     t.index ["department_id"], name: "index_visits_on_department_id"
+    t.index ["user_id", "visit_date", "appointed_at"], name: "index_visits_on_user_date_time", unique: true
     t.index ["user_id"], name: "index_visits_on_user_id"
   end
 
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "visits"
-  add_foreign_key "memos", "users"
-  add_foreign_key "memos", "visits"
   add_foreign_key "notifications", "users"
   add_foreign_key "question_selections", "questions"
   add_foreign_key "question_selections", "users"

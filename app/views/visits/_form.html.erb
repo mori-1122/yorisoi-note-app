@@ -1,20 +1,40 @@
 <div class="visit-form-box">
   <div class="card-shadow p-4">
-  <h2 class="text-center text-pink mb-4 mt-5">
+
+    <%# 戻るボタン %>
+    <div class="d-flex justify-content-start pt-5">
+      <%= link_to visits_path(date: @visit.visit_date), class: "btn btn-outline-secondary d-flex align-items-center" do %>
+        <i class="bi bi-arrow-left-circle-fill me-2"></i>
+         戻る
+      <% end %>
+    </div>
+
+  <h2 class="text-center text-pink mb-3 mt-2">
     <%= @visit.persisted? ? "受診の予定を編集" : "受診の予定を追加" %>
   </h2>
 
   <%= form_with model: @visit, local: true do |f| %>
+    <% if @visit.errors.any? %>
+      <div class="alert alert-danger">
+        <h4 class="mb-2">入力内容に誤りがあります</h4>
+        <ul class="mb-0">
+          <% @visit.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
     <%= f.hidden_field :visit_date %>
 
     <div class="form-group">
       <%= f.label :hospital_name, "医療機関名" %>
-      <%= f.select :hospital_name, options_for_select(["AA病院", "よりそいクリニック"], @visit.hospital_name), { prompt: "医療機関を選択"}, class: "form-control" %>
+      <%= f.select :hospital_name, options_for_select(["AA病院", "よりそいクリニック", "〇〇医療センター"], @visit.hospital_name), { prompt: "医療機関を選択"}, class: "form-control" %>
     </div>
 
     <div class="form-group">
-      <%= f.label :doctor_name, "医師名" %>
-      <%= f.select :doctor_name, options_for_select(["〇〇先生", "△△先生"], @visit.doctor_name), { prompt: "医師を選択"}, class: "form-control" %>
+      <%= f.label :appointed_at, "予約時間" %>
+      <%= f.time_field :appointed_at, class: "form-control" %>
     </div>
 
     <div class="form-group">
@@ -28,6 +48,11 @@
       <%= f.label :purpose, "目的" %>
       <%= f.select :purpose, options_for_select(["診察", "検査", "リハビリ"], @visit.purpose), { prompt: "目的を選択"}, class: "form-control" %>
     </div>
+
+      <div class="form-group">
+        <%= f.label :memo, "メモ" %>
+        <%= f.text_area :memo, class: "form-control" %>
+      </div>
 
     <div class="form-group form-check">
       <%= f.check_box :has_recording, class: "form-check-input" %>
