@@ -2,8 +2,8 @@
   <div class="card-shadow p-4">
 
     <%# 戻るボタン %>
-    <div class="d-flex justify-content-start pt-5">
-      <%= link_to visits_path(date: @visit.visit_date), class: "btn btn-outline-secondary d-flex align-items-center" do %>
+    <div class="d-flex justify-content-start">
+      <%= link_to visits_path(date: @visit.visit_date), class: "btn btn-outline-secondary d-flex align-items-center back-button" do %>
         <i class="bi bi-arrow-left-circle-fill me-2"></i>
          戻る
       <% end %>
