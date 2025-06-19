@@ -3,7 +3,6 @@ class User < ApplicationRecord
          :recoverable, :validatable
 
   has_many :visits, dependent: :destroy
-  has_many :memos, dependent: :destroy
   has_many :recordings, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_many :question_selections, dependent: :destroy
