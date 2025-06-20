@@ -32,18 +32,39 @@
   </head>
 
   <body>
-    <%# ログインユーザー表示 %>
-    <% if user_signed_in? %>
-      <div class="login-user-banner">
-        <p>ようこそ、<strong><%= current_user.name %></strong>さん</p>
-        <%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'btn btn-pink btn-sm' %>
+  <% if user_signed_in? %>
+    <%# トグルボタン %>
+    <div class="login-user-banner d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center">
+        <button id="menuToggle" class="hamburger-btn me-3" aria-label="メニューを開く">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+        <p class="mb-0">ようこそ、<strong><%= current_user.name %></strong>さん</p>
       </div>
-    <% end %>
-      <% flash.each do |key, message| %>
-        <div class="flash-message flash-<%= key %>alert alert-dismissible fade show" role="alert">
-          <%= message %>
-        </div>
-      <% end %>
-    <%= yield %>
-  </body>
+      <%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'btn btn-pink btn-sm' %>
+    </div>
+
+    <%# サイドバー %>
+    <nav id="sidebarMenu" class="sidebar">
+      <div class="inner">
+        <ul class="sidebar-nav">
+          <li><%= link_to "スケジュール", visits_path %></li>
+          <li><%= link_to "質問リスト", "#" %></li>
+          <li><%= link_to "プロフィール", "#" %></li>
+          <li><%= link_to "設定（未実装）", "#" %></li>
+        </ul>
+      </div>
+    </nav>
+  <% end %>
+
+  <% flash.each do |key, message| %>
+    <div class="flash-message flash-<%= key %> alert alert-dismissible fade show" role="alert">
+      <%= message %>
+    </div>
+  <% end %>
+
+  <%= yield %>
+</body>
 </html>

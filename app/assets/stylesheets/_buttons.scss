@@ -19,7 +19,7 @@
 }
 
 .btn-outline-pink {
-    color: #f06292;
+    color: #e982a4;
     border-color: #f06292;
     background-color: transparent;
   
@@ -33,4 +33,50 @@
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+}
+
+.hamburger-btn {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  border: none;
+  background: none;
+  z-index: 4;
+  cursor: pointer;
+
+  .bar {
+    display: block;
+    position: absolute;
+    width: 25px;
+    height: 2px;
+    background-color: #e66a97;
+    border-radius: 2px;
+    transition: all 0.4s ease;
+  }
+
+  .bar:nth-child(1) { top: 4px }
+  .bar:nth-child(2) { top: 14px }
+  .bar:nth-child(3) { top: 24px }
+}
+  body.open .hamburger-btn .bar:nth-child(1) {
+    transform: translateY(10px) rotate(-45deg);
+  }
+  body.open .hamburger-btn .bar:nth-child(2) {
+    opacity: 0;
+  }
+  body.open .hamburger-btn .bar:nth-child(3) {
+    transform: translateY(-10px) rotate(45deg);
+  }
+  
+.back-button {
+  margin-top: 80px;
+
+  @media (max-width: 768px) {
+    margin-top: 72px;
+    font-size: 0.9rem;
+
+    i {
+      font-size: 1.2rem;
+    }
+  }
 }
