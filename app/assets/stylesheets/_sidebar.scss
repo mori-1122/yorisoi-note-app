@@ -15,9 +15,32 @@
     ul {
       list-style: none;
       margin: 0;
+      padding: 0;
 
       li {
         margin-bottom: 1rem;
+
+        a {
+          display: block;
+          padding: 0.5rem 1rem;
+          text-decoration: none;
+          color: inherit;
+          background-color: transparent;
+          border-bottom: none;
+
+          // hover時の装飾
+          &:hover {
+            background-color: #ffe5ec;
+            border-radius: 4px;
+          }
+        }
+
+        &.active a,
+        &.current-page a {
+          background-color: transparent;
+          border-bottom: none;
+          color: inherit;
+        }
       }
     }
   }
