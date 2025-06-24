@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_24_043207) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_24_192012) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -63,10 +63,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_24_043207) do
   end
 
   create_table "questions", force: :cascade do |t|
-    t.string "category", null: false
     t.text "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "department_id", null: false
+    t.bigint "question_category_id", null: false
+    t.index ["department_id"], name: "index_questions_on_department_id"
+    t.index ["question_category_id"], name: "index_questions_on_question_category_id"
   end
 
   create_table "recordings", force: :cascade do |t|
@@ -117,6 +120,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_24_043207) do
   add_foreign_key "question_selections", "questions"
   add_foreign_key "question_selections", "users"
   add_foreign_key "question_selections", "visits"
+  add_foreign_key "questions", "departments"
+  add_foreign_key "questions", "question_categories"
   add_foreign_key "recordings", "users"
   add_foreign_key "recordings", "visits"
   add_foreign_key "visits", "departments"
