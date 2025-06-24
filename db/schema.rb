@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_18_180651) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_24_043207) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -43,14 +43,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_18_180651) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
+  create_table "question_categories", force: :cascade do |t|
+    t.string "category_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "question_selections", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "question_id", null: false
     t.datetime "selected_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "visit_id", null: false
+    t.boolean "asked", default: false, null: false
     t.index ["question_id"], name: "index_question_selections_on_question_id"
     t.index ["user_id"], name: "index_question_selections_on_user_id"
+    t.index ["visit_id", "question_id"], name: "index_question_selections_on_visit_id_and_question_id", unique: true
   end
 
   create_table "questions", force: :cascade do |t|
@@ -107,6 +116,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_18_180651) do
   add_foreign_key "notifications", "users"
   add_foreign_key "question_selections", "questions"
   add_foreign_key "question_selections", "users"
+  add_foreign_key "question_selections", "visits"
   add_foreign_key "recordings", "users"
   add_foreign_key "recordings", "visits"
   add_foreign_key "visits", "departments"
