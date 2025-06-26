@@ -4,7 +4,8 @@ class Question < ApplicationRecord # #Questionモデルを定義
   has_many :question_selections, dependent: :destroy # ユーザーの選択履歴と関連、質問削除時に選択も削除
 
   validates :content, presence: true # #質問内容（content）は必須。空の場合は保存できない
-  validate :department_or_category_must_be_present # #独自のバリデーション 診療科（department）もカテゴリ（question_category）も両方が空だと保存できない
+  validates :content, uniqueness: { message: "は、同じ診療科、カテゴリにすでにあります" }
+  validate :department_or_category_must_be_present # #独自のバリデーション 診療科（department）もカテゴリ（question_category）も両方が空だと保存できない アプリケーションレベルのチェック
 
   private
 
