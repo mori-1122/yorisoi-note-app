@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_26_080013) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_29_111644) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -47,6 +47,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_26_080013) do
     t.string "category_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["category_name"], name: "index_question_categories_on_category_name", unique: true
   end
 
   create_table "question_selections", force: :cascade do |t|
@@ -68,7 +69,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_26_080013) do
     t.datetime "updated_at", null: false
     t.bigint "department_id"
     t.bigint "question_category_id"
-    t.index ["content"], name: "index_questions_on_content", unique: true
+    t.index ["content", "question_category_id", "department_id"], name: "index_questions_on_content_add_category_and_department", unique: true
     t.index ["department_id"], name: "index_questions_on_department_id"
     t.index ["question_category_id"], name: "index_questions_on_question_category_id"
   end
