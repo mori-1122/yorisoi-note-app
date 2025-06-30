@@ -1,2 +1,32 @@
-<h1>Questions#select</h1>
-<p>Find me in app/views/questions/select.html.erb</p>
+<%# 戻るボタン %>
+<div class="d-flex justify-content-start">
+  <%= link_to visits_path(date: @visit.visit_date), class: "btn btn-outline-secondary d-flex align-items-center back-button" do %>
+    <i class="bi bi-arrow-left-circle-fill me-2"></i>
+    戻る
+  <% end %>
+</div>
+
+<h1 class="page-title text-center">質問を選ぶ</h1>
+
+<%= render 'filter_form' %>
+
+<%# メインコンテンツ %>
+<div class="main-content">
+  <%= form_with model: @visit, method: :post, local: true do |f| %>
+    <div class="question-card">
+      <div class="question-header">
+        <i class="bi bi-chat-text"></i>
+        <span>該当する質問</span>
+      </div>
+      <ul class="question-list" id="questionList">
+        <%= f.collection_checkboxes(:question_ids, Question.all, :id, :content) do |b| %>
+          <li class="question-list">
+            <%= b.label { b.check_box + b.text } %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <%= f.submit "次へ", class: "btn-pink" %>
+  <% end %>
+</div>
