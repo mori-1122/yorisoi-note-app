@@ -38,6 +38,8 @@ def create_question(department_name, category_name, content) # #3つのパラメ
   )
 end
 
+# #「診療科の名前（例：内科）」「カテゴリ名（例：薬）」「質問本文」となっている
+
 # --- 診療科別質問データ ---
 department_question_data = [
   [ "内科", nil, "この症状はどのような病気の可能性がありますか？" ],
