@@ -1,0 +1,44 @@
+<div class="filter-container px-3" id="filterContainer">
+    <!-- 絞り込みヘッダー -->
+    <div class="filter-header" id="filterToggle" style="cursor: pointer;">
+      <span class="filter-title text-center">絞り込み機能はこちら</span>
+      <i class="bi bi-patch-question"></i>
+    </div>
+
+    <!-- 開閉されるフォーム本体 -->
+    <div class="filter-body" id="filterCollapse" style="display: none;">
+      <div class="mb-3">
+        <%= form_with url: search_questions_path, method: :get, local: true, data: { turbo: false } do %>
+          <div class="filter-row">
+            <div class="filter-group">
+              <label class="filter-label">診療科</label>
+              <%= select_tag :department_id,
+                options_for_select([['全て', '']] + @departments.map { |dept| [dept.name, dept.id] }, params[:department_id]),
+                class: 'filter-input', id: 'departmentFilter' %>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">カテゴリ</label>
+              <%= select_tag :question_category_id,
+                options_for_select([['全て', '']] + @question_categories.map { |cat| [cat.category_name, cat.id] }, params[:question_category_id]),
+                class: 'filter-input', id: 'categoryFilter' %>
+            </div>
+          </div>
+
+          <div>
+            <%= text_field_tag :keyword, params[:keyword], {
+              class: 'keyword-input',
+              placeholder: 'キーワード',
+              id: 'keywordInput',
+              autocomplete: 'off'
+            } %>
+          </div>
+
+          <div class="mt-3">
+            <button type="submit" class="search-btn">検索</button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
