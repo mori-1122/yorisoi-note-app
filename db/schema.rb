@@ -53,11 +53,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_111644) do
   create_table "question_selections", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "question_id", null: false
-    t.datetime "selected_at", null: false
+    t.datetime "selected_at", null: false ##どの質問を聞くか
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "visit_id", null: false
-    t.boolean "asked", default: false, null: false
+    t.bigint "visit_id", null: false ##どの診察で聞くか
+    t.boolean "asked", default: false, null: false ##実際に「聞けたかどうか」
     t.index ["question_id"], name: "index_question_selections_on_question_id"
     t.index ["user_id"], name: "index_question_selections_on_user_id"
     t.index ["visit_id", "question_id"], name: "index_question_selections_on_visit_id_and_question_id", unique: true

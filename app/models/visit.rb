@@ -4,6 +4,10 @@ class Visit < ApplicationRecord
   has_many :documents, dependent: :destroy
   has_many :recordings, dependent: :destroy
 
+  #  Visitモデルが複数のquestion_selectionsを持つ
+  has_many :question_selections, dependent: :destroy
+  has_many :questions, through: :question_selections
+
   # 必須項目のバリデーション
   validates :visit_date, :hospital_name, :purpose, :appointed_at, presence: true
 
