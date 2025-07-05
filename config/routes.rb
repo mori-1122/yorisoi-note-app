@@ -1,31 +1,29 @@
 Rails.application.routes.draw do
-  devise_for :users # #ユーザーのログイン・登録などに必要なルート
-  get "question_selections/create"
-  get "questions/select"
-  get "questions/search"
+  devise_for :users # ユーザー認証機能
   get "up" => "rails/health#show", as: :rails_health_check
-  root to: "home#index" # #トップページ（/）にアクセス
 
-  ## 質問テンプレを選択、検索
-  resources :questions, only: [] do
+  root to: "home#index"
+
+  # 診察記録(visits)と紐づく予定
+  resources :visits, only: [ :index, :new, :create, :edit, :update, :destroy ] do
     collection do
-      get :select ## 質問を選ぶ
-      get :search # #検索(turboを使用したい)
+      get :by_date # 日付で絞り込む一覧取得
     end
-  end
 
-  ## 質問選択ほ保存確認記録をする
-  resources :question_selections, only: [ :create ] do
-    collection do
-      get :summary # #選んだ質問リスト画面
-      post :finalize # #質問を聞けたかどうかの最終確認
+    # 診察記録に紐づく質問選択・編集　visitにネストする
+    resources :question_selections, only: [ :index, :create, :edit, :update ] do
+      collection do
+        get :select # 質問選択画面
+        post :confirm # 確認画面へPOST送信する
+        post :finalize   # 最終登録処理として
+      end
+
+      member do
+        patch :toggle_answered # 質問個別に回答済み/未回答をトグルするため
+      end
     end
-  end
 
-
-  resources :visits, only: [ :index, :new, :create, :edit, :update, :destroy ] do # #visitsリソースに関するルート
-    collection do
-      get "by_date"
-    end
+    # 質問選択【とりあえずajax】
+    get :search_questions, on: :collection
   end
 end
