@@ -3,7 +3,7 @@ class QuestionsController < ApplicationController # #質問テンプレートを
     @departments = Department.all # #質問を絞るための全ての診療科を取得してビューに出す
     @question_categories = QuestionCategory.all # #質問カテゴリーも取得
     @questions = Question.all # #全ての質問テンプレートを取得
-    @visit = Visit.new
+    @visit = Visit.find(params[:visit_id])
   end
 
   def search
