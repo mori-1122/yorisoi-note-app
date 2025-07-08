@@ -11,16 +11,16 @@ Rails.application.routes.draw do
   ## 質問テンプレを選択、検索
   resources :questions, only: [] do
     collection do
-      get :select
-      get :search
+      get :select ## 質問を選ぶ
+      get :search # #検索(turboを使用したい)
     end
   end
 
-  ## 質問選択・保存・確認記録
+  ## 質問選択・保存確認記録
   resources :question_selections, only: [ :create ] do
     collection do
-      get :summary
-      post :finalize
+      get :summary # #選んだ質問リスト画面
+      post :finalize # #質問を聞けたかどうかの最終確認
     end
   end
 

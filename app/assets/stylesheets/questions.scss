@@ -1,0 +1,89 @@
+
+.filter-container {
+  background-color: #fff3f7;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+  .filter-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .filter-title {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #444;
+    }
+
+    i {
+        font-size: 1.3rem;
+        color: #888;
+    }
+  }
+
+  .filter-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    @media (min-width: 600px) {
+      flex-direction: row;
+      justify-content: space-between;
+      }
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      label {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 0.25rem;
+    }
+
+    select.filter-input {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: white;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .keyword-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: white;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .search-btn {
+    width: 100%;
+    background-color: #fff3cd;
+    border: 1px solid #ffe08a;
+    color: #333;
+    font-weight: bold;
+    border-radius: 9999px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+
+    &.hover {
+      background-color: #ffeaa7;
+    }
+  }
+
+  .overlay {
+    display: none;
+  }
+}
