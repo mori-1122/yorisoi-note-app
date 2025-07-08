@@ -1,8 +1,28 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users # #ユーザーのログイン・登録などに必要なルート
+  get "question_selections/create"
+  get "questions/select"
+  get "questions/search"
+
   get "up" => "rails/health#show", as: :rails_health_check
 
   root to: "home#index"
+
+  ## 質問テンプレを選択、検索
+  resources :questions, only: [] do
+    collection do
+      get :select
+      get :search
+    end
+  end
+
+  ## 質問選択・保存・確認記録
+  resources :question_selections, only: [ :create ] do
+    collection do
+      get :summary
+      post :finalize
+    end
+  end
 
   # 診察記録と紐づく予定
   resources :visits, only: [ :index, :new, :create, :edit, :update, :destroy ] do
@@ -10,12 +30,12 @@ Rails.application.routes.draw do
       get :by_date
     end
 
-    # 診察記録に紐づく質問選択・編集　visit にネストする
+    # 診察記録に紐づく質問選択・編集
     resources :question_selections do
       collection do
-        get :select # 質問選択画面
-        post :confirm # 確認画面へ POST
-        post :finalize # → /visits/:visit_id/question_selections/finalize
+        get :select
+        post :confirm
+        post :finalize
       end
 
       member do
@@ -27,7 +47,7 @@ Rails.application.routes.draw do
   # 質問管理機能（マスタデータの質問一覧・管理）
   resources :questions, only: [ :index ] do
     collection do
-      get :select_for_visit # 特定の visit に質問を追加する画面
+      get :select_for_visit
     end
   end
 end
