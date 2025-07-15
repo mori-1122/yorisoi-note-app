@@ -1,3 +1,5 @@
+@use "variables" as *;
+
 .btn-pink {
     background-color: #f48fb1;
     color: white;
@@ -27,7 +29,17 @@
       background-color: #f8bbd0;
       color: white;
     }
-  }
+}
+
+.btn-green {
+    background-color: #c0f5e0;
+    color: white;
+
+    &:hover {
+        background-color: #68f0ba;
+        color: white;
+    }
+}
 
 .action-buttons {
   display: flex;
@@ -58,16 +70,17 @@
   .bar:nth-child(2) { top: 14px }
   .bar:nth-child(3) { top: 24px }
 }
-  body.open .hamburger-btn .bar:nth-child(1) {
-    transform: translateY(10px) rotate(-45deg);
-  }
-  body.open .hamburger-btn .bar:nth-child(2) {
-    opacity: 0;
-  }
-  body.open .hamburger-btn .bar:nth-child(3) {
-    transform: translateY(-10px) rotate(45deg);
-  }
-  
+body.open .hamburger-btn .bar:nth-child(1) {
+  transform: translateY(10px) rotate(-45deg);
+}
+
+body.open .hamburger-btn .bar:nth-child(2) {
+  opacity: 0;
+}
+
+body.open .hamburger-btn .bar:nth-child(3) {
+  transform: translateY(-10px) rotate(45deg);
+}
 .back-button {
   margin-top: 50px;
 
@@ -79,4 +92,97 @@
       font-size: 1.2rem;
     }
   }
+}
+.toggle-btn {
+    padding: 6px 12px;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    background: white;
+    color: #333;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.toggle-btn.pending {
+    background-color: #e8f5e8;
+    border-color: #68f0ba;
+    color: #2e7d32;
+}
+
+.toggle-btn.pending:hover {
+    background-color: #68f0ba;
+    color: white;
+}
+
+.toggle-btn.asked {
+    background-color: #ffebee;
+    border-color: #f8bbd0;
+    color: #d32f2f;
+}
+
+.toggle-btn.asked:hover {
+    background-color: #f8bbd0;
+    color: white;
+}
+
+/* 戻るボタン */
+.btn-outline-primary {
+    color: #e982a4;
+    border-color: #f06292;
+    background-color: transparent;
+    padding: 8px 16px;
+    font-size: 12px;
+}
+
+.btn-outline-primary:hover {
+    background-color: #f8bbd0;
+    color: white;
+}
+
+.btn {
+  padding: 8px 16px;
+  font-size: 15px;
+  min-width: auto;
+
+  &.btn-primary {
+    background-color: $primary-color;
+    color: $white;
+
+    &:hover {
+      background-color: $primary-dark;
+      transform: translateY(-2px);
+      color: $white;
+    }
+  }
+
+  &.btn-outline {
+    background-color: $white;
+    color: $text-dark;
+    border: 1px solid #ddd;
+
+    &:hover {
+      background-color: $background-light;
+      color: $text-dark;
+    }
+  }
+}
+
+.search-btn {
+    width: 100%;
+    background-color: $yellow-color;
+    border: 1px solid $yellow-hover;
+    color: #333;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background-color: $yellow-hover;
+    }
 }

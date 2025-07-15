@@ -1,0 +1,113 @@
+@use "variables" as *;
+
+.filter-container {
+  background: $green-color;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.filter-header {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+  padding: 8px 0;
+
+  &:hover {
+    background-color: $green-hover;
+    border-radius: 4px;
+  }
+}
+
+.filter-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: $text-dark ;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  i {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+    color: black;
+  }
+}
+
+filter-body {
+  overflow: hidden;
+  transition: all 0.3s ease;
+  
+  // 非表示状態
+  &[style*="display: none"] {
+    opacity: 0;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  
+  // 表示状態
+  &[style*="display: block"] {
+    opacity: 1;
+    max-height: 500px;
+    padding-top: 16px;
+    padding-bottom: 8px;
+  }
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.filter-group {
+  flex: 1;
+  min-width: 180px;
+}
+
+.filter-label {
+  font-size: 14px;
+  color: $text-dark;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.filter-select,
+.filter-input,
+.keyword-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  background: $white;
+  font-size: 14px;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: $primary-pink;
+    outline: none;
+  }
+}
+
+.keyword-input::placeholder {
+  color: $text-muted;
+}
+
+.search-btn {
+  background: $primary-pink;
+  color: $white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: $primary-pink-hover;
+  }
+}

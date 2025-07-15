@@ -15,4 +15,14 @@ class ApplicationController < ActionController::Base # すべてのコントロ�
     devise_parameter_sanitizer.permit(:sign_up, keys: [ :name ]) # #新規登録（sign_up）時に、:nameパラメータを受け入れる
     devise_parameter_sanitizer.permit(:account_update, keys: [ :name ])
   end
+
+  # ログインした後のリダイレクト先
+  def after_sign_in_path_for(resource)
+    visits_path
+  end
+
+  # 新規登録した際のリダイレクト先
+  def after_sign_up_path_for(resource)
+    visits_path
+  end
 end

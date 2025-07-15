@@ -1,0 +1,14 @@
+@use "variables";
+
+.question-count {
+  background: white;
+  border-radius: variables.$small-radius;
+  padding: 10px;
+  box-shadow: variables.$card-shadow;
+  font-size: 13px;
+  color: variables.$text-muted;
+  
+  strong {
+    color: variables.$text-color;
+  }
+}

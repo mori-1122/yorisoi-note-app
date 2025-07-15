@@ -25,11 +25,9 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>  <%# ここを消すとレイアウトがおかしくなる %>
     <%= javascript_importmap_tags %>
-    <%= javascript_include_tag "application", type: "module", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "/js/calendar.js" %>
     <%= javascript_include_tag "/js/locales-all.global.js" %>
-    <%= javascript_include_tag "questions/select.js" %>
-
   </head>
 
   <body>
@@ -53,7 +51,7 @@
       <div class="inner">
         <ul class="sidebar-nav">
           <li><%= link_to "スケジュール", visits_path %></li>
-          <li><%= link_to "質問を選ぶ", questions_select_path %></li>
+          <li><%= link_to "質問を選ぶ", "#" %></li>
           <li><%= link_to "プロフィール", "#" %></li>
           <li><%= link_to "設定（未実装）", "#" %></li>
         </ul>

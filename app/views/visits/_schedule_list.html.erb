@@ -30,8 +30,9 @@
         </div>
 
       <div class="action-buttons mt-2">
-          <%= link_to '編集', edit_visit_path(visit), class: "btn btn-sm btn-outline-pink" %>
-          <%= button_to '削除', visit_path(visit), method: :delete, data: { turbo_confirm: '本当に削除しますか？' }, class: "btn btn-sm btn-outline-pink" %>
+          <%= link_to '編集', edit_visit_path(visit), class: "btn btn-outline-pink" %>
+          <%= button_to '削除', visit_path(visit), method: :delete, data: { turbo_confirm: '本当に削除しますか？' }, class: "btn btn-outline-pink" %>
+          <%= link_to '質問管理画面へ行く', visit_question_selections_path(visit), class: "btn btn-violet" %>
         </div>
       </div>
   <% end %>

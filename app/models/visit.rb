@@ -3,6 +3,7 @@ class Visit < ApplicationRecord
   belongs_to :department
   has_many :documents, dependent: :destroy
   has_many :recordings, dependent: :destroy
+  has_many :question_selections, dependent: :destroy
 
   #  Visitモデルが複数のquestion_selectionsを持つ
   has_many :question_selections, dependent: :destroy

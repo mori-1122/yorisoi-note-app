@@ -31,13 +31,11 @@ class QuestionSelectionsControllerTest < ActionDispatch::IntegrationTest
     )
 
     # POST リクエストで question_selection を作成
-    post question_selections_path,
-         params: {
-           question_selection: {
-             question_id: question.id,
-             visit_id: visit.id
-           }
-         }
+    post visit_question_selections_path(visit),
+        params: {
+          question_ids: [ question.id ]
+        }
+
     # レスポンスがリダイレクトであることを確認
     assert_response :redirect
   end

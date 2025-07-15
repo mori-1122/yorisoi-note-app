@@ -1,0 +1,9 @@
+<ul class="question-list">
+  <%= form_with model: visit, method: :post, local: true do |f| %>
+    <%= f.collection_checkboxes(:question_ids, questions, :id, :content) do |b| %>
+      <li class="question-list">
+        <%= b.label { b.check_box + b.text } %>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
