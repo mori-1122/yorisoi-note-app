@@ -1,0 +1,46 @@
+// メインカラー
+$primary-color: #bce9fc;
+$primary-hover: #5aaecb;
+$primary-pink: #ec407a;
+$primary-pink-hover: #d81b60;
+$primary-dark: #b71c1c;
+$success-color: #4caf50;           // 成功時グリーン
+$secondary-color: #f8bbd0;         // 優しいピンク
+$secondary-hover: #f48fb1;
+$green-color: #daf8ec;             // 淡いミントグリーン
+$green-hover: #68f0ba;
+$yellow-color: #fff3cd;            // 淡い黄色
+$yellow-hover: #ffeaa7;
+
+// テキストカラー
+$text-dark: #2e2e2e;
+$text-gray: #4a4a4a;
+$text-color: #333;                 // 古い互換用
+$text-muted: #666;
+$text-light: #aaa;
+
+// 背景・ボーダー・影
+$background-light: #fdfdfd;
+$background-color: #fafafa;
+$color-bg-base: #f8f9fa;
+$background-gradient: linear-gradient(to bottom, #f8f9fa 0%, #fce4ec 100%);
+$border-color: #dfe3e8;
+$border-light: #f0f0f0;
+$shadow-light: rgba(0, 0, 0, 0.05);
+$shadow-medium: rgba(0, 0, 0, 0.1);
+$card-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+// Flashメッセージ
+$flash-notice-bg: #f48fb1;
+$flash-notice-border: #f06292;
+$flash-alert-bg: #f8d7da;
+$flash-alert-text: #721c24;
+$flash-alert-border: #f5c6cb;
+$flash-success-bg: #81d4fa;
+$flash-success-border: #4fc3f7;
+$flash-text-color: rgb(247, 247, 247);
+
+// その他
+$small-radius: 8px;
+$white: #fff;
+$transition: all 0.3s ease;
