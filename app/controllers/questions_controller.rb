@@ -6,21 +6,31 @@ class QuestionsController < ApplicationController # 質問テンプレートを�
   def select # 「質問を選ぶ」画面を表示する
     @departments = Department.all # 質問を絞るための全ての診療科を取得してビューに出す
     @question_categories = QuestionCategory.all # 質問カテゴリーも取得
-    @questions = Question.all # 全ての質問テンプレートを取得
-
     @questions = filter_questions
 
     # 診察記録から
     @visit = Visit.find(params[:visit_id]) if params[:visit_id].present?
+
+    unless @visit
+      redirect_to visits_path, alert: "受診予定を選択してください"
+      return
+    end
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def search
+    @departments = Department.all
+    @question_categories = QuestionCategory.all
     @questions = filter_questions
-    # Ajax検索用（将来的にTurboで実装予定）
+    @visit = Visit.find(params[:visit_id]) if params[:visit_id].present?
+
     respond_to do |format|
-      format.html { redirect_to select_questions_path(search_params) }
-      format.json { render json: @questions.includes(:department, :question_category) }
-      format.turbo_stream # 将来的にturboで実装
+      format.html
+      format.js
     end
   end
 
@@ -46,6 +56,6 @@ class QuestionsController < ApplicationController # 質問テンプレートを�
   end
 
   def search_params
-    params.permit(:department_id, :category_id, :keyword, :visit_id)
+    params.permit(:department_id, :question_category_id, :keyword, :visit_id)
   end
 end
