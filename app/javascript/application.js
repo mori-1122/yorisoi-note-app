@@ -1,116 +1,93 @@
-window.onload = function () {
-window.onload = () => { //DOMが完全に読み込まれてから安全に初期化
-  window.selectedQuestionIds = [];
-  window.searchInProgress = false;
 
-  initSidebar();
-  initFilterUI();
-  initQuestionSelection();
-};
+// サイドバーの開閉 トグルボタン（#menuToggle）とサイドバー領域（#sidebarMenu）を明示的に監視
+function initSidebar() {
+  const menuToggle = document.getElementById('menuToggle');
+  const sidebar = document.getElementById('sidebarMenu');
 
-      const isHidden =
-        filterCollapse.style.display === "none" || filterCollapse.style.display === "";
-      filterCollapse.style.display = isHidden ? "block" : "none";
-
-      const icon = filterToggle.querySelector("i");
-      if (icon) {
-        icon.className = isHidden
-          ? "bi bi-chevron-double-up"
-          : "bi bi-chevron-double-down";
-
-// フィルターUI初期化（開閉・変更イベント）
-function initFilterUI() {
-  const filterForm = document.getElementById('filter-form');
-  if (!filterForm) return;
-
-  const dept = document.getElementById('departmentFilter');
-  const cat = document.getElementById('categoryFilter');
-  const keyword = document.getElementById('keywordInput');
-  const toggle = document.getElementById('filterToggle');
-  const collapse = document.getElementById('filterCollapse');
-
-  // visit_id 保存
-  window.currentVisitId = document.querySelector('input[name="visit_id"]')?.value;
-
-  // 開閉トグル
-  toggle?.addEventListener('click', e => {
+//クリックイベントに対してdocument.body.classList.toggle('open')で状態を切り替える
+  menuToggle?.addEventListener('click', e => {
     e.preventDefault();
-    const hidden = !collapse || collapse.style.display === 'none';
-    collapse.style.display = hidden ? 'block' : 'none';
-    toggle.querySelector('i').className = hidden ? 'bi bi-chevron-double-up' : 'bi bi-chevron-double-down';
+    document.body.classList.toggle('open');
   });
 
-  dept?.addEventListener('change', () => {
-    updateCategories(dept.value);
-    setTimeout(submitSearch, 300);
-  });
-
-  cat?.addEventListener('change', submitSearch);
-
-  keyword?.addEventListener('input', debounce(submitSearch, 800));
-
-  filterForm.addEventListener('submit', e => {
-    e.preventDefault();
-    submitSearch();
+  document.addEventListener('click', e => { 
+    if (document.body.classList.contains('open') &&
+        !sidebar?.contains(e.target) &&
+        !menuToggle.contains(e.target)) {
+      document.body.classList.remove('open');
+    }
   });
 }
-// カテゴリ更新
-function updateCategories(departmentId) {
-  const cat = document.getElementById('categoryFilter');
-  if (!cat) return;
-
-// Ajaxでカテゴリを取得するためのfetch実装
-  fetch(`/questions/search?department_id=${departmentId}&action_type=categories&format=json`, {
-    headers: defaultHeaders()
-  })
-    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
-    .then(categories => {
-      cat.innerHTML = '<option value="">全て</option>';
-      categories.forEach(c => {
-        cat.insertAdjacentHTML('beforeend', `<option value="${c.id}">${c.name}</option>`);
-      });
-    })
-    .catch(err => console.error('カテゴリ取得失敗:', err));
-}
-// Ajax検索
-function submitSearch() {
-  if (window.searchInProgress) return;
-  window.searchInProgress = true;
-
-  const form = document.getElementById('filter-form');
-  if (!form) return;
-
-  const formData = new FormData(form);
-  formData.set('visit_id', window.currentVisitId);
-
-  window.selectedQuestionIds = Array.from(
-    document.querySelectorAll('input[name="visit[question_ids][]"]:checked')
-  ).map(cb => cb.value);
-
-  fetch(`${form.action}.js?${new URLSearchParams(formData)}`, {
-    headers: defaultHeaders('js')
-  })
-    .then(res => res.text())
-    .then(code => {
-      eval(code);
-      restoreSelections();
-    })
-    .catch(err => console.error('検索失敗:', err))
-    .finally(() => { window.searchInProgress = false; });
-}
+// チェック復元
+function restoreSelections() {
+  setTimeout(() => {
+    window.selectedQuestionIds.forEach(id => {
+      const cb = document.querySelector(`input[name="visit[question_ids][]"][value="${id}"]`);
+      if (cb) {
+        cb.checked = true;
+        updateDisplay(cb);
       }
-    };
-  }
-
-  // サイドメニュー開閉処理
-  const menuToggle = document.getElementById("menuToggle");
-  const sidebar = document.getElementById("sidebarMenu");
-
-  if (menuToggle && sidebar) {
-    menuToggle.addEventListener("click", function (e) {
-      e.preventDefault();
-      document.body.classList.toggle("open");
-      console.log("動いた");
     });
+    updateCounter();
+    updateButton();
+  }, 100);
+}
+
+// 質問選択のイベント初期化
+function initQuestionSelection() {
+  updateCounter();
+  updateButton();
+
+  document.addEventListener('change', e => {
+    if (e.target.matches('input[name="visit[question_ids][]"]')) {
+      updateCounter();
+      updateButton();
+      updateDisplay(e.target);
+    }
+  });
+
+  document.addEventListener('click', e => {
+    const li = e.target.closest('li');
+    if (li && !e.target.matches('input[type="checkbox"]')) {
+      const cb = li.querySelector('input[type="checkbox"]');
+      if (cb) {
+        cb.checked = !cb.checked;
+        cb.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+  });
+
+  document.getElementById('questionForm')?.addEventListener('submit', e => {
+    const checked = document.querySelectorAll('input[name="visit[question_ids][]"]:checked');
+    if (checked.length === 0) {
+      e.preventDefault();
+      alert("質問を一つ以上選択してください");
+    }
+  });
+}
+
+// 表示更新
+function updateCounter() {
+  const count = document.querySelectorAll('input[name="visit[question_ids][]"]:checked').length;
+  const counter = document.getElementById('selectedCounter');
+  const span = document.getElementById('selectedCount');
+  if (counter && span) {
+    span.textContent = count;
+    counter.style.display = count > 0 ? 'block' : 'none';
   }
-};
+}
+
+function updateButton() {
+  const count = document.querySelectorAll('input[name="visit[question_ids][]"]:checked').length;
+  const btn = document.querySelector('#show-question-btn');
+  if (btn) {
+    btn.disabled = count === 0;
+    btn.innerHTML = count === 0
+      ? '<i class="bi bi-list-check"></i> 質問を選択してください'
+      : `<i class="bi bi-list-check"></i> 選んだ質問のリストをみる (${count}件)`;
+  }
+}
+
+function updateDisplay(cb) {
+  cb.closest('li')?.classList.toggle('selected', cb.checked);
+}
