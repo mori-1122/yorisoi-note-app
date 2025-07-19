@@ -25,7 +25,7 @@
           <div class="filter-group">
             <label class="filter-label">診療科</label>
             <%= select_tag :department_id,
-              options_for_select([['全て', '']] + @departments.map { |dept| [dept.name, dept.id] }, params[:department_id]),
+              options_for_select(@department_options, params[:department_id]),
               class: 'filter-input',
               id: 'departmentFilter' %>
           </div>
@@ -33,7 +33,7 @@
           <div class="filter-group">
             <label class="filter-label">カテゴリ</label>
             <%= select_tag :question_category_id,
-              options_for_select([['全て', '']] + @question_categories.map { |cat| [cat.category_name, cat.id] }, params[:question_category_id]),
+              options_for_select(@category_options, params[:question_category_id]),
               class: 'filter-input',
               id: 'categoryFilter' %>
           </div>

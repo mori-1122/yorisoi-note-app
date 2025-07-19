@@ -11,6 +11,9 @@ class QuestionsController < ApplicationController # 質問テンプレートを�
     # 診察記録から
     @visit = Visit.find(params[:visit_id]) if params[:visit_id].present?
 
+    # viewに渡すための選択肢の配列を作成
+    @department_options = [['全て', '']] + @departments.map { |dept| [dept.name, dept.id] }
+    @category_options = [['全て', '']] + @question_categories.map { |cat| [cat.category_name, cat.id] }
     unless @visit
       redirect_to visits_path, alert: "受診予定を選択してください"
       return
