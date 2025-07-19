@@ -8,7 +8,7 @@
 
 <h1 class="page-title text-center">質問を選ぶ</h1>
 
-<%= render 'filter_form', filter_url: questions_path(format: :js) %>
+<%= render 'filter_form', visit_id: @visit.id %>
 
 <%# メインコンテンツ %>
 <div class="main-content">
@@ -17,11 +17,13 @@
       <div class="question-header">
         <i class="bi bi-chat-text"></i>
         <span>該当する質問</span>
-        <span class="question-count"></span>
+        <span class="question-count" id="question-count">(<%= @questions.size %>件)</span>
       </div>
 
-      <div id="questionList">
-        <%= render partial: 'question_list', locals: { visit: @visit, questions: @questions } %>
+      <div id="question-list">
+        <ul class="question-list">
+          <%= render partial: 'question_list', locals: { visit: @visit, questions: @questions } %>
+        </ul>
       </div>
     </div>
 
