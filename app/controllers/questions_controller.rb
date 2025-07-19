@@ -29,7 +29,6 @@ class QuestionsController < ApplicationController # 質問テンプレートを�
     @visit = Visit.find(params[:visit_id]) if params[:visit_id].present?
 
     respond_to do |format|
-      format.html
       format.js
     end
   end
