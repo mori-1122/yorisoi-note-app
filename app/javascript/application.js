@@ -1,3 +1,4 @@
+import "filter";
 
 // サイドバーの開閉 トグルボタン（#menuToggle）とサイドバー領域（#sidebarMenu）を明示的に監視
 function initSidebar() {
@@ -91,3 +92,12 @@ function updateButton() {
 function updateDisplay(cb) {
   cb.closest('li')?.classList.toggle('selected', cb.checked);
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  window.selectedQuestionIds = [];
+  window.searchInProgress = false;
+
+  initSidebar();
+  restoreSelections();
+  initQuestionSelection();
+});
