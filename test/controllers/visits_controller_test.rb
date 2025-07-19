@@ -10,7 +10,7 @@ class VisitsControllerTest < ActionDispatch::IntegrationTest
       name: "テストユーザー"
     )
 
-    sign_in @user
+    sign_in @user, scope: :user
 
     @department = Department.create!(name: "内科")
 
