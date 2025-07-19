@@ -12,7 +12,7 @@
 
 <%# メインコンテンツ %>
 <div class="main-content">
-  <%= form_with model: @visit, method: :post, local: true do |f| %>
+  <%= form_with model: @visit, method: :post, local: true, html: { id: "questionForm" } do |f| %>
     <div class="question-card">
       <div class="question-header">
         <i class="bi bi-chat-text"></i>
@@ -27,6 +27,17 @@
       </div>
     </div>
 
-    <%= f.submit "次へ", class: "btn-pink" %>
-  <% end %>
+    <%# 選んだ質問をみる %>
+    <div class="form-actions text-center mt-3">
+      <%= link_to visit_question_selections_path(@visit), class: "btn btn-violet btn-review-questions", id: "show-question-btn" do %>
+        <i class="bi bi-list-check"></i>
+        選んだ質問リストをみる
+      <% end %>
+     </div>
+
+<%# 選択数のカウント %>
+<div class="selected-counter text-center mt-2" id="selectedCounter">
+  <i class="bi bi-check-circle-fill"></i>
+  <span id="selectedCount">0</span>件選択中
 </div>
+<% end %>
