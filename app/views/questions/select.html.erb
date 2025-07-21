@@ -8,23 +8,36 @@
 
 <h1 class="page-title text-center">質問を選ぶ</h1>
 
-<%= render 'filter_form', filter_url: questions_path(format: :js) %>
+<%= render 'filter_form', visit_id: @visit.id %>
 
 <%# メインコンテンツ %>
 <div class="main-content">
-  <%= form_with model: @visit, method: :post, local: true do |f| %>
+  <%= form_with model: @visit, method: :post, local: true, html: { id: "questionForm" } do |f| %>
     <div class="question-card">
       <div class="question-header">
         <i class="bi bi-chat-text"></i>
         <span>該当する質問</span>
-        <span class="question-count"></span>
+        <span class="question-count" id="question-count">(<%= @questions.size %>件)</span>
       </div>
 
-      <div id="questionList">
-        <%= render partial: 'question_list', locals: { visit: @visit, questions: @questions } %>
+      <div id="question-list">
+        <ul class="question-list">
+          <%= render partial: 'question_list', locals: { visit: @visit, questions: @questions } %>
+        </ul>
       </div>
     </div>
 
-    <%= f.submit "次へ", class: "btn-pink" %>
-  <% end %>
+    <%# 選んだ質問をみる %>
+    <div class="form-actions text-center mt-3">
+      <%= link_to visit_question_selections_path(@visit), class: "btn btn-violet btn-review-questions", id: "show-question-btn" do %>
+        <i class="bi bi-list-check"></i>
+        選んだ質問リストをみる
+      <% end %>
+     </div>
+
+<%# 選択数のカウント %>
+<div class="selected-counter text-center mt-2" id="selectedCounter">
+  <i class="bi bi-check-circle-fill"></i>
+  <span id="selectedCount">0</span>件選択中
 </div>
+<% end %>

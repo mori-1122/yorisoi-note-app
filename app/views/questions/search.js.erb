@@ -1,0 +1,2 @@
+<%# @questionsと@visitを使ってquestions/_question_list.html.erbを描画する。そのHTMLをJavaScript経由でid="question-list"の中に差し込む。%>
+document.getElementById("question-list").innerHTML = "<%= j(render partial: 'questions/question_list', locals: { questions: @questions, visit: @visit }) %>";
