@@ -1,15 +1,14 @@
-window.onload = () => { //DOMがすべて揃ったあとに初期化しないと、存在しない要素を参照してエラーになる危険がある
+
+window.addEventListener("DOMContentLoaded", () => { //DOMがすべて揃ったあとに初期化しないと、存在しない要素を参照してエラーになる危険がある
   window.selectedQuestionIds = [];//質問選択の状態と検索ロックを管理。状態の保持・制御に使う。
   window.searchInProgress = false; //他の関数（submitSearch, restoreSelections）で参照される。
-  initSidebar();//3つの関数はページロード時に一度だけ呼び出される初期化関数。
   initFilterUI(); //UIの初期化
   initQuestionSelection(); //visit[question_ids][]による選択項目が使われているため。表示更新やsubmit時の検証で必要
-};
+});
 // フィルターUI初期化（開閉・変更イベント）
 function initFilterUI() {//絞り込みUIのイベントを定義・制御
   const filterForm = document.getElementById('filter-form');
   if (!filterForm) return; //filter-formがなければこのページでは使わないので、他ページのJS干渉を避けるために抜ける。
-
   const dept = document.getElementById('departmentFilter');//各イベント登録で使うため変数にキャッシュ
   const cat = document.getElementById('categoryFilter');
   const keyword = document.getElementById('keywordInput');
