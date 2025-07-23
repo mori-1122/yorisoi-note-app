@@ -23,9 +23,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <%# cdnからでないと、カレンダーが正常に読み込まれない %>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>  <%# ここを消すとレイアウトがおかしくなる %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "/js/calendar.js" %>
     <%= javascript_include_tag "/js/locales-all.global.js" %>
   </head>
