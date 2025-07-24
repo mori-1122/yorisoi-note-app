@@ -1,5 +1,5 @@
 pin "application", preload: true
-pin "filter", to: "filter.js"
+pin "filter", to: "filter.js", preload: true
 pin "question_status_toggle", to: "question_status_toggle.js"
 
 pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
