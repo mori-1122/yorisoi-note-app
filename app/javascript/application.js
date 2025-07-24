@@ -2,22 +2,6 @@ import "@hotwired/turbo-rails";
 import "filter";
 import "question_status_toggle";
 
-// サイドバーの開閉 トグルボタン（#menuToggle）とサイドバー領域（#sidebarMenu）を明示的に監視
-function initSidebar() {
-  const menuToggle = document.getElementById('menuToggle');
-  const sidebar = document.getElementById('sidebarMenu');
-
-//クリックイベントに対してdocument.body.classList.toggle('open')で状態を切り替える
-  menuToggle?.addEventListener('click', e => {
-    e.preventDefault();
-    document.body.classList.toggle('open');
-  });
-
-  document.addEventListener('click', e => { 
-    if (document.body.classList.contains('open') &&
-        !sidebar?.contains(e.target) &&
-        !menuToggle.contains(e.target)) {
-      document.body.classList.remove('open');
 // カレンダー初期化関数
 window.initCalendar = function() {
     const el = document.getElementById("calendar");
@@ -25,17 +9,7 @@ window.initCalendar = function() {
     if (!el) {
         return;
     }
-  });
-}
-// チェック復元
-function restoreSelections() {
-  setTimeout(() => {
-    window.selectedQuestionIds.forEach(id => {
-      const cb = document.querySelector(`input[name="visit[question_ids][]"][value="${id}"]`);
-      if (cb) {
-        cb.checked = true;
-        updateDisplay(cb);
-      }
+    
     if (typeof FullCalendar === "undefined") {
         return;}
 
@@ -93,6 +67,7 @@ function restoreSelections() {
         console.error("カレンダー初期化エラー:", error);
     }
 };
+
 // サイドバーの開閉 トグルボタン（#menuToggle）とサイドバー領域（#sidebarMenu）を明示的に監視
 window.initSidebar = () => {
     const banner = document.querySelector('.login-user-banner');
@@ -122,15 +97,8 @@ window.initSidebar = () => {
             document.body.classList.remove('open');
         }
     });
-    updateCounter();
-    updateButton();
-  }, 100);
-}
+};
 
-// 質問選択のイベント初期化
-function initQuestionSelection() {
-  updateCounter();
-  updateButton();
 // チェック復元
 window.restoreSelections = () => {
     setTimeout(() => {
@@ -146,11 +114,7 @@ window.restoreSelections = () => {
     }, 100);
 };
 
-  document.addEventListener('change', e => {
-    if (e.target.matches('input[name="visit[question_ids][]"]')) {
-      updateCounter();
-      updateButton();
-      updateDisplay(e.target);
+// 質問選択のイベント初期化
 window.initQuestionSelection = () => {
     window.updateCounter();
     window.updateButton();
@@ -182,6 +146,7 @@ window.initQuestionSelection = () => {
         }
     });
 };
+
 // 表示更新
 window.updateCounter = () => {
     const count = document.querySelectorAll('input[name="visit[question_ids][]"]:checked').length;
@@ -193,14 +158,6 @@ window.updateCounter = () => {
     }
 };
 
-  document.addEventListener('click', e => {
-    const li = e.target.closest('li');
-    if (li && !e.target.matches('input[type="checkbox"]')) {
-      const cb = li.querySelector('input[type="checkbox"]');
-      if (cb) {
-        cb.checked = !cb.checked;
-        cb.dispatchEvent(new Event('change', { bubbles: true }));
-      }
 window.updateButton = () => {
     const count = document.querySelectorAll('input[name="visit[question_ids][]"]:checked').length;
     const btn = document.querySelector('#show-question-btn');
@@ -212,11 +169,6 @@ window.updateButton = () => {
     }
 };
 
-  document.getElementById('questionForm')?.addEventListener('submit', e => {
-    const checked = document.querySelectorAll('input[name="visit[question_ids][]"]:checked');
-    if (checked.length === 0) {
-      e.preventDefault();
-      alert("質問を一つ以上選択してください");
 window.updateDisplay = (cb) => {
     cb.closest('li')?.classList.toggle('selected', cb.checked);
 };
@@ -228,37 +180,11 @@ document.addEventListener("turbo:before-render", () => {
         window.calendarInstance.destroy();
         window.calendarInstance = null;
     }
-  });
-}
-
-// 表示更新
-function updateCounter() {
-  const count = document.querySelectorAll('input[name="visit[question_ids][]"]:checked').length;
-  const counter = document.getElementById('selectedCounter');
-  const span = document.getElementById('selectedCount');
-  if (counter && span) {
-    span.textContent = count;
-    counter.style.display = count > 0 ? 'block' : 'none';
-  }
-}
-
-function updateButton() {
-  const count = document.querySelectorAll('input[name="visit[question_ids][]"]:checked').length;
-  const btn = document.querySelector('#show-question-btn');
-  if (btn) {
-    btn.disabled = count === 0;
-    btn.innerHTML = count === 0
-      ? '<i class="bi bi-list-check"></i> 質問を選択してください'
-      : `<i class="bi bi-list-check"></i> 選んだ質問のリストをみる (${count}件)`;
-  }
-}
+    
     // サイドバーの状態をリセット
     document.body.classList.remove('open');
 });
 
-function updateDisplay(cb) {
-  cb.closest('li')?.classList.toggle('selected', cb.checked);
-}
 // Turbo読み込み後の初期化
 document.addEventListener("turbo:load", () => {
     window.selectedQuestionIds = [];
