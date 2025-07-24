@@ -252,6 +252,9 @@ function updateButton() {
       : `<i class="bi bi-list-check"></i> 選んだ質問のリストをみる (${count}件)`;
   }
 }
+    // サイドバーの状態をリセット
+    document.body.classList.remove('open');
+});
 
 function updateDisplay(cb) {
   cb.closest('li')?.classList.toggle('selected', cb.checked);
