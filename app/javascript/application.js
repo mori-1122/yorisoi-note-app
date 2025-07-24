@@ -93,6 +93,34 @@ function restoreSelections() {
         console.error("カレンダー初期化エラー:", error);
     }
 };
+// サイドバーの開閉 トグルボタン（#menuToggle）とサイドバー領域（#sidebarMenu）を明示的に監視
+window.initSidebar = () => {
+    const banner = document.querySelector('.login-user-banner');
+
+    // ここを関数の中に移す
+    banner?.addEventListener('click', e => {
+        const menuToggle = document.getElementById('menuToggle');
+        if (!menuToggle) {
+            return;
+        }
+
+        const target = e.target.closest('#menuToggle');
+        if (!target) return;
+
+        e.preventDefault();
+        document.body.classList.toggle('open');
+    });
+
+    document.addEventListener('click', e => {
+        const sidebar = document.getElementById('sidebarMenu');
+        const menuToggle = document.getElementById('menuToggle');
+        if (!sidebar || !menuToggle) return;
+
+        const isOpen = document.body.classList.contains('open');
+        const isOutside = !sidebar.contains(e.target) && !menuToggle.contains(e.target);
+        if (isOpen && isOutside) {
+            document.body.classList.remove('open');
+        }
     });
     updateCounter();
     updateButton();
