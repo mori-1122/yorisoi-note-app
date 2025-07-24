@@ -131,6 +131,20 @@ window.initSidebar = () => {
 function initQuestionSelection() {
   updateCounter();
   updateButton();
+// チェック復元
+window.restoreSelections = () => {
+    setTimeout(() => {
+        window.selectedQuestionIds.forEach(id => {
+            const cb = document.querySelector(`input[name="visit[question_ids][]"][value="${id}"]`);
+            if (cb) {
+                cb.checked = true;
+                window.updateDisplay(cb);
+            }
+        });
+        window.updateCounter();
+        window.updateButton();
+    }, 100);
+};
 
   document.addEventListener('change', e => {
     if (e.target.matches('input[name="visit[question_ids][]"]')) {
