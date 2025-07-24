@@ -18,6 +18,12 @@ function initSidebar() {
         !sidebar?.contains(e.target) &&
         !menuToggle.contains(e.target)) {
       document.body.classList.remove('open');
+// カレンダー初期化関数
+window.initCalendar = function() {
+    const el = document.getElementById("calendar");
+    
+    if (!el) {
+        return;
     }
   });
 }
@@ -30,6 +36,63 @@ function restoreSelections() {
         cb.checked = true;
         updateDisplay(cb);
       }
+    if (typeof FullCalendar === "undefined") {
+        return;}
+
+    // 既存のカレンダーインスタンスがあれば破棄
+    if (window.calendarInstance) {
+        window.calendarInstance.destroy();
+        window.calendarInstance = null;
+    }
+
+    try {
+        // 新しいカレンダーを作成
+        window.calendarInstance = new FullCalendar.Calendar(el, {
+            initialView: "dayGridMonth",
+            locale: "ja",
+            dateClick: function(info) {
+                const clickDate = info.dateStr;
+                
+                // 新しい訪問作成ページに遷移
+                window.location.href = `/visits/new?date=${clickDate}`;
+                
+                // Fetch APIでAjaxリクエストを送る
+                fetch("/visits/by_date?" + new URLSearchParams({ date: clickDate }), {
+                    method: "GET",
+                    headers: {
+                        "Accept": "text/html",
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        throw new Error("予定の取得に失敗しました");
+                    }
+                })
+                .then(data => {
+                    const scheduleList = document.getElementById("schedule-list");
+                    if (scheduleList) {
+                        scheduleList.innerHTML = data;
+                    }
+                })
+                .catch(error => {
+                    console.error("Ajax error:", error);
+                    const scheduleList = document.getElementById("schedule-list");
+                    if (scheduleList) {
+                        scheduleList.innerHTML = "<p class='flash-error text-center'>予定の取得ができません。</p>";
+                    }
+                });
+            }
+        });
+
+        window.calendarInstance.render();
+        
+    } catch (error) {
+        console.error("カレンダー初期化エラー:", error);
+    }
+};
     });
     updateCounter();
     updateButton();
