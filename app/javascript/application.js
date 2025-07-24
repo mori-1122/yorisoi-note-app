@@ -137,6 +137,37 @@ function initQuestionSelection() {
       updateCounter();
       updateButton();
       updateDisplay(e.target);
+window.initQuestionSelection = () => {
+    window.updateCounter();
+    window.updateButton();
+
+    document.addEventListener('change', e => {
+        if (e.target.matches('input[name="visit[question_ids][]"]')) {
+            window.updateCounter();
+            window.updateButton();
+            window.updateDisplay(e.target);
+        }
+    });
+
+    document.addEventListener('click', e => {
+        const li = e.target.closest('li');
+        if (li && !e.target.matches('input[type="checkbox"]')) {
+            const cb = li.querySelector('input[type="checkbox"]');
+            if (cb) {
+                cb.checked = !cb.checked;
+                cb.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+    });
+
+    document.getElementById('questionForm')?.addEventListener('submit', e => {
+        const checked = document.querySelectorAll('input[name="visit[question_ids][]"]:checked');
+        if (checked.length === 0) {
+            e.preventDefault();
+            alert("質問を一つ以上選択してください");
+        }
+    });
+};
     }
   });
 
@@ -148,14 +179,26 @@ function initQuestionSelection() {
         cb.checked = !cb.checked;
         cb.dispatchEvent(new Event('change', { bubbles: true }));
       }
+window.updateButton = () => {
+    const count = document.querySelectorAll('input[name="visit[question_ids][]"]:checked').length;
+    const btn = document.querySelector('#show-question-btn');
+    if (btn) {
+        btn.disabled = count === 0;
+        btn.innerHTML = count === 0
+            ? '<i class="bi bi-list-check"></i> 質問を選択してください'
+            : `<i class="bi bi-list-check"></i> 選んだ質問のリストをみる (${count}件)`;
     }
-  });
+};
 
   document.getElementById('questionForm')?.addEventListener('submit', e => {
     const checked = document.querySelectorAll('input[name="visit[question_ids][]"]:checked');
     if (checked.length === 0) {
       e.preventDefault();
       alert("質問を一つ以上選択してください");
+window.updateDisplay = (cb) => {
+    cb.closest('li')?.classList.toggle('selected', cb.checked);
+};
+
     }
   });
 }
