@@ -1,3 +1,6 @@
+import "@hotwired/turbo-rails";
+import "filter";
+import "question_status_toggle";
 
 // サイドバーの開閉 トグルボタン（#menuToggle）とサイドバー領域（#sidebarMenu）を明示的に監視
 function initSidebar() {
