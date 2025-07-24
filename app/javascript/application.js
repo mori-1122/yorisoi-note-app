@@ -199,6 +199,12 @@ window.updateDisplay = (cb) => {
     cb.closest('li')?.classList.toggle('selected', cb.checked);
 };
 
+// Turbo遷移前のクリーンアップ
+document.addEventListener("turbo:before-render", () => {
+    // カレンダーインスタンスを破棄
+    if (window.calendarInstance) {
+        window.calendarInstance.destroy();
+        window.calendarInstance = null;
     }
   });
 }
@@ -228,3 +234,26 @@ function updateButton() {
 function updateDisplay(cb) {
   cb.closest('li')?.classList.toggle('selected', cb.checked);
 }
+// Turbo読み込み後の初期化
+document.addEventListener("turbo:load", () => {
+    window.selectedQuestionIds = [];
+    
+    setTimeout(() => {
+        requestAnimationFrame(() => {
+            window.initSidebar();
+            
+            // initFilterUIが存在するかチェックしてから実行
+            if (typeof window.initFilterUI === 'function') {
+                window.initFilterUI();
+            } else {
+                console.warn('initFilterUI関数が見つかりません');
+            }
+            
+            window.initQuestionSelection();
+            window.restoreSelections();
+            
+            // カレンダー初期化
+            window.initCalendar();
+        });
+    }, 0);
+});
