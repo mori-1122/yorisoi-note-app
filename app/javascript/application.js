@@ -168,8 +168,16 @@ window.initQuestionSelection = () => {
         }
     });
 };
+// 表示更新
+window.updateCounter = () => {
+    const count = document.querySelectorAll('input[name="visit[question_ids][]"]:checked').length;
+    const counter = document.getElementById('selectedCounter');
+    const span = document.getElementById('selectedCount');
+    if (counter && span) {
+        span.textContent = count;
+        counter.style.display = count > 0 ? 'block' : 'none';
     }
-  });
+};
 
   document.addEventListener('click', e => {
     const li = e.target.closest('li');
