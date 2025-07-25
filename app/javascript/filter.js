@@ -1,104 +1,99 @@
+window.initFilterUI = function() { //他スクリプトからも呼べるようにする 質問選択画面のフィルターUIを初期化する
+  const filterForm = document.getElementById('filter-form'); // document.getElementById()は該当IDが存在しない場合nullを返すため、それを回避
+  if (!filterForm) {
+    return;
+  }
 
-window.addEventListener("DOMContentLoaded", () => { //DOMがすべて揃ったあとに初期化しないと、存在しない要素を参照してエラーになる危険がある
-  window.selectedQuestionIds = [];//質問選択の状態と検索ロックを管理。状態の保持・制御に使う。
-  window.searchInProgress = false; //他の関数（submitSearch, restoreSelections）で参照される。
-  initFilterUI(); //UIの初期化
-  initQuestionSelection(); //visit[question_ids][]による選択項目が使われているため。表示更新やsubmit時の検証で必要
-});
-// フィルターUI初期化（開閉・変更イベント）
-function initFilterUI() {//絞り込みUIのイベントを定義・制御
-  const filterForm = document.getElementById('filter-form');
-  if (!filterForm) return; //filter-formがなければこのページでは使わないので、他ページのJS干渉を避けるために抜ける。
-  const dept = document.getElementById('departmentFilter');//各イベント登録で使うため変数にキャッシュ
+  // それぞれのフィルター項目（診療科・カテゴリ・キーワード）やUI制御要素（開閉トグル）を取得
+  const dept = document.getElementById('departmentFilter');
   const cat = document.getElementById('categoryFilter');
   const keyword = document.getElementById('keywordInput');
   const toggle = document.getElementById('filterToggle');
   const collapse = document.getElementById('filterCollapse');
- // visit_id 保存
-  window.currentVisitId = document.querySelector('input[name="visit_id"]')?.value; //検索時にパラメータとして必要。hiddenフィールドに入ってるvisit_idを取得し、グローバルに保持。
 
-  // 開閉トグル
-  toggle?.addEventListener('click', e => { //HTML上に#filterToggle、#filterCollapseが存在。 ?.によって「もしtoggleが存在すれば」だけ処理する
+  // 質問検索時に visit_idを含める submitSearchで使われる。?.valueによって該当要素がなければ undefined になるので、nullエラーを防止している。
+  window.currentVisitId = document.querySelector('input[name="visit_id"]')?.value;
+
+  // フィルターボックスを開閉するトグル機能の実装
+  toggle?.addEventListener('click', e => { //?. により toggle が存在しないページではエラーにならず無視
     e.preventDefault();
-    const hidden = !collapse || collapse.style.display === 'none';
-    collapse.style.display = hidden ? 'block' : 'none'; //閉じていれば表示し、表示されていれば閉じる = トグル動作
-    toggle.querySelector('i').className = hidden ? 'bi bi-chevron-double-up' : 'bi bi-chevron-double-down';
+    const hidden = !collapse || collapse.style.display === 'none'; // 非表示状態かどうか
+    collapse.style.display = hidden ? 'block' : 'none';
+    toggle.querySelector('i').className = hidden ? 'bi bi-chevron-double-up' : 'bi bi-chevron-double-down'; //collapse -> フィルターボックス本体。hiddenという真偽値をもとに、displayを'block'か'none'に切り替え
   });
 
-  dept?.addEventListener('change', () => { //診療科ごとにカテゴリが変わる仕様（DB設計的に）
-    updateCategories(dept.value); //updateCategories()はfetch()で非同期にカテゴリを更新
-    setTimeout(submitSearch, 300); //updateCategories()が非同期fetchを使っているため、遅れて検索をかける。非同期処理の順番を調整してる。
+  dept?.addEventListener('change', () => { //診療科に応じてカテゴリを再取得（Ajax）。
+    window.updateCategories(dept.value); // updateCategories()はdepartment_idに応じたカテゴリリストを取得・更新
+    setTimeout(window.submitSearch, 300); // setTimeout によってカテゴリ描画完了を少し待ってから検索
   });
 
-  cat?.addEventListener('change', submitSearch); //カテゴリ選択が変わったら即座に検索
+  cat?.addEventListener('change', window.submitSearch); // カテゴリ変更 → すぐ検索
+  keyword?.addEventListener('input', window.debounce(window.submitSearch, 800)); // キーワード入力 → 入力が止まってから 800ms 後に検索（debounce）。debounce()により連続検索を防ぎ、入力完了するまで待つ。
 
-  keyword?.addEventListener('input', debounce(submitSearch, 800));  //キーワードはdebounceによって、連続入力を抑制し最後の入力だけ反応するように制御。
-
-  filterForm.addEventListener('submit', e => {
+  filterForm.addEventListener('submit', e => { // 通常のHTMLフォーム送信（ページリロード）を防ぎ、Ajaxで処理
     e.preventDefault();
-    submitSearch(); //通常のHTMLフォーム送信を止めて、Ajax経由で処理を行う。
+    window.submitSearch();
   });
-}
-// カテゴリ更新
-function updateCategories(departmentId) { //fetchURLにaction_type=categoriesを付けてルーティング分岐させている
-  const cat = document.getElementById('categoryFilter');
+};
+
+window.updateCategories = function(departmentId) {
+  const cat = document.getElementById('categoryFilter'); // カテゴリのセレクトボックス取得。
   if (!cat) return;
 
-// Ajaxでカテゴリを取得するためのfetch実装
-  fetch(`/questions/search?department_id=${departmentId}&action_type=categories&format=json`, { // 「選択された診療科に対応するカテゴリ一覧を、JSON形式で取得する」リクエスト。${departmentId}：引数で受け取った診療科IDをURLに埋め込んでいる。
-    headers: defaultHeaders() // リクエストにヘッダーを追加。
+  fetch(`/questions/search?department_id=${departmentId}&action_type=categories&format=json`, { ///questions/searchにdepartment_idをクエリとして渡す。action_type=categoriesは、カテゴリのみ返す。
+    headers: window.defaultHeaders() //javaScriptのfetchリクエストに共通のヘッダーを渡す
   })
-    .then(res => res.ok ? res.json() : Promise.reject(res.statusText)) // res.ok、HTTPステータスコードが200〜299のときtrue成功判定。res.json()成功したらレスポンスをJSONとして解釈。
-    .then(categories => {
-      cat.innerHTML = '<option value="">全て</option>'; // categories上の.json()によってパースされたカテゴリ配列。
-      categories.forEach(c => {
-        cat.insertAdjacentHTML('beforeend', `<option value="${c.id}">${c.name}</option>`); // cat.insertAdjacentHTML(...)HTML文字列をセーフに挿入する。beforeend現在の要素の最後の子として追加。
-      });
-    })
-    .catch(err => console.error('カテゴリ取得失敗:', err));
-}
+  .then(res => res.ok ? res.json() : Promise.reject(res.statusText)) // res.okがtrue（ステータス 200〜299の成功）なら → .json() を実行
+  .then(categories => { // 前の.then()で JSON にパースされたデータ（= categories）がここに渡ってくる。
+    cat.innerHTML = '<option value="">すべて</option>'; // セレクトボックス（例: <select id="categoryFilter">）の中身を一旦リセット。最初に「すべて」オプションを追加
+    categories.forEach(c => { // カテゴリ一覧をループして、各 <option> 要素を追加
+      cat.insertAdjacentHTML('beforeend', `<option value="${c.id}">${c.name}</option>`);
+    });
+  })
+  .catch(error => console.error('カテゴリ取れません')); // .catch()は通信失敗・非200レスポンスなどに対応。
+};
 
-// Ajax検索
-function submitSearch() {
-  if (window.searchInProgress) return; // 連打防止のロック。二重送信を防ぐ。
+window.submitSearch = function() { // 質問リストのAjax検索
+  if (window.searchInProgress) return; // 多重送信防止用のフラグ（送信中なら return）
   window.searchInProgress = true;
 
-  const form = document.getElementById('filter-form'); 
+  const form = document.getElementById('filter-form'); // フォーム内のすべての入力値をAjaxで送信するために、FormDataオブジェクトに値を詰める。明示的にvisit_idを追加しているのは、フォーム内にvisit_idのinput要素がない場合に備えた保険
   if (!form) return;
 
-  const formData = new FormData(form); //FormDataはフォーム内の全入力項目を自動的に収集してくれる
-  formData.set('visit_id', window.currentVisitId); //visit_id は手動で上書き追加。
+  const formData = new FormData(form); // FormData は、<form> 要素からすべてのフォームフィールド（input, select, textarea など）を自動的に抽出して key-valueペアにまとめるJavaScriptのAPI
+  formData.set('visit_id', window.currentVisitId); // input が無い、もしくは JavaScript の描画順の都合でまだDOMに存在していない時のためにJS側で visit_idを安全に取得
+  // JS側で visit_id を安全に取得
 
-  window.selectedQuestionIds = Array.from(//チェックされた質問のIDを収集。
-    document.querySelectorAll('input[name="visit[question_ids][]"]:checked') //restoreSelections()のためにグローバル変数として保持
+  window.selectedQuestionIds = Array.from( // チェックされた質問IDを保持
+    document.querySelectorAll('input[name="visit[question_ids][]"]:checked')
   ).map(cb => cb.value);
 
-  fetch(`${form.action}.js?${new URLSearchParams(formData)}`, { // format.jsを指定したリクエストになる。Railsはこれでsearch.js.erb を返す。
-    headers: defaultHeaders('js')
+  fetch(`${form.action}.js?${new URLSearchParams(formData)}`, { // fetch()を使ってAjaxによる.jsリクエストを送信している。明示的に.jsを付けることで、Railsは /questions/search.jsに対してjsを返す。
+    headers: window.defaultHeaders('js')
   })
-    .then(res => res.text()) // 成功したときだけ、レスポンスを文字列として読み込む（HTMLやJSの本文）
-    .then(code => { //.then(code =>eval(code))によって、controller側のsearch.js.erb が実行される。
-      eval(code); //受け取ったJSコードを即座に実行
-      restoreSelections(); // フィルタ後の状態を復元
+    .then(res => res.text())
+    .then(code => { // .then(code => eval(code))で受け取ったJSを即時実行
+      eval(code);
+      window.restoreSelections(); // restoreSelections()により質問の選択状態を復元。
     })
-    .catch(err => console.error('検索失敗:', err)) // Rubyのrescueにあたる処理　(rescue => eみたいな)。
-    .finally(() => { window.searchInProgress = false; }); // rubyのensureに当たる
-}
-// ヘッダー共通化
-function defaultHeaders(type = 'json') { //Ajaxリクエストで使う共通ヘッダーを返す。fetch()のheaders:に渡す。引数typeに'json'または'js'を指定できる.
+    .catch(err => console.error('検索失敗:', err))
+    .finally(() => { window.searchInProgress = false; }); // .finally()で送信中フラグを解除。
+};
 
-  return { // サーバーに「どの形式で返してほしいか」を伝える。
-    'Accept': type === 'js' ? 'text/javascript' : 'application/json', // type === 'js' のとき → 'text/javascript'。 Rails側でformat.jsに反応（search.js.erb が返る）。それ以外 → 'application/json'
-    'X-Requested-With': 'XMLHttpRequest', // 「これはAjaxリクエストですよ」とサーバーに伝えるヘッダー。
-    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content // CSRF対策用のトークン。Railsはこれが無いと POST/PUT/DELETEを拒否する。
+// ヘッダー共通化
+window.defaultHeaders = function(type = 'json') {
+  return {
+    'Accept': type === 'js' ? 'text/javascript' : 'application/json', // Accept:text/javascriptによって、Rails側に「JavaScriptが欲しい」と伝える
+    'X-Requested-With': 'XMLHttpRequest', // Railsはrequest.xhr?でAjaxとして扱える
+    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content // X-CSRF-TokenはCSRF対策。Railsのprotect_from_forgeryに必要なトークン
   };
-}
+};
 
 // debounce ヘルパー
-function debounce(fn, delay) { // 入力イベントなどで、処理を連続で呼ばないように制御するユーティリティ関数。
-  let timeout; // timeout は、遅延処理の予約ID（setTimeoutの返り値）を保持する変数。
-  return () => { // 実際に返すのは「無名関数」。イベントにこの関数を使う。
-    clearTimeout(timeout); // 前回のタイマーをキャンセル（連打されても一旦止める）
-    timeout = setTimeout(fn, delay); // 新たに delay（ms）後に fn を実行する予約を入れる。
+window.debounce = function(fn, delay) {
+  let timeout;
+  return () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(fn, delay);
   };
-}
+};

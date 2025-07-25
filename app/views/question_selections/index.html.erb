@@ -5,10 +5,18 @@
   <% end %>
 </div>
 
+<%# 質問をカウントする %>
 <div class="question-count text-center mb-4">
   <strong>登録した質問：</strong><%= @total_user_questions %> 件
 </div>
 
+<%# フラッシュメッセージのデータ属性 %>
+<div id="flash-data"
+     data-notice="<%= notice if notice %>"
+     data-alert="<%= alert if alert %>"
+     class="d-none"></div>
+
+<%# 受診先情報 %>
 <% @user_questions.group_by(&:visit).each do |visit, selections| %>
   <div class="visit-group mb-4">
     <h3 class="visit-title">
@@ -16,29 +24,32 @@
     </h3>
 
     <div class="my-questions-card">
-        <ul class="question-list">
-          <% selections.each do |selection| %>
-            <li class="question-item" data-selection-id="<%= selection.id %>">
-              <div class="question-text <%= 'asked' if selection.asked? %>">
-                <%= selection.question.content %>
-              </div>
-              <div class="question-actions">
-                <%= button_to visit_question_selection_path(visit, selection),
-                    method: :patch,
-                    remote: true,
-                    params: { question_selection: { asked: !selection.asked } },
-                    class: "toggle-btn #{selection.asked? ? 'asked' : 'pending'}" do %>
-                  <%= selection.asked? ? '未質問に戻す' : '質問済みにする' %>
-                <% end %>
-              </div>
-            </li>
-          <% end %>
-        </ul>
-      </div>
+      <ul class="question-list" id="question-list-<%= visit.id %>">
+        <% selections.each do |selection| %>
+          <li class="question-item" data-selection-id="<%= selection.id %>">
+            <div class="question-text <%= 'asked' if selection.asked? %>">
+              <%= selection.question.content %>
+            </div>
+            <div class="question-actions">
+              <%= button_to visit_question_selection_path(visit, selection),
+                          method: :patch,
+                          remote: true,
+                          params: { question_selection: { asked: !selection.asked } },
+                          class: "btn btn-sm toggle-btn #{selection.asked? ? 'btn-success asked' : 'btn-warning pending'}" do %>
+                <%= selection.asked? ? '未質問に戻す' : '質問済みにする' %>
+                <i class="bi <%= selection.asked? ? 'bi-check-circle-fill' : 'bi-clock-fill' %> me-1"></i>
+              <% end %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
     </div>
-  <% end %>
+  </div>
+<% end %>
 
 <%# 遷移するボタン %>
+<div class="text-center mt-4">
   <%= link_to "選択画面に戻る",
-    select_questions_path(visit_id: @visit.id),
-    class: "btn btn-outline-pink" %>
+              select_questions_path(visit_id: @visit.id),
+              class: "btn btn-outline-pink" %>
+</div>

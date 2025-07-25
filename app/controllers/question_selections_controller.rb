@@ -3,7 +3,7 @@ class QuestionSelectionsController < ApplicationController
   before_action :set_visit, only: [ :index, :create, :select, :toggle_answered ]
 
   def index
-    @question_selections = @visit.question_selections.includes(:question) # Visitに登録されている質問選択リストを効率よく取得するために、登録済みの質問(QuestionSelection)一覧を取得 includes(:question)により、各QuestionSelectionが持つquestionを事前にまとめて取得（N+1 問題防止）
+    @question_selections = @visit.question_selections.includes(:question) # Visitに登録されている質問選択リストを効率よく取得するために、登録済みの質問(QuestionSelection)一覧を取得。includes(:question)により、各QuestionSelectionが持つquestionを事前にまとめて取得（N+1 問題防止）
     @total_user_questions = @question_selections.count
 
     @user_questions = @question_selections
