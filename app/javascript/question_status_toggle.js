@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbo:load', () => {
   document.addEventListener("ajax:success", function (event) {
     const [data, _status, xhr] = event.detail;
 
