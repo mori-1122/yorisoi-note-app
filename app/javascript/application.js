@@ -11,7 +11,8 @@ window.initCalendar = function() {
     }
     
     if (typeof FullCalendar === "undefined") {
-        return;}
+        return;
+    }
 
     // 既存のカレンダーインスタンスがあれば破棄
     if (window.calendarInstance) {
@@ -99,28 +100,72 @@ window.initSidebar = () => {
     });
 };
 
+// 選択状態を保存
+window.saveSelectionState = () => {
+    const checkedInputs = document.querySelectorAll('input[name="visit[question_ids][]"]:checked');
+    window.selectedQuestionIds = Array.from(checkedInputs).map(input => input.value);
+    
+    // セッションストレージに保存（ページ遷移時の保持のため）
+    try {
+        sessionStorage.setItem('selectedQuestionIds', JSON.stringify(window.selectedQuestionIds));
+    } catch (error) {
+        console.warn('保存に失敗:', error);
+    }
+};
+
+// 選択状態を読み込み
+window.loadSelectionState = () => {
+    // まず現在のページの選択状態を確認
+    const checkedInputs = document.querySelectorAll('input[name="visit[question_ids][]"]:checked');
+    if (checkedInputs.length > 0) {
+        window.selectedQuestionIds = Array.from(checkedInputs).map(input => input.value);
+        return;
+    }
+    
+    // セッションストレージから復元を試行
+    try {
+        const saved = sessionStorage.getItem('selectedQuestionIds');
+        if (saved) {
+            window.selectedQuestionIds = JSON.parse(saved);
+        } else {
+            window.selectedQuestionIds = [];
+        }
+    } catch (error) {
+        console.warn('セッションストレージからの読み込みに失敗:', error);
+        window.selectedQuestionIds = [];
+    }
+};
+
 // チェック復元
 window.restoreSelections = () => {
-    setTimeout(() => {
-        window.selectedQuestionIds.forEach(id => {
-            const cb = document.querySelector(`input[name="visit[question_ids][]"][value="${id}"]`);
-            if (cb) {
-                cb.checked = true;
-                window.updateDisplay(cb);
-            }
-        });
-        window.updateCounter();
-        window.updateButton();
-    }, 100);
+    if (!window.selectedQuestionIds || window.selectedQuestionIds.length === 0) {
+        return;
+    }
+    
+    window.selectedQuestionIds.forEach(id => {
+        const cb = document.querySelector(`input[name="visit[question_ids][]"][value="${id}"]`);
+        if (cb && !cb.checked) {
+            cb.checked = true;
+            window.updateDisplay(cb);
+        }
+    });
+    
+    window.updateCounter();
+    window.updateButton();
 };
 
 // 質問選択のイベント初期化
 window.initQuestionSelection = () => {
+    // 初期状態を読み込み
+    window.loadSelectionState();
+    
     window.updateCounter();
     window.updateButton();
 
     document.addEventListener('change', e => {
         if (e.target.matches('input[name="visit[question_ids][]"]')) {
+            // 選択状態が変更されたら保存
+            window.saveSelectionState();
             window.updateCounter();
             window.updateButton();
             window.updateDisplay(e.target);
@@ -143,6 +188,9 @@ window.initQuestionSelection = () => {
         if (checked.length === 0) {
             e.preventDefault();
             alert("質問を一つ以上選択してください");
+        } else {
+            // フォーム送信前に状態を保存
+            window.saveSelectionState();
         }
     });
 };
@@ -175,6 +223,11 @@ window.updateDisplay = (cb) => {
 
 // Turbo遷移前のクリーンアップ
 document.addEventListener("turbo:before-render", () => {
+    // 選択状態を保存
+    if (typeof window.saveSelectionState === 'function') {
+        window.saveSelectionState();
+    }
+    
     // カレンダーインスタンスを破棄
     if (window.calendarInstance) {
         window.calendarInstance.destroy();
@@ -187,7 +240,7 @@ document.addEventListener("turbo:before-render", () => {
 
 // Turbo読み込み後の初期化
 document.addEventListener("turbo:load", () => {
-    window.selectedQuestionIds = [];
+    // 初期化は各関数内で行う
     
     setTimeout(() => {
         requestAnimationFrame(() => {
@@ -201,10 +254,15 @@ document.addEventListener("turbo:load", () => {
             }
             
             window.initQuestionSelection();
-            window.restoreSelections();
+            
+            // 選択状態の復元は初期化後に実行
+            setTimeout(() => {
+                window.restoreSelections();
+            }, 100);
             
             // カレンダー初期化
             window.initCalendar();
         });
     }, 0);
 });
+
