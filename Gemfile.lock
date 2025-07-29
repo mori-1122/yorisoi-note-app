@@ -269,6 +269,8 @@ GEM
     pry-byebug (3.11.0)
       byebug (~> 12.0)
       pry (>= 0.13, < 0.16)
+    pry-rails (0.3.11)
+      pry (>= 0.13.0)
     psych (5.2.6)
       date
       stringio
@@ -472,7 +474,9 @@ DEPENDENCIES
   kamal
   pg (~> 1.1)
   propshaft
+  pry
   pry-byebug
+  pry-rails
   puma (>= 5.0)
   rails (~> 8.0.2)
   rails-i18n
