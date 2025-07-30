@@ -140,8 +140,8 @@ body.open .hamburger-btn .bar:nth-child(3) {
 }
 
 .btn-outline-primary:hover {
-    background-color: #f8bbd0;
-    color: white;
+    background-color: $flash-alert-border;
+    color: $white;
 }
 
 .btn {
