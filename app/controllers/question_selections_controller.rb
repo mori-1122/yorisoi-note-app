@@ -62,6 +62,21 @@ class QuestionSelectionsController < ApplicationController
   end
 
   # 質問の状態変更（toggle_asked ありならトグル）
+  # 削除機能を追加
+  def destroy
+    @question_selection = @visit.question_selections.find(params[:id]) # この受診予定（@visit）に属する質問選択（question_selections）の中から、:id に一致するレコードを1件探して@question_selectionに代入する
+    @question_selection.destroy!
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.remove(@question_selection)
+      end
+      format.html do
+        redirect_to visit_question_selections_path(@visit, page: "list"),
+                    notice: "質問を削除しました"
+      end
+    end
+  end
   def update
     if params[:toggle_asked].present?
       @question_selection.update!(asked: !@question_selection.asked)
