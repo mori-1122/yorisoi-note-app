@@ -103,7 +103,9 @@ body.open .hamburger-btn .bar:nth-child(3) {
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .toggle-btn.pending {
