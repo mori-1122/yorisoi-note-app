@@ -1,9 +1,10 @@
 .flash-message {
+  text-align: center;
   position: fixed;
   top: 3.5rem;
   right: 20px;  // 右寄せ
   z-index: 9998;
-  max-width: 340px;
+  max-width: 280px;
   width: calc(100% - 40px);
   padding: 1rem 1.25rem;
   border-radius: 12px;
