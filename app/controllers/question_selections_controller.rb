@@ -44,19 +44,26 @@ class QuestionSelectionsController < ApplicationController
   end
 
   # 質問の登録
-  def create
-    question_ids = selection_params[:question_ids] || []
-    question_ids.reject!(&:blank?)
+  def create # ユーザーが質問を選択して「登録」ボタンを押した時に呼ばれる
+    question_ids = selection_params[:question_ids] || [] # パラメータからquestion_idsを取得。 nilの場合でも []をセットして処理を続行するため || []を使用。
+    question_ids.reject!(&:blank?) # 空文字やnilが混じっている可能性があるため、排除し、IDのみ対象とする。reject!を使うことで元の配列を直接変更（破壊的）
 
-    existing_question_ids = @visit.question_selections.pluck(:question_id)
-    new_question_ids = question_ids.map(&:to_i) - existing_question_ids
+    existing_question_ids = @visit.question_selections.pluck(:question_id) # visitに登録されている質問IDの一覧を取得。pluck(:question_id)により不要なActiveRecordオブジェクトを生成せず、DBから値のみ取得.
+    new_question_ids = question_ids.map(&:to_i) - existing_question_ids # フォーム送信時の question_idsは "12"のような文字列で来るため、.map(&:to_i)整数に変換。差集合演算（-）により、既に登録済みのIDを除いた「新しく登録すべき質問ID」の配列が new_question_ids。
 
-    new_question_ids.each do |question_id|
-      @visit.question_selections.create(question_id: question_id)
+    new_question_ids.each do |question_id| # 新規登録対象の質問IDを1件ずつ処理。各question_id に対して、@visitに紐づくquestion_selection を作成。
+      begin
+        @visit.question_selections.create!(
+          question_id: question_id, # question_id:対象の質問。
+          user_id: current_user.id, # user_id: 登録したユーザー（ログイン中のユーザー）。
+          selected_at: Time.current # selected_at:登録時刻を記録（管理・表示用に）。
+          )
+      rescue ActiveRecord::RecordInvalid # バリデーションエラーなどが発生した場合でも、処理全体を止めずに次のIDの処理に進む
+      end
     end
 
     respond_to do |format|
-      format.js   # create.js.erb が必要（無い場合は削除要）
+      format.js
       format.html { redirect_to visit_question_selections_path(@visit, page: "list"), notice: "質問が追加されました" }
     end
   end
