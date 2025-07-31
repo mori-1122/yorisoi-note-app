@@ -84,26 +84,21 @@ class QuestionSelectionsController < ApplicationController
       end
     end
   end
+  # 質問の状態変更
   def update
-    if params[:toggle_asked].present?
+    if params[:toggle_asked].present? # リクエストに含まれるパラメータキーをtoggle_askedにした
       @question_selection.update!(asked: !@question_selection.asked)
 
       respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            @question_selection,
+            partial: "question_selections/question_selection",
+            locals: { selection: @question_selection }
+          )
+        end
         format.json { render json: { asked: @question_selection.asked } }
         format.html { redirect_to visit_question_selections_path(@visit, page: "list"), notice: "状態を更新しました" }
-      end
-    else
-      # 通常の更新（今後の拡張想定）
-      if @question_selection.update(update_params)
-        respond_to do |format|
-          format.json { render json: { success: true } }
-          format.html { redirect_to visit_question_selections_path(@visit, page: "list"), notice: "質問を更新しました" }
-        end
-      else
-        respond_to do |format|
-          format.json { render json: { success: false, errors: @question_selection.errors.full_messages } }
-          format.html { redirect_to visit_question_selections_path(@visit, page: "list"), alert: "更新に失敗しました" }
-        end
       end
     end
   end
