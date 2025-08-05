@@ -31,7 +31,7 @@
 
   <body>
     <%# 「ログインしている場合」かつ「questions#selectまたはquestions#searchアクションではない場合」だけ処理を実行したい %>
-  <% if user_signed_in? && !(controller_name == 'questions' && action_name.in?(%w[select search])) %>
+  <% if user_signed_in? && controller_name == 'visits' && action_name == 'index' %>
     <%# トグルボタン %>
     <div class="login-user-banner d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center">

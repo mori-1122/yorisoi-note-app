@@ -1,0 +1,29 @@
+<%= turbo_frame_tag dom_id(selection) do %>
+  <li class="question-item" data-selection-id="<%= selection.id %>">
+    <div class="question-text <%= 'asked' if selection.asked? %>">
+      <%= selection.question.content %>
+    </div>
+    <div class="question-actions">
+      <%= button_to(
+        visit_question_selection_path(selection.visit, selection),
+        method: :patch,
+        params: { toggle_asked: true },
+        form: { data: { turbo: true } },
+        class: "btn btn-sm toggle-btn #{selection.asked? ? 'btn-success asked' : 'btn-warning pending'}"
+      ) do %>
+        <%= selection.asked? ? '未質問に戻す' : '質問済みにする' %>
+        <i class="bi <%= selection.asked? ? 'bi-check-circle-fill' : 'bi-hand-thumbs-up' %> me-1"></i>
+      <% end %>
+
+      <%# 削除ボタン %>
+      <%= button_to(
+        visit_question_selection_path(selection.visit, selection),
+        method: :delete,
+        form: { data: { turbo: true } },
+        class: "delete-btn"
+      ) do %>
+        <i class="bi bi-trash-fill"></i>
+      <% end %>
+    </div>
+  </li>
+<% end %>

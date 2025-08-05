@@ -17,7 +17,7 @@
 
 .my-questions-card {
   background-color: #fff;
-  border: 2px solid rgb(105, 100, 100);
+  border: 1px solid rgb(98, 97, 97);
   border-radius: 10px;
   padding: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -27,21 +27,19 @@ ul.question-list {
   list-style: none !important;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .question-item {
   display: flex;
   align-items: center;
   padding: 8px;
-  margin-bottom: 8px;
   background: #fafafa;
   border: 1px solid #ddd;
   border-radius: 6px;
   transition: background-color 0.3s ease;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
 
   &:hover {
     background-color: #f0f8ff;
@@ -60,41 +58,11 @@ ul.question-list {
 }
 
 .question-actions {
-  margin-left: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
-.toggle-btn {
-  padding: 3px 8px;
-  font-size: 10px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  background: #fff;
-  color: #333;
-  cursor: pointer;
-  transition: background-color 0.3s;
-
-  &.pending {
-    background-color: #e8f5e8;
-    border-color: #68f0ba;
-    color: #2e7d32;
-
-    &:hover {
-      background-color: #68f0ba;
-      color: #fff;
-    }
-  }
-
-  &.asked {
-    background-color: #ffebee;
-    border-color: #f8bbd0;
-    color: #d32f2f;
-
-    &:hover {
-      background-color: #f8bbd0;
-      color: #fff;
-    }
-  }
-}
 .question-count {
   background: white;
   border-radius: variables.$small-radius;

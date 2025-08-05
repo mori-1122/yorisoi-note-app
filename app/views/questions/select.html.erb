@@ -12,7 +12,7 @@
 
 <%# メインコンテンツ %>
 <div class="main-content">
-  <%= form_with model: @visit, method: :post, local: true, html: { id: "questionForm" } do |f| %>
+  <%= form_with url: visit_question_selections_path(@visit), method: :post, remote: true, html: { id: "questionForm" } do |f| %>
     <div class="question-card">
       <div class="question-header">
         <i class="bi bi-chat-text"></i>
@@ -22,22 +22,24 @@
 
       <div id="question-list">
         <ul class="question-list">
-          <%= render partial: 'question_list', locals: { visit: @visit, questions: @questions } %>
+          <%= render partial: 'question_list', locals: { questions: @questions, selected_question_ids: @selected_question_ids } %>
         </ul>
       </div>
     </div>
 
     <%# 選んだ質問をみる %>
     <div class="form-actions text-center mt-3">
-      <%= link_to visit_question_selections_path(@visit), class: "btn btn-violet btn-review-questions", id: "show-question-btn" do %>
+      <%= f.button :submit, class: "btn btn-violet btn-review-questions", id: "show-question-btn" do %>
         <i class="bi bi-list-check"></i>
         選んだ質問リストをみる
       <% end %>
      </div>
 
-<%# 選択数のカウント %>
-<div class="selected-counter text-center mt-2" id="selectedCounter">
-  <i class="bi bi-check-circle-fill"></i>
-  <span id="selectedCount">0</span>件選択中
+    <%# 選択数のカウント %>
+    <div class="selected-counter text-center mt-2" id="selectedCounter">
+      <i class="bi bi-check-circle-fill"></i>
+      <span id="selectedCount">0</span>件選択中
+    </div>
+  <% end %>
 </div>
-<% end %>
+<%# 一旦、turboは後でにする。%>

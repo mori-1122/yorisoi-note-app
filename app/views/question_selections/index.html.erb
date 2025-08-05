@@ -17,39 +17,27 @@
      class="d-none"></div>
 
 <%# 受診先情報 %>
-<% @user_questions.group_by(&:visit).each do |visit, selections| %>
+<% @user_questions.group_by(&:visit).each do |visit, selections| %> <%# visit:各Visitオブジェクト（キー）と、 selections:そのvisitに属するQuestionSelection の配列（値）%>
+ <% if selections.any? %>
   <div class="visit-group mb-4">
     <h3 class="visit-title">
-      <%= visit.visit_date.strftime("%Y年%m月%d日") %> - <%= visit.hospital_name %>
+      <%= visit.visit_date.strftime("%Y年%m月%d日") %><%= visit.hospital_name %>
     </h3>
 
     <div class="my-questions-card">
       <ul class="question-list" id="question-list-<%= visit.id %>">
         <% selections.each do |selection| %>
-          <li class="question-item" data-selection-id="<%= selection.id %>">
-            <div class="question-text <%= 'asked' if selection.asked? %>">
-              <%= selection.question.content %>
-            </div>
-            <div class="question-actions">
-              <%= button_to visit_question_selection_path(visit, selection),
-                          method: :patch,
-                          remote: true,
-                          params: { question_selection: { asked: !selection.asked } },
-                          class: "btn btn-sm toggle-btn #{selection.asked? ? 'btn-success asked' : 'btn-warning pending'}" do %>
-                <%= selection.asked? ? '未質問に戻す' : '質問済みにする' %>
-                <i class="bi <%= selection.asked? ? 'bi-check-circle-fill' : 'bi-clock-fill' %> me-1"></i>
-              <% end %>
-            </div>
-          </li>
+          <%= render partial: "question_selections/question_selection", locals: { selection: selection } %>
         <% end %>
-      </ul>
+        </ul>
     </div>
   </div>
+<% end %>
 <% end %>
 
 <%# 遷移するボタン %>
 <div class="text-center mt-4">
   <%= link_to "選択画面に戻る",
-              select_questions_path(visit_id: @visit.id),
-              class: "btn btn-outline-pink" %>
+      select_questions_path(visit_id: @visit.id),
+      class: "btn btn-outline-pink" %>
 </div>
