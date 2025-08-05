@@ -27,7 +27,7 @@ gem "dartsass-rails"
 gem "rails-i18n"
 gem "better_errors"
 gem "binding_of_caller"
-
+gem "streamio-ffmpeg", "~> 3.0", ">= 3.0.2"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
