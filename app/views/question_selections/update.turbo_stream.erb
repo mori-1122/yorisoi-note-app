@@ -1,0 +1,3 @@
+<%= turbo_stream dom_id(@question_selection) do %>
+  <%= render partial: "question_selections/question_selection", locals: { selection: @question_selection } %>
+<% end %>

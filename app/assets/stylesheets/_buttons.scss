@@ -103,7 +103,9 @@ body.open .hamburger-btn .bar:nth-child(3) {
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .toggle-btn.pending {
@@ -138,8 +140,8 @@ body.open .hamburger-btn .bar:nth-child(3) {
 }
 
 .btn-outline-primary:hover {
-    background-color: #f8bbd0;
-    color: white;
+    background-color: $flash-alert-border;
+    color: $white;
 }
 
 .btn {
@@ -185,4 +187,30 @@ body.open .hamburger-btn .bar:nth-child(3) {
     &:hover {
       background-color: $yellow-hover;
     }
+}
+.delete-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid $primary-dark;
+  border-radius: 6px;
+  background-color: white;
+  color: $flash-alert-text;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: $flash-notice-bg;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  i {
+    font-size: 14px;
+    line-height: 1;
+  }
 }

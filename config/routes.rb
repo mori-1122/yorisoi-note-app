@@ -10,7 +10,7 @@ Rails.application.routes.draw do
         end
 
         # 診察記録に紐づく質問選択・編集
-        resources :question_selections, only: [ :index, :create, :update ]
+        resources :question_selections, only: [ :index, :create, :update, :destroy ]
       end
 
   # 質問テンプレを選択、検索

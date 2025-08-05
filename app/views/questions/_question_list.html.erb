@@ -1,11 +1,14 @@
-<%= form_with model: visit, method: :post, local: true do |f| %>
-  <ul class="question-list">
-    <%= f.collection_checkboxes(:question_ids, questions, :id, :content) do |b| %>
-      <li class="question-item"
-        data-department="<%= b.object.department_id %>"
-        data-category="<%= b.object.question_category_id %>">
-        <%= b.label { b.check_box + b.text } %>
-      </li>
-    <% end %>
-  <% end %>
-</ul>
+<% questions.each do |q| %>
+  <li class="question-item"
+      data-department="<%= q.department_id %>"
+      data-category="<%= q.question_category_id %>">
+    <label>
+      <input type="checkbox"
+             name="visit[question_ids][]"
+             value="<%= q.id %>"
+             class="question-checkbox"
+             <%= 'checked' if selected_question_ids.include?(q.id) %>>
+      <%= q.content %>
+    </label>
+  </li>
+<% end %>
