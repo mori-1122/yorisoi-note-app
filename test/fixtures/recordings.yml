@@ -3,13 +3,9 @@
 one:
   user: one
   visit: one
-  file_path: MyString
-  memo: MyText
   recorded_at: 2025-05-22 10:47:29
 
 two:
   user: two
   visit: two
-  file_path: MyString
-  memo: MyText
   recorded_at: 2025-05-22 10:47:29
