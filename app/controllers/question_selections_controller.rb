@@ -117,9 +117,9 @@ class QuestionSelectionsController < ApplicationController
     params.require(:visit).permit(question_ids: [])
   end
 
-  def update_params
-    params.require(:question_selection).permit(:asked, :memo)
-  end
+  # def update_params
+  #   params.require(:question_selection).permit(:asked, :memo)
+  # end
 
   # 質問絞り込み（診療科・カテゴリ・キーワード対応）
   def build_questions_query
