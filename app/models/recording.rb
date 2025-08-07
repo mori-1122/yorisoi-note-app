@@ -4,6 +4,6 @@ class Recording < ApplicationRecord
 
   has_one_attached :audio_file # ActiveStorageを使用 ここの名前は任意で作成可能
 
-  validates :audio_file
+  # validates :audio_file
   # gem導入を検討
 end
