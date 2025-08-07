@@ -14,9 +14,9 @@ class RecordingsController < ApplicationController # 録音に関するリクエ
     end
 
     if @recording.save # もしも保存できたら
-      render json: { status: 'OK' } # ステータスOKのJSONレスポンスを返す(jsを使っているから)
+      render json: { status: "OK" } # ステータスOKのJSONレスポンスを返す(jsを使っているから)
     else
-      render json: { status: 'error', errors: @recording.errors.full_messages }, status: :unprocessable_entity # 保存に失敗した場合はエラーメッセージを含むJSONを返し、ステータスコード422を添付
+      render json: { status: "error", errors: @recording.errors.full_messages }, status: :unprocessable_entity # 保存に失敗した場合はエラーメッセージを含むJSONを返し、ステータスコード422を添付
     end
   end
 
