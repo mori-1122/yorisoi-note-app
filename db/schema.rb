@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_02_202256) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_04_200939) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -105,8 +105,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_202256) do
   create_table "recordings", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "visit_id", null: false
-    t.string "file_path", null: false # 削除したい
-    t.text "memo" # 削除したい
     t.datetime "recorded_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
