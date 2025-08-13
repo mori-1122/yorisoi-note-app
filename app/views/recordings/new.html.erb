@@ -1,0 +1,73 @@
+<%# 戻るボタン %>
+<div class="d-flex justify-content-start mb-3">
+  <%= link_to visits_path(date: @visit.visit_date), class: "btn btn-outline-secondary d-flex align-items-center back-button" do %>
+    <i class="bi bi-arrow-left-circle-fill me-2"></i>戻る
+  <% end %>
+</div>
+
+<h1 class="text-center">録音をする</h1>
+
+<div class="recording-interface" id="recordingInterface">
+<%# 受診先情報 %>
+  <div class="visit-group mb-4">
+    <h3 class="visit-title text-center">
+        <%= @visit.visit_date.strftime("%Y年%m月%d日") %><%= @visit.hospital_name %>
+    </h3>
+  </div>
+
+<%# 波形 %>
+<div class="wave-container empty" id="waveContainer">
+  <div class="wave-bars" id="waveBars"></div>
+</div>
+
+<%# audio プレーヤー %>
+<div class="audio-player-container text-center mb-3" id="audioPlayerContainer">
+  <h6 class="mb-3">録音を確認する</h6>
+  <audio id="audioPlayer"></audio>
+</div>
+
+<%# タイマー %>
+<div class="timer text-center" id="timer">00:00</div>
+
+<%# 録音ボタン %>
+<div class="d-flex justify-content-center mb-4">
+  <%= button_tag type: "button",
+      id: "recordBtn",
+      class: "btn btn-danger rounded-circle d-flex flex-column align-items-center justify-content-center record-btn" do %>
+    <i class="bi bi-mic-fill fs-1"></i>
+    <div class="fw-bold small btn-text">録音開始</div>
+  <% end %>
+</div>
+
+<%# 保存ボタン %>
+<div class="d-flex justify-content-center mb-4">
+  <%= button_tag type: "button",
+      id: "saveBtn",
+      class: "btn btn-primary btn-lg save-btn",
+      data: { url: visit_recording_path(@visit)} do %>
+    <i class="bi bi-cloud-upload me-2"></i>保存する
+  <% end %>
+</div>
+
+<%# 文言表示 %>
+<div class="alert alert-info text-center status-alert" id="status">
+  録音ボタンを押して診察時の録音を開始してください
+</div>
+
+<%# バリデーション制約 %>
+<div class="constraints">
+  <h6>
+    <i class="bi bi-exclamation-circle"></i> 録音制約
+  </h6>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <i class="bi bi-check text-success me-2"></i>対応形式：WebM, WAV, MP3
+    </li>
+    <li class="list-group-item">
+      <i class="bi bi-check text-success me-2"></i>最大ファイルサイズ：2MB未満
+    </li>
+    <li class="list-group-item">
+      <i class="bi bi-check text-success me-2"></i>推奨録音時間：3分以内
+    </li>
+  </ul>
+</div>
