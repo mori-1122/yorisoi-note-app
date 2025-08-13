@@ -1,0 +1,61 @@
+@use "../variables" as *;
+
+.wave-container {
+  background: linear-gradient(135deg, $color-bg-base 0%, $background-color 100%);
+  border-radius: 15px;
+  padding: 25px;
+  margin: 25px 0;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: 2px dashed $text-muted;
+
+  &.empty {
+    &::after {
+      content: '録音を開始してください';
+      color: $text-muted;
+      font-size: 16px;
+    }
+  }
+}
+
+// 波形バー
+.wave-bars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+// 個別の波形バー
+.wave-bar {
+  width: 4px;
+  height: 30px;
+  background: $primary-hover;
+  border-radius: 2px;
+  animation: wave 1.2s infinite ease-in-out;
+
+  // 各バーのアニメーション
+  &:nth-child(1) { animation-delay: 0s; height: 15px; }
+  &:nth-child(2) { animation-delay: 0.1s; height: 25px; }
+  &:nth-child(3) { animation-delay: 0.2s; height: 35px; }
+  &:nth-child(4) { animation-delay: 0.3s; height: 45px; }
+  &:nth-child(5) { animation-delay: 0.4s; height: 55px; }
+  &:nth-child(6) { animation-delay: 0.5s; height: 45px; }
+  &:nth-child(7) { animation-delay: 0.6s; height: 35px; }
+  &:nth-child(8) { animation-delay: 0.7s; height: 25px; }
+  &:nth-child(9) { animation-delay: 0.8s; height: 15px; }
+}
+
+// 波形アニメーション
+@keyframes wave {
+  0%, 100% {
+    transform: scaleY(0.5);
+    background: $primary-hover;
+  }
+  50% {
+    transform: scaleY(1.5);
+    background: $primary-pink;
+  }
+}
