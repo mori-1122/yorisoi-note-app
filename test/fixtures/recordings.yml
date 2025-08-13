@@ -5,8 +5,6 @@
 #  id          :integer          not null, primary key
 #  user_id     :integer          not null
 #  visit_id    :integer          not null
-#  file_path   :string           not null
-#  memo        :text
 #  recorded_at :datetime         not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
