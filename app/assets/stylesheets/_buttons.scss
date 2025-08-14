@@ -214,3 +214,59 @@ body.open .hamburger-btn .bar:nth-child(3) {
     line-height: 1;
   }
 }
+
+.record-btn {
+  width: 100px;
+  height: 100px;
+  box-shadow: 0 8px 25px $flash-alert-text;
+
+  i {
+    line-height: 1;
+  }
+
+  &.recording {
+    background-color: $text-light;
+    animation: pulse 1.5s infinite;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.save-btn {
+  display: none;
+  background: $success-color;
+  border: none;
+  color: $white;
+  padding: 15px 30px;
+  border-radius: $small-radius;
+  transform: $transition;
+
+  &:hover {
+    background: $primary-pink-hover;
+    transform: translateY(-2px);
+  }
+
+  &.show {
+    display: flex;
+    animation: slideUp 0.4s ease;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}

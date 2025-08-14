@@ -1,0 +1,17 @@
+@use "../variables" as *;
+
+.timer {
+  font-size: 48px;
+  font-weight: 200;
+  margin: 25px 0;
+  letter-spacing: 3px;
+}
+
+
+.status-alert {
+  border: 2px dashed $text-color;
+  border-radius: $small-radius;
+  background:$flash-alert-border;
+  color: $text-color;
+}
+
