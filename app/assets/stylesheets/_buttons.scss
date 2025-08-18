@@ -1,11 +1,12 @@
 @use "variables" as *;
 
+// カスタムボタンスタイル
 .btn-pink {
     background-color: #f48fb1;
     color: white;
 
     &:hover {
-        background-color:  #ec6c9a;
+        background-color: #ec6c9a;
         color: white;
     }
 }
@@ -21,9 +22,9 @@
 }
 
 .btn-outline-pink {
-    color: #e982a4;
-    border-color: #f06292;
-    background-color: transparent;
+    color: #ec417a;
+    border-color: #6b3f4d;
+    background-color: rgba(231, 94, 142, 0.1);
   
     &:hover {
       background-color: #f8bbd0;
@@ -32,21 +33,104 @@
 }
 
 .btn-green {
-    background-color: #c0f5e0;
+    background-color: #65c49e;
     color: white;
 
     &:hover {
-        background-color: #68f0ba;
+        background-color: #74a390;
         color: white;
     }
 }
 
+// 基本ボタンスタイル
+.btn {
+  padding: 8px 16px;
+  font-size: 15px;
+  min-width: auto;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: $transition;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  &.btn-primary {
+    background-color: $primary-color;
+    color: $white;
+
+    &:hover {
+      background-color: $primary-dark;
+      transform: translateY(-2px);
+      color: $white;
+    }
+  }
+
+  &.btn-secondary {
+    background: $primary-pink;
+    color: $white;
+    box-shadow: $card-shadow;
+    padding: 15px 25px;
+    font-size: 16px;
+    min-width: 160px;
+
+    &:hover {
+      background: $primary-pink-hover;
+      color: $white;
+      transform: translateY(-2px);
+    }
+  }
+
+  &.btn-outline {
+    background-color: $white;
+    color: $text-dark;
+    border: 1px solid #ddd;
+
+    &:hover {
+      background-color: $background-light;
+      color: $text-dark;
+    }
+  }
+
+  &.btn-outline-primary {
+    color: #e982a4;
+    border-color: #f06292;
+    background-color: transparent;
+    padding: 8px 16px;
+    font-size: 12px;
+
+    &:hover {
+      background-color: $flash-alert-border;
+      color: $white;
+    }
+  }
+
+  &.btn-outline-secondary {
+    background: transparent;
+    color: $text-gray;
+    border: 2px solid $border-light;
+    padding: 15px 25px;
+    font-size: 16px;
+    min-width: 160px;
+
+    &:hover {
+      background: $color-bg-base;
+      border-color: $text-gray;
+      color: $text-dark;
+    }
+  }
+}
+
+// アクションボタンコンテナ
 .action-buttons {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
 }
 
+// 特殊ボタン
 .hamburger-btn {
   width: 30px;
   height: 30px;
@@ -66,10 +150,11 @@
     transition: all 0.4s ease;
   }
 
-  .bar:nth-child(1) { top: 4px }
-  .bar:nth-child(2) { top: 14px }
-  .bar:nth-child(3) { top: 24px }
+  .bar:nth-child(1) { top: 4px; }
+  .bar:nth-child(2) { top: 14px; }
+  .bar:nth-child(3) { top: 24px; }
 }
+
 body.open .hamburger-btn .bar:nth-child(1) {
   transform: translateY(10px) rotate(-45deg);
 }
@@ -81,6 +166,7 @@ body.open .hamburger-btn .bar:nth-child(2) {
 body.open .hamburger-btn .bar:nth-child(3) {
   transform: translateY(-10px) rotate(45deg);
 }
+
 .back-button {
   margin-top: 50px;
 
@@ -93,6 +179,8 @@ body.open .hamburger-btn .bar:nth-child(3) {
     }
   }
 }
+
+// トグルボタン
 .toggle-btn {
     padding: 6px 12px;
     border: 1px solid #f0f0f0;
@@ -106,72 +194,31 @@ body.open .hamburger-btn .bar:nth-child(3) {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-}
 
-.toggle-btn.pending {
-    background-color: #e8f5e8;
-    border-color: #68f0ba;
-    color: #2e7d32;
-}
+    &.pending {
+        background-color: #e8f5e8;
+        border-color: #68f0ba;
+        color: #2e7d32;
 
-.toggle-btn.pending:hover {
-    background-color: #68f0ba;
-    color: white;
-}
-
-.toggle-btn.asked {
-    background-color: #ffebee;
-    border-color: #f8bbd0;
-    color: #d32f2f;
-}
-
-.toggle-btn.asked:hover {
-    background-color: #f8bbd0;
-    color: white;
-}
-
-/* 戻るボタン */
-.btn-outline-primary {
-    color: #e982a4;
-    border-color: #f06292;
-    background-color: transparent;
-    padding: 8px 16px;
-    font-size: 12px;
-}
-
-.btn-outline-primary:hover {
-    background-color: $flash-alert-border;
-    color: $white;
-}
-
-.btn {
-  padding: 8px 16px;
-  font-size: 15px;
-  min-width: auto;
-
-  &.btn-primary {
-    background-color: $primary-color;
-    color: $white;
-
-    &:hover {
-      background-color: $primary-dark;
-      transform: translateY(-2px);
-      color: $white;
+        &:hover {
+            background-color: #68f0ba;
+            color: white;
+        }
     }
-  }
 
-  &.btn-outline {
-    background-color: $white;
-    color: $text-dark;
-    border: 1px solid #ddd;
+    &.asked {
+        background-color: #ffebee;
+        border-color: #f8bbd0;
+        color: #d32f2f;
 
-    &:hover {
-      background-color: $background-light;
-      color: $text-dark;
+        &:hover {
+            background-color: #f8bbd0;
+            color: white;
+        }
     }
-  }
 }
 
+// 検索ボタン
 .search-btn {
     width: 100%;
     background-color: $yellow-color;
@@ -188,6 +235,8 @@ body.open .hamburger-btn .bar:nth-child(3) {
       background-color: $yellow-hover;
     }
 }
+
+// 削除ボタン
 .delete-btn {
   width: 32px;
   height: 32px;
@@ -215,30 +264,44 @@ body.open .hamburger-btn .bar:nth-child(3) {
   }
 }
 
+// 録音ボタン
 .record-btn {
   width: 100px;
   height: 100px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, $primary-pink 0%, $primary-pink-hover 100%);
+  color: $white;
+  cursor: pointer;
+  transition: $transition;
   box-shadow: 0 8px 25px $flash-alert-text;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 
   i {
     line-height: 1;
+    font-size: 24px;
+  }
+
+  .btn-text {
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  &:hover {
+    transform: translateY(-3px) scale(1.02);
   }
 
   &.recording {
-    background-color: $text-light;
+    background: linear-gradient(135deg, $secondary-hover 0%, $flash-notice-border 100%);
     animation: pulse 1.5s infinite;
   }
 }
 
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
-
+// 保存ボタン
 .save-btn {
   display: none;
   background: $success-color;
@@ -246,10 +309,14 @@ body.open .hamburger-btn .bar:nth-child(3) {
   color: $white;
   padding: 15px 30px;
   border-radius: $small-radius;
-  transform: $transition;
+  transition: $transition;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 
   &:hover {
-    background: $primary-pink-hover;
+    background: $secondary-hover;
     transform: translateY(-2px);
   }
 
@@ -259,14 +326,57 @@ body.open .hamburger-btn .bar:nth-child(3) {
   }
 }
 
+// アニメーション
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
 @keyframes slideUp {
   from {
     opacity: 0;
     transform: translateY(20px);
   }
-
   to {
     opacity: 1;
-    transform: translateY(0)
+    transform: translateY(0);
   }
+}
+
+// Bootstrap Icons サポート
+.bi {
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+}
+
+// 音声プレーヤーコンテナ内のボタン専用スタイル
+.audio-player-container .btn {
+  padding: 15px 25px;
+  font-size: 16px;
+  min-width: 160px;
+  margin: 10px;
+
+  // レスポンシブ対応
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 8px 0;
+  }
+// フォーカス・アクティブ状態
+.btn {
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(236, 64, 122, 0.25);
+  }
+}
 }
