@@ -56,8 +56,8 @@ class Recording < ApplicationRecord # アクティブレコードを定義
       #     content_type: "audio/mpeg" # MIMEタイプを明示し、ダウンロードやストリーミングに対応。
       #   )
       # end
-      
-       # WebMのdurationを補完する（ffmpegでヘッダ書き換え）
+
+      # WebMのdurationを補完する（ffmpegでヘッダ書き換え）
       _stdout, stderr, status = Open3.capture3(
         "ffmpeg", "-i", path, "-c", "copy", fixed_path,
         "-y", "-loglevel", "quiet"
