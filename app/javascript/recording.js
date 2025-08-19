@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(error => { // 通信失敗や例外を捕捉するためにPromiseのcatchを利用
       console.error("保存エラー", error); // 原因を調べられるようにログを残す
-      updateStatus(`保存エラー：${error.message}`, 'danger'); // 利用者に失敗したことを即時に知らせる
+      // updateStatus(`保存エラー：${error.message}`, 'danger'); // 利用者に失敗したことを即時に知らせる
       
       saveBtn.disabled = false; // 失敗した場合でもユーザーが再度保存できるようにする
       saveBtn.innerHTML = originalHTML; // 処理中インジケータを消して通常状態に復帰させる

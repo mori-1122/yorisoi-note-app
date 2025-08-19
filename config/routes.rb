@@ -23,4 +23,7 @@ Rails.application.routes.draw do
       get :search # 検索 (将来的にTurboを使用したい)
     end
   end
+
+  # Chrome DevToolsが勝手に叩く .well-knownのリクエストを表示させないようにしたい
+  match "/.well-known/*path", to: ->(env) { [ 204, { "Content-Type" => "text/plain" }, [ "" ] ] }, via: :all
 end
