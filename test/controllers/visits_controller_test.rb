@@ -20,7 +20,7 @@ class VisitsControllerTest < ActionDispatch::IntegrationTest
       hospital_name: "テスト病院",
       purpose: "検査",
       appointed_at: 3.days.from_now.change(hour: 10, min: 0),
-      visit_date: 3.days.from_now.to_date
+      visit_date: Date.tomorrow + 3.days
     )
   end
 
