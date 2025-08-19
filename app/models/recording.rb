@@ -12,7 +12,7 @@
 # Indexes
 #
 #  index_recordings_on_user_id   (user_id)
-#  index_recordings_on_visit_id  (visit_id)
+#  index_recordings_on_visit_id  (visit_id) UNIQUE
 #
 
 class Recording < ApplicationRecord # アクティブレコードを定義
