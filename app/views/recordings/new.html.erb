@@ -1,3 +1,7 @@
+<% content_for :javascript do %>
+  <%= javascript_include_tag "recording" %>
+<% end %>
+
 <%# 戻るボタン %>
 <div class="d-flex justify-content-start mb-3">
   <%= link_to visits_path(date: @visit.visit_date), class: "btn btn-outline-secondary d-flex align-items-center back-button" do %> <%# visits#index に戻るためのボタン。URLに dateパラメータを付与して、その日の一覧を再表示する。 link_toの第1引数はvisits_path(date:@visit.visit_date) → GET /visits?date=2025-08-14のようなURLを生成。%>

@@ -118,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
           audioPlayer.src = audioUrl; // 録音したデータをユーザーが再生できる。
           audioPlayer.controls = true; // 再生・停止などのUIをブラウザ組み込みで利用可能になる。
         }
-
         if (audioPlayerContainer) {
           audioPlayerContainer.style.display = 'block';
         }
