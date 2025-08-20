@@ -32,8 +32,7 @@ one:
   has_recording: false
   has_document: false
   department: one
-  appointed_at: <%= 2.days.from_now.change(hour: 9, min: 0) %>
-
+  appointed_at: <%= 2.days.from_now %>
 two:
   user: two
   visit_date: <%= 2.days.from_now.to_date %>
@@ -42,4 +41,4 @@ two:
   has_recording: false
   has_document: false
   department: two
-  appointed_at: <%= 2.days.from_now.change(hour: 9, min: 0) %>
+  appointed_at: <%= 2.days.from_now %>
