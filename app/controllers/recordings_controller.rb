@@ -3,23 +3,23 @@ class RecordingsController < ApplicationController # 録音に関するリクエ
   before_action :set_visit # コントローラの各アクションの前に、対応する Visit（診察記録）を取得して@visitにセット
 
   def new # 録音がまだ存在しなければ新しく作る。診療をする際に録音機能も作成する
-    @visit = Visit.find(params[:visit_id]) # 受信先を表示したい
     @recording = @visit.recording || @visit.build_recording # 録音がまだ存在しなければ新しく作る。診療をする際に録音機能も作成する
   end
 
   def create
-    @recording = @visit.build_recording(user: current_user, recorded_at: Time.current)
-    @recording.audio_file.attach(params[:audio]) if params[:audio].present?
+    @recording = @visit.build_recording(user: current_user, recorded_at: Time.current, audio_file: params[:audio]) # 「誰の録音か」を明確に。 recorded_at:Time.currentで録音日時を保存する→後で検索・表示に必要。 audio_file:params[:audio]で送信された音声ファイルを直接添付する。
 
-    if @recording.save && @recording.audio_file.attached?
-      path = ActiveStorage::Blob.service.send(:path_for, @recording.audio_file.key)
-      duration = `ffprobe -i "#{path}" -show_entries format=duration -v quiet -of csv=p=0`.to_f.round rescue 0
+    if @recording.save && @recording.audio_file.attached? # 録音ファイルがきちんと保存されているか
+      path = ActiveStorage::Blob.service.send(:path_for, @recording.audio_file.key) # ActiveStorageの仕組み上、添付ファイルはBlobとして保存される。path_for 呼ぶことで、サーバーの一時保存場所にあるファイルの実ファイルパスを取得できる。
+      duration = `ffprobe -i "#{path}" -show_entries format=duration -v quiet -of csv=p=0`.to_f.round rescue 0 # ffprobe (ffmpegの解析ツール) を使い、音声ファイルの「再生時間」を取得する。-show_entries format=duration→再生時間を出力。-v quiet → ログを抑制。
+      # -of csv=p=0 → 数値だけをCSV形式で出す。.to_f.roundで数値に変換＆四捨五入。rescue0で失敗時にduration=0として扱う→ファイル壊れていてもアプリが落ちないように安全策をとる。
 
-      blob = @recording.audio_file.blob
-      blob.update(metadata: @recording.audio_file.blob.metadata.merge(custom_duration: duration))
-      render json: { status: "OK", redirect_url: visit_recording_path(@visit) }
+
+      blob = @recording.audio_file.blob # active storageはアップロードされたファイルをBlobとして扱う。blobオブジェクトを取得することで、このファイルに対してメタデータの追加や操作が可能に。
+      blob.update(metadata: @recording.audio_file.blob.metadata.merge(custom_duration: duration))# ビューで再生時間を表示するためにActiveStorageのmetadataにdurationを独自項目 (custom_duration)として追加保存。既存のmetadataに .mergeで追加しているので、他のメタ情報（content_type, sizeなど）は保持されたまま。
+      render json: { status: "OK", redirect_url: visit_recording_path(@visit) } # フロントエンドに「保存成功」をJSONで返す。
     else
-      render json: { status: "error", errors: @recording.errors.full_messages }, status: :unprocessable_entity
+      render json: { status: "error", errors: @recording.errors.full_messages }, status: :unprocessable_entity # エラーメッセージをJSONで返却する。
     end
   end
 
