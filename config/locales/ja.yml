@@ -15,6 +15,7 @@ ja:
       visit: 通院予定
     attributes:
       visit:
+        visit_date: 受診日
         department: 診療科
         department_id: 診療科
         hospital_name: 医療機関名

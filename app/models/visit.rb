@@ -46,10 +46,10 @@ class Visit < ApplicationRecord
   private
 
   def visit_date_cannot_be_in_the_past # #visit_dateが過去の日付かどうかをチェックする
-    return unless visit_date.present? && appointed_at.present? # 受診日時が過去ならエラー
+    return if visit_date.nil?
 
-    if appointed_at <= Time.zone.now  # appointed_atはdatetimeなのでTime.zone.nowと比較する
-      errors.add(:visit_date, "は今日より後の日時を指定してください")
+    if visit_date <= Time.zone.now.to_date
+      errors.add(:visit_date, "は、今日より後の日付を指定してください。")
     end
   end
 end
