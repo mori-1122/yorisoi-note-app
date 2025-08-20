@@ -7,44 +7,22 @@ class RecordingsController < ApplicationController # 録音に関するリクエ
   end
 
   def create
-  @recording = @visit.build_recording(
-    user: current_user,
-    recorded_at: Time.current,
-    audio_file: params[:audio]
-  )
-
-  if @recording.save && @recording.audio_file.attached?
-    # パス取得を段階的に分ける（Brakeman対策）
-    audio_key = @recording.audio_file.key
-    raw_path = ActiveStorage::Blob.service.send(:path_for, audio_key)
-    file_path = File.expand_path(raw_path)
-
-    # ffprobeでの再生時間取得
-    stdout, stderr, status = Open3.capture3(
-      "ffprobe",
-      "-i", file_path,
-      "-show_entries", "format=duration",
-      "-v", "quiet",
-      "-of", "csv=p=0"
+    @recording = @visit.build_recording(
+      user: current_user,
+      recorded_at: Time.current,
+      audio_file: params[:audio]
     )
 
-    # 適切なエラーハンドリング
-    duration = if status.success?
-      stdout.to_f.round
+    if @recording.save && @recording.audio_file.attached?
+      duration = fetch_audio_duration(@recording.audio_file)
+      @recording.audio_file.blob.update(
+        metadata: @recording.audio_file.blob.metadata.merge(custom_duration: duration)
+      )
+      render json: { status: "OK", redirect_url: visit_recording_path(@visit) }
     else
-      Rails.logger.warn("ffprobe failed for recording #{@recording.id}: #{stderr}")
-      0
+      render json: { status: "error", errors: @recording.errors.full_messages },
+             status: :unprocessable_entity
     end
-
-    # メタデータ更新
-    blob = @recording.audio_file.blob
-    blob.update(metadata: blob.metadata.merge(custom_duration: duration))
-
-    render json: { status: "OK", redirect_url: visit_recording_path(@visit) }
-  else
-    render json: { status: "error", errors: @recording.errors.full_messages }, 
-           status: :unprocessable_entity
-  end
 end
 
   def show
@@ -63,5 +41,14 @@ end
 
   def set_visit
     @visit = Visit.find(params[:visit_id])
+  end
+
+  def fetch_audio_duration(file)
+    path = File.expand_path(ActiveStorage::Blob.service.send(:path_for, file.key))
+    stdout, stderr, status = Open3.capture3(
+      "ffprobe", "-i", path, "-show_entries", "format=duration",
+      "-v", "quiet", "-of", "csv=p=0"
+    )
+    status.success? ? stdout.to_f.round : 0
   end
 end
