@@ -19,13 +19,17 @@ class VisitsControllerTest < ActionDispatch::IntegrationTest
       department: @department,
       hospital_name: "テスト病院",
       purpose: "検査",
-      appointed_at: Time.current,
-      visit_date: Date.today
+      appointed_at: 3.days.from_now.change(hour: 10, min: 0),
+      visit_date: Date.tomorrow + 3.days
     )
   end
 
   test "should get index" do
     get visits_url
     assert_response :success
+  end
+
+  setup do
+    Time.zone = "Tokyo"
   end
 end

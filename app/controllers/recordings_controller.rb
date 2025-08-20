@@ -3,20 +3,23 @@ class RecordingsController < ApplicationController # 録音に関するリクエ
   before_action :set_visit # コントローラの各アクションの前に、対応する Visit（診察記録）を取得して@visitにセット
 
   def new # 録音がまだ存在しなければ新しく作る。診療をする際に録音機能も作成する
-    @recording = @visit.recording || @visit.build_recording
+    @visit = Visit.find(params[:visit_id]) # 受信先を表示したい
+    @recording = @visit.recording || @visit.build_recording # 録音がまだ存在しなければ新しく作る。診療をする際に録音機能も作成する
   end
 
   def create
-    @recording = @visit.build_recording(user: current_user) # この診察（@visit）に紐づく録音（Recording）を新しく作り、その録音のuserをcurrent_userに設定する
+    @recording = @visit.build_recording(user: current_user, recorded_at: Time.current)
+    @recording.audio_file.attach(params[:audio]) if params[:audio].present?
 
-    if params[:audio].present? # present?はオブジェクトが「存在していて」「空でない」ならtrueを返す
-      @recording.audio_file.attach(params[:audio]) # リクエストパラメータに audio（音声ファイル）があれば、それを録音オブジェクトに添付し
-    end
+    if @recording.save && @recording.audio_file.attached?
+      path = ActiveStorage::Blob.service.send(:path_for, @recording.audio_file.key)
+      duration = `ffprobe -i "#{path}" -show_entries format=duration -v quiet -of csv=p=0`.to_f.round rescue 0
 
-    if @recording.save # もしも保存できたら
-      render json: { status: "OK" } # ステータスOKのJSONレスポンスを返す(jsを使っているから)
+      blob = @recording.audio_file.blob
+      blob.update(metadata: @recording.audio_file.blob.metadata.merge(custom_duration: duration))
+      render json: { status: "OK", redirect_url: visit_recording_path(@visit) }
     else
-      render json: { status: "error", errors: @recording.errors.full_messages }, status: :unprocessable_entity # 保存に失敗した場合はエラーメッセージを含むJSONを返し、ステータスコード422を添付
+      render json: { status: "error", errors: @recording.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

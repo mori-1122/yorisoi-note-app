@@ -26,8 +26,8 @@ class QuestionSelectionsControllerTest < ActionDispatch::IntegrationTest
       department: department,
       hospital_name: "テスト病院",
       purpose: "検査",
-      appointed_at: Time.current,
-      visit_date: Date.today
+      appointed_at: 1.day.from_now.change(hour: 9, min: 0),
+      visit_date: 1.day.from_now.to_date
     )
 
     # POST リクエストで question_selection を作成

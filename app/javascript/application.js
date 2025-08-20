@@ -1,6 +1,7 @@
 import "@hotwired/turbo-rails";
 import "filter";
 import "question_status_toggle";
+import "recording";
 
 // カレンダー初期化関数
 window.initCalendar = function() {

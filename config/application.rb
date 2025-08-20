@@ -21,8 +21,7 @@ module YorisoiNote2
     #
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
-    #
-    # config.time_zone = "Central Time (US & Canada)"
+    config.time_zone = "Tokyo" # タイムゾーンを東京に設定 録音機能で使用
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end

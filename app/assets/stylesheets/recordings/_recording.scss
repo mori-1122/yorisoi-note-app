@@ -15,3 +15,238 @@
   color: $text-color;
 }
 
+// 音声プレーヤーコンテナ（保存完了版）
+.audio-player-container {
+  background: $white;
+  border-radius: 25px;
+  padding: 40px 30px;
+  margin: 30px 0;
+  border: 2px solid $success-color;
+  box-shadow: $card-shadow;
+  text-align: center;
+  position: relative;
+  overflow: visible;
+
+  // 成功アイコン
+  .success-icon {
+    width: 80px;
+    height: 80px;
+    background: $success-color;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    font-size: 40px;
+    color: $white;
+    box-shadow: $card-shadow;
+  }
+
+  // 成功メッセージ
+  .success-message {
+    margin-bottom: 30px;
+
+    h2 {
+      color: $text-dark;
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+  }
+
+  // 保存詳細情報
+  .save-details {
+    background: $green-color;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 25px 0;
+    border: 1px solid $green-hover;
+
+    h4 {
+      color: $text-dark;
+      margin-bottom: 15px;
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+
+      // レスポンシブ対応
+      @media (max-width: 480px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .detail-item {
+      background: $white;
+      padding: 15px;
+      border-radius: $small-radius;
+      box-shadow: $shadow-light;
+      text-align: center;
+      transition: $transition;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px $shadow-medium;
+      }
+
+      .detail-label {
+        font-size: 12px;
+        color: $text-muted;
+        margin-bottom: 8px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .detail-value {
+        font-size: 16px;
+        color: $text-dark;
+        font-weight: 600;
+      }
+    }
+  }
+
+  // // ボタンスタイル
+  // .btn {
+  //   display: inline-flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   gap: 8px;
+  //   padding: 15px 25px;
+  //   border: none;
+  //   border-radius: 12px;
+  //   font-size: 16px;
+  //   font-weight: 600;
+  //   text-decoration: none;
+  //   transition: $transition;
+  //   margin: 10px;
+  //   min-width: 160px;
+  //   cursor: pointer;
+
+  //   &:hover {
+  //     text-decoration: none;
+  //     transform: translateY(-2px);
+  //   }
+
+  //   // セカンダリボタン
+  //   &.btn-secondary {
+  //     background: $primary-pink;
+  //     color: $white;
+  //     box-shadow: $card-shadow;
+
+  //     &:hover {
+  //       background: $primary-pink-hover;
+  //       color: $white;
+  //     }
+
+  //     i {
+  //       font-size: 18px;
+  //     }
+  //   }
+
+    // アウトラインセカンダリボタン
+    &.btn-outline-secondary {
+      background: transparent;
+      color: $text-gray;
+      border: 2px solid $border-light;
+
+      &:hover {
+        background: $color-bg-base;
+        border-color: $text-gray;
+        color: $text-dark;
+      }
+
+      i {
+        font-size: 16px;
+      }
+    }
+
+    // アイコンとテキストの配置
+    span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+  // レスポンシブ対応
+  @media (max-width: 768px) {
+    padding: 30px 20px;
+    margin: 20px 0;
+
+    .success-icon {
+      width: 70px;
+      height: 70px;
+      font-size: 32px;
+    }
+
+    .success-message h2 {
+      font-size: 24px;
+    }
+
+    .btn {
+      width: 100%;
+      margin: 8px 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 25px 15px;
+
+    .success-icon {
+      width: 60px;
+      height: 60px;
+      font-size: 28px;
+    }
+
+    .success-message h2 {
+      font-size: 20px;
+    }
+
+    .save-details {
+      padding: 15px;
+
+      h4 {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+// Bootstrap Icons サポート
+.bi {
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+}
+
+// 追加のアニメーション効果
+.audio-player-container .btn {
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(236, 64, 122, 0.25);
+  }
+}
+
+// アイコンとテキストの配置
+  span {
+    align-items: center;
+    gap: 8px;
+  }
+
+  i {
+    font-size: 18px;
+  }

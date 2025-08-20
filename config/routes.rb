@@ -12,16 +12,7 @@ Rails.application.routes.draw do
         # 診察記録に紐づく質問選択・編集
         resources :question_selections, only: [ :index, :create, :update, :destroy ]
 
-        # # 診療記録に紐ついている録音
-        # resources :recordings, only: [ :new, :create, :show, :destroy ] do
-        #   collection do
-        #     get :test
-        #     post :upload
-        #   end
-        # end
-
-
-        # 診療記録に紐ついている録音
+        # 診療記録に紐ついている録音 Visit に対して録音は1件しか紐づかない想定なので、ルートは単数
         resource :recording, only: [ :new, :create, :show, :destroy ]
       end
 
@@ -32,4 +23,7 @@ Rails.application.routes.draw do
       get :search # 検索 (将来的にTurboを使用したい)
     end
   end
+
+  # Chrome DevToolsが勝手に叩く .well-knownのリクエストを表示させないようにしたい
+  match "/.well-known/*path", to: ->(env) { [ 204, { "Content-Type" => "text/plain" }, [ "" ] ] }, via: :all
 end

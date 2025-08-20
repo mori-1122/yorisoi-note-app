@@ -1,0 +1,35 @@
+<div class="audio-player-container">
+    <div class="success-icon">✓</div>
+  <div class="success-message"> <%# 保存が成功したことを示すアイコンとメッセージ %>
+    <h2>録音保存完了</h2>
+  </div>
+
+  <%# 音声を聞けるようにする %>
+  <div class="audioPlayerContainer text-center mb-3" id="audioPlayerContainer" style="display:block;">
+  <h6 class="mb-3">録音を確認する</h6>
+   <%= audio_player(@recording) %><%# view helperを使用 %>
+</div>
+<%# 録音情報 %>
+  <div class="save-details">
+    <h4>保存情報</h4>
+    <div class="detail-grid">
+      <div class="detail-item">
+        <div class="detail-label">ファイルサイズ</div>
+        <div class="detail-value"><%= recording_file_size(@recording) %></div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">録音時間</div>
+        <div class="detail-value"><%= format_duration(@recording.audio_file.blob) %></div>
+      </div>
+    </div>
+  </div>
+
+  <%# 次へのアクション %>
+  <%= link_to visit_question_selections_path(@visit), class: "btn btn-pink" do %>
+    <span><i class="bi bi-clipboard-check"></i>質問選択へ</span>
+  <% end %>
+
+  <%= link_to visits_path(date: @visit.visit_date), class: "btn btn-violet" do %>
+    <span><i class="bi bi-caret-down-fill">トップへ戻る</i></span>
+   <% end %>
+</div>
