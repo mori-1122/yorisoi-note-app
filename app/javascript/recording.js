@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
     waveContainer.classList.add('completed'); // completed クラスを付けて「録音が終了した」状態とする
   }
 
-
    // --- 波形エリアごと隠す ---
   function hideWaveArea () { // 
     if (!waveContainer) return; //waveContainerが存在しない場合にエラーにならないようにガード処理
@@ -121,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (audioPlayerContainer) {
           audioPlayerContainer.style.display = 'block';
         }
-        
+
         // 保存ボタンを表示
         if (saveBtn) {
           saveBtn.style.display = 'inline-block';
