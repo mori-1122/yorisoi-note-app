@@ -40,6 +40,3 @@ module RecordingsHelper
     number_to_human_size(recording.audio_file.byte_size) # ActiveStorage::Attachedオブジェクトが持つメソッド。バイト数（整数値）を返す
   end # number_to_human_sizeは、number_to_human_size
 end
-
-
-# ActiveStorageの metadataはJSONのハッシュ（文字列キー）
