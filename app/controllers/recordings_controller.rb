@@ -57,19 +57,13 @@ end
   end
 
   # FFprobeで音声の長さ(秒)を取得する
-  # - Open3.capture3 を「引数配列」で呼ぶことでシェル解釈によるコマンドインジェクションを防ぐ
-  # - status.success? を見て失敗時は 0 を返し、コントローラを落とさない（可用性重視）
-  # - ActiveStorage が Disk サービス以外(S3等)の場合は path_for が使えないため注意
-  #   その場合は file.open(tmpdir) { |f| ... } や file.download で Tempfile に落としてから ffprobe を当てる
   def fetch_audio_duration(file)
-    # Disk サービス前提で内部パスを取得（private APIだが実務上は一般的に使われる）
-    path = File.expand_path(ActiveStorage::Blob.service.send(:path_for, file.key))
-
-    # ffprobe の標準的な呼び出し（静粛モードで duration のみをCSV出力）
-    stdout, stderr, status = Open3.capture3(
-      "ffprobe", "-i", path, "-show_entries", "format=duration",
-      "-v", "quiet", "-of", "csv=p=0"
-    )
-    status.success? ? stdout.to_f.round : 0
+    file.open(tmpdir: Dir.tmpdir) do |f| # ActiveStorageのblob.openは、S3の場合も 一時的にローカルファイルへダウンロードしてから渡してくれるらしい。tmpdir:を指定することで、一時ファイルが安全にOSのテンポラリディレクトリに作られる。
+      stdout, stderr, status = Open3.capture3( # stdout → コマンドが通常出力した文字列。stderr → エラー出力の文字列。status → プロセスの終了ステータスを表す Process::Status オブジェクト。
+        "ffprobe", "-i", f.path, "-show_entries", "format=duration",
+        "-v", "quiet", "-of", "csv=p=0" # -v quiet → ログを抑制。-show_entries format=duration → フォーマット情報から duration だけを取り出す。-of csv=p=0 → 出力を CSV 形式でシンプルに数値のみ取得。
+      )
+      status.success? ? stdout.to_f.round : 0  # ffprobeが正常終了しない場合（ファイル破損・非対応形式など）に例外を投げず、0 を返すようにしている。
+    end
   end
 end
