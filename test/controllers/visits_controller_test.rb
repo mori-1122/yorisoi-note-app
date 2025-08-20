@@ -4,6 +4,8 @@ class VisitsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
+    Time.zone = "Tokyo"
+
     @user = User.create!(
       email: "test2@example.com",
       password: "password",
@@ -27,9 +29,5 @@ class VisitsControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
     get visits_url
     assert_response :success
-  end
-
-  setup do
-    Time.zone = "Tokyo"
   end
 end
