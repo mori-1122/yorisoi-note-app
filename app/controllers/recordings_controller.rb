@@ -1,4 +1,4 @@
-require "open3" # ffprobeを使うので、Open3の記載が必要らしい
+require "streamio-ffmpeg"
 
 class RecordingsController < ApplicationController # 録音に関するリクエストを処理するコントローラ
   before_action :authenticate_user! # ユーザーがログインしているか確認
@@ -32,7 +32,7 @@ class RecordingsController < ApplicationController # 録音に関するリクエ
       render json: { status: "error", errors: @recording.errors.full_messages },
              status: :unprocessable_entity
     end
-end
+  end
 
   def show
     @recording = @visit.recording # 診察に紐づく録音を取得して表示用に準備
@@ -53,17 +53,17 @@ end
   # 例: current_user.visits.find(params[:visit_id])
   # 他人のvisit_idを推測されてもアクセス不能にできる
   def set_visit
-    @visit = Visit.find(params[:visit_id])
+    @visit = current_user.visits.find(params[:visit_id])
   end
 
   # FFprobeで音声の長さ(秒)を取得する
   def fetch_audio_duration(file)
-    file.open(tmpdir: Dir.tmpdir) do |f| # ActiveStorageのblob.openは、S3の場合も 一時的にローカルファイルへダウンロードしてから渡してくれるらしい。tmpdir:を指定することで、一時ファイルが安全にOSのテンポラリディレクトリに作られる。
-      stdout, stderr, status = Open3.capture3( # stdout → コマンドが通常出力した文字列。stderr → エラー出力の文字列。status → プロセスの終了ステータスを表す Process::Status オブジェクト。
-        "ffprobe", "-i", f.path, "-show_entries", "format=duration",
-        "-v", "quiet", "-of", "csv=p=0" # -v quiet → ログを抑制。-show_entries format=duration → フォーマット情報から duration だけを取り出す。-of csv=p=0 → 出力を CSV 形式でシンプルに数値のみ取得。
-      )
-      status.success? ? stdout.to_f.round : 0  # ffprobeが正常終了しない場合（ファイル破損・非対応形式など）に例外を投げず、0 を返すようにしている。
+    file.open(tmpdir: Dir.tmpdir) do |f|
+      movie = FFMPEG::Movie.new(f.path)
+      movie.valid? ? movie.duration.to_f.round : 0
+    rescue StandardError => e
+      Rails.logger.warn("[RecordingsController] fetch_audio_duration failed: #{e.class} #{e.message}")
+      0
     end
   end
 end
