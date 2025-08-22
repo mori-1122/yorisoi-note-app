@@ -1,25 +1,27 @@
-<div class="container d-flex flex-column justify-content-center align-items-center text-center min-vh-100">
-  <!-- アプリ名 -->
-  <h1 class="display-4 fw-bold" style="color: #f48fb1;">
-    よりそいノート<i class="bi bi-heart-pulse"></i>
-  </h1>
+<div class="wrapper">
+  <div class="container d-flex flex-column justify-content-center align-items-center text-center min-vh-100">
+    <!-- アプリ名 -->
+    <h1 class="display-4 fw-bold" style="color: #f48fb1;">
+      よりそいノート<i class="bi bi-heart-pulse fw-bold fs-1"></i>
+    </h1>
 
-  <!-- キャッチコピー -->
-  <p class="lead mt-4">
-    診察を、もっとスムーズに。
-  </p>
+    <!-- キャッチコピー -->
+    <p class="lead mt-4">
+      診察を、もっとスムーズに。
+    </p>
 
-  <!-- メッセージ -->
-  <p class="mt-3 text-muted">
-    受診内容の記録や振り返りを<br>
-    わかりやすくサポートします。
-  </p>
+    <!-- メッセージ -->
+    <p class="mt-3 text-muted">
+      受診内容の記録や振り返りを<br>
+      わかりやすくサポートします。
+    </p>
 
-  <%# ボタン %>
-  <div class="mt-5">
-    <% unless user_signed_in? %>
-      <%= link_to 'はじめる', new_user_registration_path, class: 'btn btn-lg btn-pink me-3' %>  <%# 遷移する %>
-      <%= link_to 'ログイン', new_user_session_path, class: 'btn btn-outline-secondary btn-lg me-3' %>
-    <% end %>
+    <%# ボタン %>
+    <div class="mt-5">
+      <% unless user_signed_in? %>
+        <%= link_to 'はじめる', new_user_registration_path, class: 'btn btn-lg btn-pink me-3' %>  <%# 遷移する %>
+        <%= link_to 'ログイン', new_user_session_path, class: 'btn btn-violet me-3' %>
+      <% end %>
+    </div>
   </div>
 </div>
