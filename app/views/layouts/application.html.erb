@@ -27,11 +27,6 @@
     <%= javascript_importmap_tags %>
     <%= javascript_include_tag "/js/calendar.js" %>
     <%= javascript_include_tag "/js/locales-all.global.js" %>
-
-    <%# 録音ページのみrecording.jsを読み込む %>
-    <% if controller_name == "recordings" && action_name == "new" %>
-      <%= javascript_include_tag "recording" %>
-    <% end %>
   </head>
 
   <body>
@@ -50,7 +45,6 @@
       <%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'btn btn-pink btn-sm' %>
     </div>
 
-    <%# サイドバー %>
     <nav id="sidebarMenu" class="sidebar">
       <div class="inner">
         <ul class="sidebar-nav">
@@ -70,5 +64,6 @@
   <% end %>
 
   <%= yield %>
+  <%= yield :javascript %>
 </body>
 </html>
