@@ -1,4 +1,4 @@
-require "streamio-ffmpeg"
+"streamio-ffmpeg"
 
 class RecordingsController < ApplicationController # 録音に関するリクエストを処理するコントローラ
   before_action :authenticate_user! # ユーザーがログインしているか確認
@@ -58,12 +58,9 @@ class RecordingsController < ApplicationController # 録音に関するリクエ
 
   # FFprobeで音声の長さ(秒)を取得する
   def fetch_audio_duration(file)
-    file.open(tmpdir: Dir.tmpdir) do |f|
-      movie = FFMPEG::Movie.new(f.path)
-      movie.valid? ? movie.duration.to_f.round : 0
-    rescue StandardError => e
-      Rails.logger.warn("[RecordingsController] fetch_audio_duration failed: #{e.class} #{e.message}")
-      0
+    file.open(tmpdir: Dir.tmpdir) do |f| # S3やクラウドストレージに保存されている場合でも 一時的にローカルファイルへダウンロードしてブロックに渡してくれる
+      movie = FFMPEG::Movie.new(f.path) # FFMPEG::Movie はファイルパスを渡すとffprobe/ffmpegでメタ情報を読み込む 音声の長さを取得
+      movie.valid? ? movie.duration.to_f.round : 0 # 無効なファイルや壊れたファイルならfalseを返すので、例外処理を入れなくても安全に 0 を返せる
     end
   end
 end
