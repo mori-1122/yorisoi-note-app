@@ -43,6 +43,8 @@ class Visit < ApplicationRecord
 
   validate :visit_date_cannot_be_in_the_past
 
+  validate :appointed_at_cannot_be_in_the_past
+
   private
 
   # visit_date が「今日より後」かどうか
