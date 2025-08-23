@@ -40,23 +40,6 @@ class Recording < ApplicationRecord # アクティブレコードを定義
     mp3_path   = "#{path}.mp3" # 変換後MP3ファイル。
 
     begin
-      # # 録音時間を埋め直す Chrome の MediaRecorder が出力する WebM は duration メタ情報が欠ける場合がある
-      # system("ffmpeg -i #{Shellwords.escape(path)} -c copy #{Shellwords.escape(fixed_path)} -y -loglevel quiet") # -c copyはデータをある形式に変換する処理のエンコードをせずにストリーム(中に入ってる個々のデータの流れ)をコピーし、ヘッダーを書き直す
-
-      # duration = `ffprobe -i #{Shellwords.escape(fixed_path)} -show_entries format=duration -v quiet -of csv=p=0`.to_f # ffprobe で WebM ファイルの長さを秒数で取得。RubyでFloatに変換。ActiveStorageのblob.metadataにdurationを追加してDBに保存。
-      # audio_file.blob.update(metadata: audio_file.blob.metadata.merge(duration: duration)) # 録音時間が Rails 内で参照可能になる。
-
-      # # WebM → MP3 に変換 スマホでも聴けるようにするため
-      # system("ffmpeg -i #{Shellwords.escape(fixed_path)} -ar 44100 -ac 2 -b:a 192k #{Shellwords.escape(mp3_path)} -y -loglevel quiet")
-
-      # if File.exist?(mp3_path) # 変換したMP3ファイルが存在すれば、ActiveStorage の converted_audio に添付する。
-      #   converted_audio.attach(
-      #     io: File.open(mp3_path),
-      #     filename: "recording.mp3",
-      #     content_type: "audio/mpeg" # MIMEタイプを明示し、ダウンロードやストリーミングに対応。
-      #   )
-      # end
-
       # WebMのdurationを補完する（ffmpegでヘッダ書き換え）
       _stdout, stderr, status = Open3.capture3(
         "ffmpeg", "-i", path, "-c", "copy", fixed_path,
