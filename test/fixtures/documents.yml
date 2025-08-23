@@ -20,13 +20,9 @@
 one:
   user: one
   visit: one
-  image_path: MyString
   doc_type: MyString
-  taken_at: 2025-05-22 10:47:30
 
 two:
   user: two
   visit: two
-  image_path: MyString
   doc_type: MyString
-  taken_at: 2025-05-22 10:47:30
