@@ -18,5 +18,7 @@
 class Document < ApplicationRecord
   belongs_to :user
   belongs_to :visit
+  has_one_attached :image
 
+  validates :image, attached: true
 end
