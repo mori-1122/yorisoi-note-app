@@ -14,6 +14,9 @@ Rails.application.routes.draw do
 
         # 診療記録に紐ついている録音 Visit に対して録音は1件しか紐づかない想定なので、ルートは単数
         resource :recording, only: [ :new, :create, :show, :destroy ]
+
+        # 画像アップロード
+        resources :documents, only: [ :index, :new, :create, :update, :destroy ]
       end
 
   # 質問テンプレを選択、検索
