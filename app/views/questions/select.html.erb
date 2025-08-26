@@ -12,7 +12,7 @@
 
 <%# メインコンテンツ %>
 <div class="main-content">
-  <%= form_with url: visit_question_selections_path(@visit), method: :post, remote: true, html: { id: "questionForm" } do |f| %>
+  <%= form_with url: visit_question_selections_path(@visit), method: :post, html: { id: "questionForm" } do |f| %>
     <div class="question-card">
       <div class="question-header">
         <i class="bi bi-chat-text"></i>
@@ -42,4 +42,3 @@
     </div>
   <% end %>
 </div>
-<%# 一旦、turboは後でにする。%>

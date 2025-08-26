@@ -8,7 +8,6 @@
         visit_question_selection_path(selection.visit, selection),
         method: :patch,
         params: { toggle_asked: true },
-        form: { data: { turbo: true } },
         class: "btn btn-sm toggle-btn #{selection.asked? ? 'btn-success asked' : 'btn-warning pending'}"
       ) do %>
         <%= selection.asked? ? '未質問に戻す' : '質問済みにする' %>
@@ -19,7 +18,6 @@
       <%= button_to(
         visit_question_selection_path(selection.visit, selection),
         method: :delete,
-        form: { data: { turbo: true } },
         class: "delete-btn"
       ) do %>
         <i class="bi bi-trash-fill"></i>

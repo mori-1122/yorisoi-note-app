@@ -1,7 +1,9 @@
 <%# 戻るボタン %>
 <div class="d-flex justify-content-start mb-3">
-  <%= link_to visits_path(date: @visit.visit_date), class: "btn btn-outline-secondary d-flex align-items-center back-button" do %>
-    <i class="bi bi-arrow-left-circle-fill me-2"></i>戻る
+  <%= link_to visits_path(date: @visit.visit_date),
+              class: "btn btn-outline-secondary d-flex align-items-center back-button" do %>
+    <i class="bi bi-arrow-left-circle-fill me-2"></i>
+    戻る
   <% end %>
 </div>
 
@@ -17,27 +19,28 @@
      class="d-none"></div>
 
 <%# 受診先情報 %>
-<% @user_questions.group_by(&:visit).each do |visit, selections| %> <%# visit:各Visitオブジェクト（キー）と、 selections:そのvisitに属するQuestionSelection の配列（値）%>
- <% if selections.any? %>
-  <div class="visit-group mb-4">
-    <h3 class="visit-title">
-      <%= visit.visit_date.strftime("%Y年%m月%d日") %><%= visit.hospital_name %>
-    </h3>
+<% @user_questions.group_by(&:visit).each do |visit, selections| %>
+  <%# visit: 各Visitオブジェクト（キー）と、selections: そのvisitに属するQuestionSelection の配列（値） %>
+  <% if selections.any? %>
+    <div class="visit-group mb-4">
+      <h3 class="visit-title">
+        <%= visit.visit_date.strftime("%Y年%m月%d日") %><%= visit.hospital_name %>
+      </h3>
 
-    <div class="my-questions-card">
-      <ul class="question-list" id="question-list-<%= visit.id %>">
-        <% selections.each do |selection| %>
-          <%= render partial: "question_selections/question_selection", locals: { selection: selection } %>
-        <% end %>
+      <div class="my-questions-card">
+        <ul id="<%= dom_id(visit, :question_selections) %>" class="question-list">
+          <%= render partial: "question_selections/question_selection",
+                     collection: selections,
+                     as: :selection %>
         </ul>
+      </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
 <% end %>
 
 <%# 遷移するボタン %>
 <div class="text-center mt-4">
   <%= link_to "選択画面に戻る",
-      select_questions_path(visit_id: @visit.id),
-      class: "btn btn-outline-pink" %>
+              select_questions_path(visit_id: @visit.id),
+              class: "btn btn-outline-pink" %>
 </div>
