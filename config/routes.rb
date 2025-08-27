@@ -12,11 +12,11 @@ Rails.application.routes.draw do
         # 診察記録に紐づく質問選択・編集
         resources :question_selections, only: [ :index, :create, :update, :destroy ]
 
-        # 診療記録に紐ついている録音 Visit に対して録音は1件しか紐づかない想定なので、ルートは単数
+        # 診療記録に紐ついている録音 Visit に対して録音は1件しか紐づかない想定なので、ルートは単数 医療業界では録音に厳しい状況もあるため、更新はなしとする。
         resource :recording, only: [ :new, :create, :show, :destroy ]
 
         # 画像アップロード
-        resources :documents, only: [ :index, :new, :create, :update, :destroy ]
+        resources :documents, only: [ :index, :new, :create, :edit, :update, :destroy ]
       end
 
   # 質問テンプレを選択、検索
