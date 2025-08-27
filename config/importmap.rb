@@ -9,3 +9,4 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 
 pin "bootstrap", to: "bootstrap.bundle.min.js"
 pin "recording", to: "recording.js" # 録音ページ限定で使うため、preload を外して「必要なページでだけ読み込む」ようにした。
+pin "document_preview", to: "document_preview.js"
