@@ -15,6 +15,11 @@
 #  index_documents_on_visit_id  (visit_id)
 #
 
+
+# Document モデルを残している理由
+# 患者が病院から受け取る書類は多岐に渡り、紙ベースでは紛失のリスクもある。
+# 種類を明確に管理できるようdoc_typeを保持することで、
+# アプリ上での整理・参照を容易にするため。
 class Document < ApplicationRecord
   belongs_to :user
   belongs_to :visit
