@@ -1,5 +1,4 @@
 class QuestionsController < ApplicationController # 質問テンプレートを扱うコントローラ
-  before_action :authenticate_user! # 未ログインのユーザーがアクセスしようとしたらログイン画面へリダイレクト
   before_action :set_visit, only: [ :select, :search, :create ] # どの受診予定（Visit）に紐づく質問なのかを明確にして、以降の処理で使えるようにする
 
 
