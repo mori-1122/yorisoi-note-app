@@ -30,6 +30,6 @@ class DocumentsController < ApplicationController
   end
 
   def document_params
-    params.require(:document).permit(:image, :doc_type)
+    params.expect(document: %i[image doc_type])
   end
 end
