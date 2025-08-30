@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base # すべてのコントロ�
   helper_method :current_user, :user_signed_in? # #メソッドをビューでも使えるようにする
   before_action :set_locale # #日本語表示されなかったため、対応
   before_action :configure_permitted_parameters, if: :devise_controller? # #Deviseがコントローラとして動作しているとき（ログイン・新規登録など）だけ、configure_permitted_parameters メソッドを実行するように設定。
+  before_action :authenticate_user!
 
   protected # #コントローラーの中で使用
 
