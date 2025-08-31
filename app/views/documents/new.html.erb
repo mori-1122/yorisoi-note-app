@@ -7,7 +7,7 @@
 </div>
 
 <div class="container my-3">
-  <h1 class="text-center text-pink">通院に関する画像を管理する</h1>
+  <h1 class="text-center text-pink">通院に関する画像を保存する</h1>
 
   <% flash.each do |type, message| %>
     <div class="flash-message <%= type %>"><%= message %></div>
@@ -17,56 +17,13 @@
   <div class="card">
     <div class="card-header">
       <h5 class="card-title">
-      <i class="bi bi-file-earmark-image"></i>
-      画像アップロード
+        <i class="bi bi-file-earmark-image"></i>
+        画像アップロード
       </h5>
     </div>
-  </div>
-  <div class="card-body">
-  <%= form_with model: [@visit, @document], local: true, html: { multipart: true, id: "document-form" } do |form| %>
-    <div class="form-group">
-      <%= form.label :image, class: "form-label" do %>
-        <i class="bi bi-image me-1"></i>
-        画像を選択する
-      <% end %>
+
+    <div class="card-body">
+      <%= render "form" %>
     </div>
-
-  <div class="upload-area" id="upload-area">
-  <%= form.file_field :image,
-      accept: "image/*",
-      id: "document-icon" %>
-
-  <div class="upload-icon">
-    <i class="bi bi-cloud-upload upload-icon-large"></i>
   </div>
-
-  <div class="upload-text">
-    クリックまたは、ドラッグ&ドロップで画像を選択してください
-  </div>
-
-  <div class="upload-subtext">
-    JPG, PNG, GIF形式に対応
-  </div>
-</div>
-
-<div class="preview-container">
-  <img id="preview-image" class="preview-image" alt="プレビュー">
-
-  <div class="preview-info">
-    <span id="file-name">ファイル名</span>
-  </div>
-</div>
-    <div class="form-group form-group-center">
-      <%= form.label :doc_type, "文書の種類", class: "form-label" %>
-      <%= form.select :doc_type,
-            [["選択してください", ""]] +
-            Document.doc_types.keys.map { |k| [Document.human_attribute_name("doc_type.#{k}"), k] },
-            {},
-            { class: "form_select" } %>
-    </div>
-
-    <div class="submit-area">
-      <%= form.submit "アップロード", class: "btn btn-outline-pink" %>
-    </div>
-  <% end %>
 </div>
