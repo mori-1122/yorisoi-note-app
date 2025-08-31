@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   const fileInput = document.getElementById('document-icon');
   const uploadArea = document.getElementById('upload-area');
-  const previewContainer = document.querySelector('.preview-container');
-  const previewImage = document.getElementById('preview-image');
   const fileName = document.getElementById('file-name');
   const form = document.getElementById('document-form');
+  const previewImage = document.getElementById('preview-image');
+  const previewContainer = document.querySelector('.preview-container');
 
   if (!fileInput || !uploadArea) return; // 必要な要素が存在しない場合は処理を停止
 
@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // ファイルを選んだ
 fileInput.addEventListener('change', (e) => {
   const file = e.target.files[0];
-  console.log("ファイル選択イベント発火:", file); // ← 追加
   if (file) {
     showPreview(file);
   } else {
@@ -45,7 +44,6 @@ fileInput.addEventListener('change', (e) => {
 
 // プレビューを表示する
 function showPreview(file) {
-    console.log("showPreview呼び出し:", file); // ← 追加
   if (!file.type.startsWith('image/')) {
     alert('画像ファイルを選択してください。');
     return;
@@ -58,10 +56,15 @@ function showPreview(file) {
 
   const reader = new FileReader();
   reader.onload = (e) => {
-    if (previewImage && previewContainer) {
-      previewImage.src = e.target.result;
-      if (fileName) fileName.textContent = file.name;
-      previewContainer.style.display = 'block';
+    if (uploadArea) {
+      uploadArea.innerHTML =  `
+        <img src="${e.target.result}"
+              alt="プレビュー"
+              class="preview-img" />
+              `;
+    }
+    if (fileName) {
+      fileName.textContent = file.name;
     }
   };
   reader.readAsDataURL(file);
@@ -71,6 +74,12 @@ function showPreview(file) {
 function hidePreview() {
   if (previewContainer) {
     previewContainer.style.display = 'none';
+  }
+  if (previewImage) {
+    previewImage.src = "";
+  }
+  if (fileName) {
+    fileName.textContent = "ファイル名";
   }
 }
 
