@@ -2,7 +2,7 @@ class DocumentsController < ApplicationController
   before_action :set_visit
 
   def index
-    @documents = @visit.documents.includes(:user)
+    @documents = @visit.documents.includes(:user).order(created_at: :desc)
   end
 
   def new
