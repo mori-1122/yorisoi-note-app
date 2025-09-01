@@ -1,3 +1,5 @@
+@use "variables" as *;
+
 .flash-message {
   text-align: center;
   position: fixed;
@@ -11,8 +13,9 @@
   font-size: 0.95rem;
   font-weight: 600;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-  animation: fadeOut 8s forwards;
-  color: rgb(247, 247, 247);
+  color: $flash-text-color;
+
+  animation: fadeIn 0.3s ease, fadeOut 1s ease 5s forwards;
 
   @media (max-width: 400px) {
     font-size: 0.8rem;
@@ -24,24 +27,28 @@
 }
 
   .flash-notice {
-    background-color: #f48fb1; // ピンク（成功・通知）
-    border: 1px solid #f06292;
+    background-color: $flash-notice-bg; // ピンク（成功・通知）
+    border: 1px solid $flash-notice-border;
   }
 
   .flash-alert, .flash-error {
-    background-color: #f8d7da; // 警告系（赤み）
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+    background-color: $flash-alert-bg;  // 警告系（赤み）
+    color: $flash-alert-text;
+    border: 1px solid $flash-alert-border;
   }
 
   .flash-success {
-    background-color: #81d4fa; // 水色（成功系）
-    border: 1px solid #4fc3f7;
+    background-color: $flash-success-bg;   // 水色（成功系）
+    border: 1px solid $flash-success-border;
   }
 
-// フェードアウトのアニメーション定義
-@keyframes fadeOut {
-    0%   { opacity: 1; }  // 最初は表示
-    80%  { opacity: 1; }  // 80%の間は表示状態のまま
-    100% { opacity: 0; display: none; } // 最後に透明にして非表示にする
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeOut {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; display: none; }
   }
