@@ -42,7 +42,7 @@
         </button>
         <p class="mb-0">ようこそ、<strong><%= current_user.name %></strong>さん</p>
       </div>
-      <%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'btn btn-pink btn-sm' %>
+      <%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'btn btn-pink btn-logout' %>
     </div>
 
     <nav id="sidebarMenu" class="sidebar">
@@ -58,7 +58,7 @@
   <% end %>
 
   <% flash.each do |key, message| %>
-    <div class="flash-message flash-<%= key %> alert alert-dismissible fade show" role="alert">
+    <div class="flash-message flash-<%= key %>">
       <%= message %>
     </div>
   <% end %>
