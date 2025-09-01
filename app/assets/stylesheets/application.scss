@@ -9,12 +9,4 @@
 @use "question_selections/questions";
 @use "recordings/recording";
 @use "recordings/wave";
-
-
-.text-pink {
-  color: #f48fb1;
-}
-
-.text-center.text-pink {
-  padding-top: 2rem;
-}
+@use "documents_upload";
