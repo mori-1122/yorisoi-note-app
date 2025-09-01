@@ -19,7 +19,7 @@
     <%# ボタン %>
     <div class="mt-5">
       <% unless user_signed_in? %>
-        <%= link_to 'はじめる', new_user_registration_path, class: 'btn btn-lg btn-pink me-3' %>  <%# 遷移する %>
+        <%= link_to 'はじめる', new_user_registration_path, class: 'btn btn-green me-3' %>  <%# 遷移する %>
         <%= link_to 'ログイン', new_user_session_path, class: 'btn btn-violet me-3' %>
       <% end %>
     </div>
