@@ -1,0 +1,70 @@
+<%# 戻るボタン %>
+<div class="d-flex justify-content-start">
+  <%= link_to visits_path(date: @visit.visit_date), class: "btn btn-outline-secondary d-flex align-items-center back-button" do %>
+    <i class="bi bi-arrow-left-circle-fill me-2"></i>
+    戻る
+  <% end %>
+</div>
+
+<div class="container my-3">
+  <h1 class="mb-4s text-center">
+    <i class="bi bi-images me-2"></i>
+    アップロードされた画像
+  </h1>
+
+  <%= link_to new_visit_document_path(@visit), class: "btn-pink mb-3" do %>
+    <i class="bi bi-plus me-1"></i>新規追加
+  <% end %>
+
+  <% flash.each do |type, message| %>
+    <div class="flash-message <%= type %>"><%= message %></div>
+  <% end %>
+
+  <% if @documents.any? %>
+    <div class="documents-grid">
+      <% @documents.each do |doc| %>
+        <div class="card mb-4">
+          <% if doc.image.attached? %>
+            <%= image_tag doc.image, class: "card-img-top",
+                alt: I18n.t("activerecord.attributes.document.doc_type.#{doc.doc_type}") %>
+          <% else %>
+            <div class="card-img-top d-flex flex-column justify-content-center align-items-center py-5 bg-light">
+              <i class="bi bi-file-text fs-1 mb-2 text-muted"></i>
+              <span class="text-muted"><%= I18n.t("activerecord.attributes.document.doc_type.#{doc.doc_type}") %></span>
+            </div>
+          <% end %>
+
+          <div class="card-body">
+            <h5 class="card-title"><%= I18n.t("activerecord.attributes.document.doc_type.#{doc.doc_type}") %></h5>
+
+            <div class="mb-2 text-muted">
+              <i class="bi bi-calendar3 me-2"></i>
+              作成： <%= l doc.created_at, format: :short %>
+            </div>
+
+            <% if doc.image.attached? %>
+              <div class="mb-2 text-muted">
+                <i class="bi bi-info-circle me-2"></i>
+                ファイル： <%= doc.image.filename %>
+              </div>
+            <% end %>
+
+            <div class="d-grid gap-2">
+              <% if doc.image.attached? %>
+                <%= link_to rails_blob_path(doc.image, disposition: "inline"),
+                            class: "btn btn-outline-primary",
+                            target: "_blank" do %>
+                  <i class="bi bi-eye me-2"></i>画像を表示する
+                <% end %>
+              <% else %>
+                <button class="btn btn-outline-primary" disabled>
+                  <i class="bi bi-eye me-2"></i>画像を表示する
+                </button>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

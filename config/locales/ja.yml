@@ -14,15 +14,17 @@ ja:
       article:
         title: 'タイトル'
         content: '内容'
-      document/doc_type:
-        medical_record: 診療記録
-        prescription: 処方箋
-        test_result: 検査結果
-        insurance_card: 保険証
-        referral_letter: 紹介状
-        medical_certificate: 診断書
-        patient_card: 診察券
-        other: その他
+      document:
+        doc_type:
+          medical_record: 診療記録
+          prescription: 処方箋
+          test_result: 検査結果
+          insurance_card: 保険証
+          referral_letter: 紹介状
+          medical_certificate: 診断書
+          patient_card: 診察券
+          other: その他
+
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'
