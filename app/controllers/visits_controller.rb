@@ -1,5 +1,4 @@
 class VisitsController < ApplicationController
-  before_action :authenticate_user!# #ユーザーがログインしていないとアクセスできない
   before_action :set_visit, only: [ :edit, :update, :destroy ]
 
   def index # #通院予定の一覧ページを表示

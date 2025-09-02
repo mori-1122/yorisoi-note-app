@@ -1,5 +1,4 @@
 class QuestionSelectionsController < ApplicationController
-  before_action :authenticate_user! # Devise による認証（未ログインはリダイレクト）
   before_action :set_visit # visit_id パラメータから @visit を取得（全アクション共通）
   before_action :set_question_selection, only: [ :update ] # update 用。visit に紐づく質問選択を取得
 

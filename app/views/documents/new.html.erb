@@ -1,0 +1,29 @@
+<%# 戻るボタン %>
+<div class="d-flex justify-content-start">
+  <%= link_to visits_path(date: @visit.visit_date), class: "btn btn-outline-secondary d-flex align-items-center back-button" do %>
+    <i class="bi bi-arrow-left-circle-fill me-2"></i>
+    戻る
+  <% end %>
+</div>
+
+<div class="container my-3">
+  <h1 class="text-center text-pink">通院に関する画像を保存する</h1>
+
+  <% flash.each do |type, message| %>
+    <div class="flash-message <%= type %>"><%= message %></div>
+  <% end %>
+
+  <%# メイン %>
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title">
+        <i class="bi bi-file-earmark-image"></i>
+        画像アップロード
+      </h5>
+    </div>
+
+    <div class="card-body">
+      <%= render "form" %>
+    </div>
+  </div>
+</div>

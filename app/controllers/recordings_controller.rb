@@ -1,7 +1,6 @@
 "streamio-ffmpeg"
 
 class RecordingsController < ApplicationController # 録音に関するリクエストを処理するコントローラ
-  before_action :authenticate_user! # ユーザーがログインしているか確認
   before_action :set_visit # コントローラの各アクションの前に、対応する Visit（診察記録）を取得して@visitにセット
 
   def new # 録音がまだ存在しなければ新しく作る。診療をする際に録音機能も作成する
