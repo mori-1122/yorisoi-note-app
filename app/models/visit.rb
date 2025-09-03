@@ -23,6 +23,7 @@
 #
 
 class Visit < ApplicationRecord
+  before_validation :combine_date_and_time
   belongs_to :user
   belongs_to :department
   has_many :documents, dependent: :destroy
