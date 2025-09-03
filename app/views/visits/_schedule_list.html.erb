@@ -23,19 +23,25 @@
 
       <%# 録音、資料 %>
       <div class="mt-2 text-muted small">
-          <strong>録音：</strong>
-          <%= visit.has_recording? ? "あり" : "なし" %><br>  <%# 条件式 ? 真のときの値 : 偽のときの値 %>
-          <strong>資料：</strong>
-          <%= visit.has_document? ? "あり" : "なし" %>
-        </div>
+          <strong>録音を聴く：</strong>
+          <% if visit.recording&.audio_file&.attached? %>
+            <audio controls>
+              <source src="<%= rails_blob_path(visit.recording.audio_file, disposition: "attachment") %>"
+                      type="<%= visit.recording.audio_file.content_type %>">
+            </audio>
+          <% else %>
+            なし
+          <% end %>
 
       <div class="action-buttons mt-2">
           <%= link_to '編集', edit_visit_path(visit), class: "btn btn-outline-pink" %>
-          <%= button_to '削除', visit_path(visit), method: :delete, data: { turbo_confirm: '本当に削除しますか？' }, class: "btn btn-outline-pink" %>
+          <%= button_to '削除', visit_path(visit), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "btn btn-outline-pink" %>
           <%= link_to '質問管理画面へ行く', visit_question_selections_path(visit, page: 'list'), class: "btn btn-violet" %>
           <%= link_to '診察中に録音をする', new_visit_recording_path(visit), data: { turbo: false }, class: "btn btn-green" %><%# とりあえず、ここではturboを止める %>
+          <%= link_to '画像を見る', visit_documents_path(visit), class: "btn btn-outline-secondary" %>
         </div>
       </div>
+    </div>
   <% end %>
 <% else %>
   <p class="text-muted">予定がありません。</p> <%# 予定がない場合の表示 %>
