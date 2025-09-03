@@ -46,9 +46,9 @@
 
 // 基本ボタンスタイル
 .btn {
-  padding: 8px 16px;
-  font-size: 15px;
-  min-width: auto;
+  padding: 6px 12px;   // ← 小さめに
+  font-size: 14px;     // ← 文字も少し小さく
+  min-width: unset;
   border: none;
   border-radius: 8px;
   cursor: pointer;
