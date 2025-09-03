@@ -48,6 +48,12 @@ class Visit < ApplicationRecord
 
   private
 
+  def combine_date_and_time
+    return if visit_date.blank? || appointed_at.blank?
+
+    time_str = appointed_at.is_a?(String) ? appointed_at : appointed_at.strftime("%H:%M")
+    self.appointed_at = Time.zone.parse("#{visit_date} #{time_str}")
+  end
   # visit_date が「今日より後」かどうか
   def visit_date_cannot_be_in_the_past
     return if visit_date.blank?
