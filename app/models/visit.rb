@@ -58,8 +58,8 @@ class Visit < ApplicationRecord
   def visit_date_cannot_be_in_the_past
     return if visit_date.blank?
 
-    if visit_date <= Time.zone.today
-      errors.add(:visit_date, "は、今日より後の日付を指定してください。")
+    if visit_date < Time.zone.today
+      errors.add(:visit_date, "は、今日以降の日付を指定してください。")
     end
   end
 
