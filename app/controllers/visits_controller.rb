@@ -5,7 +5,9 @@ class VisitsController < ApplicationController
     selected_date = params[:date].presence || Date.today # #URLにdate=2025-06-07みたいなパラメータがついていたらその日付、なければ今日の日付を使う 「選択された日付、または今日」をselected_dateに入れる
     @visit = Visit.new(visit_date: selected_date) # #フォーム用visitインスタンス 、日付フィールドが空じゃなく選択された日（または今日）になってる。
     @departments = Department.all # #プルダウンに診療科一覧を取得 フォームの「診療科」セレクトボックスに使われる
-    @visits = current_user.visits.where("visit_date >= ?", Date.today).order(visit_date: :asc) # #昇順に（今日）以上の日付のレコードを取得
+    @visits = current_user.visits
+              .where("appointed_at >= ?", Time.current)
+              .order(:appointed_at)
   end
 
   def new
