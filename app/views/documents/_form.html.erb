@@ -1,52 +1,62 @@
 <%= form_with model: [@visit, @document],
-                  data: { turbo: false },
-                   local: true,
-                   multipart: true,
-                   html: { multipart: true,
-                   id: "document-form"} do |form| %>
+              local: true,
+              multipart: true,
+              id: "document-form",
+              data: { turbo: false } do |form| %>
 
-  <div class="form-group">
-    <%= form.label :image, class: "form-label" do %>
-      <i class="bi bi-image me-1"></i>
-      画像を選択する
-    <% end %>
-  </div>
-
-    <div class="upload-area" id="upload-area">
-      <div class="upload-icon">
-        <i class="bi bi-cloud-upload upload-icon-large"></i>
-      </div>
-      <div class="upload-text">クリックまたは、ドラッグ&ドロップで画像を選択してください</div>
-      <div class="upload-subtext">JPG, PNG, GIF形式に対応</div>
+  <div class="card mb-3">
+    <div class="card-header">
+      <h5 class="card-title">
+        <i class="bi bi-file-earmark-image"></i>
+        <%= @document.new_record? ? "画像アップロード" : "画像を編集する" %>
+      </h5>
     </div>
 
-    <%# 隠しファイル入力 %>
-    <%= form.file_field :image,
-          accept: "image/*",
-          id: "document-icon",
-          class: "d-none" %>
+    <div class="card-body">
+      <div class="form-group">
+        <%= form.label :image, class: "form-label" do %>
+          <i class="bi bi-image me-1"></i>
+          画像を選択する
+        <% end %>
+      </div>
 
-    <%# プレビュー %>
-    <div class="preview-container">
-      <div class="preview-wrapper">
-        <img id="preview-image" class="preview-img" alt="プレビュー">
+      <div class="upload-area" id="upload-area">
+        <div class="upload-icon">
+          <i class="bi bi-cloud-upload upload-icon-large"></i>
+        </div>
+        <div class="upload-text">クリックまたは、ドラッグ&ドロップで画像を選択してください</div>
+        <div class="upload-subtext">JPG, PNG, GIF形式に対応</div>
+      </div>
+
+      <%# 隠しファイル入力 %>
+      <%= form.file_field :image,
+            accept: "image/*",
+            id: "document-icon",
+            class: "d-none" %>
+
+      <%# プレビュー %>
+      <div class="preview-container">
+        <div class="preview-wrapper">
+          <img id="preview-image" class="preview-img" alt="プレビュー">
           <div class="preview-info">
             <span id="file-name">ファイル名</span>
           </div>
+        </div>
+      </div>
+
+      <div class="mb-3 text-center">
+        <%= form.label :doc_type, "文書の種類", class: "form-label" %>
+        <%= form.select :doc_type,
+              [["選択してください", ""]] +
+              Document.doc_types.keys.map { |k| [I18n.t("activerecord.attributes.document.doc_type.#{k}"), k] },
+              { include_blank: false },
+              { class: "form-select w-auto d-inline-block" } %>
+      </div>
+
+      <div class="submit-area text-center">
+        <%= form.submit (@document.new_record? ? "アップロード" : "更新する"),
+                          class: "btn-pink" %>
       </div>
     </div>
-
-    <div class="mb-3 text-center">
-      <%= form.label :doc_type, "文書の種類", class: "form-label" %>
-      <%= form.select :doc_type,
-            [["選択してください", ""]] +
-            Document.doc_types.keys.map { |k| [I18n.t("activerecord.attributes.document.doc_type.#{k}"), k] },
-            { include_blank: false },
-            { class: "form-select w-auto d-inline-block" } %>
-    </div>
-
-    <div class="submit-area text-center">
-      <%= form.submit (@document.new_record? ? "アップロード" : "更新する"),
-                        class: "btn btn-outline-pink" %>
-    </div>
-  <% end %>
+  </div>
+<% end %>
