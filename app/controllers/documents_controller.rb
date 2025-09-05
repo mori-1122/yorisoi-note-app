@@ -1,5 +1,6 @@
 class DocumentsController < ApplicationController
   before_action :set_visit
+  before_action :set_document, only: [ :edit, :update, :destroy ]
 
   def index
     @documents = @visit.documents.includes(:user).order(created_at: :desc)
@@ -22,6 +23,23 @@ class DocumentsController < ApplicationController
     end
   end
 
+  def edit
+  end
+
+  def update
+    if @document.update(document_params)
+      redirect_to visit_documents_path(@visit), notice: "画像を更新しました。"
+    else
+      flash.now[:error] = "更新に失敗しました。"
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @document.destroy
+    redirect_to visit_documents_path(@visit), notice: "画像を削除しました。"
+  end
+
   private
 
   def set_visit
@@ -30,5 +48,9 @@ class DocumentsController < ApplicationController
 
   def document_params
     params.expect(document: %i[image doc_type])
+  end
+
+  def set_document
+    @document = @visit.documents.find(params[:id])
   end
 end
