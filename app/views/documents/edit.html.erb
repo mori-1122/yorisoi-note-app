@@ -1,0 +1,42 @@
+<%# 戻るボタン %>
+<div class="d-flex justify-content-start">
+  <%= link_to visits_path(date: @visit.visit_date), class: "btn btn-outline-secondary d-flex align-items-center back-button" do %>
+    <i class="bi bi-arrow-left-circle-fill me-2"></i>
+    戻る
+  <% end %>
+</div>
+
+<div class="container my-3">
+  <h1 class="text-center text-pink">通院に関する画像を編集する</h1>
+
+  <% flash.each do |type, message| %>
+    <div class="flash-message <%= type %>"><%= message %></div>
+  <% end %>
+
+  <%# 現在の表示 %>
+  <% if @document.image.attached? %>
+    <div class="card mb-3">
+      <div class="card-header">
+        <h5 class="card-title">
+          <i class="bi bi-eye"></i>現在の画像
+        </h5>
+      </div>
+      <div class="card-body text-center">
+        <%= image_tag @document.image, class: "current-image" %>
+        <div class="mt-2">
+          <small class="text-muted">
+            種類： <%= I18n.t("activerecord.attributes.document.doc_type.#{@document.doc_type}") %> |
+            ファイル：<%= @document.image.filename.to_s %>
+          </small>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <%# 編集する部分 %>
+  <div class="card">
+    <div class="card-body">
+      <%= render "form" %>
+    </div>
+  </div>
+</div>
