@@ -1,41 +1,45 @@
 @use "variables" as *;
 
 .card {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto 2rem;
   border: none;
-  border-radius: $small-radius;
-  box-shadow: $card-shadow;
-  margin-bottom: 1.5rem;
 }
 
 .card-header {
   background-color: $color-bg-base;
   border-bottom: 1px solid $border-color;
-  padding: 1.5rem;
+  padding: 1rem 1.5rem;
   border-radius: $small-radius $small-radius 0 0;
-}
-
-.card-title {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: $text-dark;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  max-width: 600px;   // タイトル枠だけ制限
+  margin: 0 auto;
 }
 
 .card-body {
   padding: 2rem;
   background: $white;
+
+  // 中央寄せ & 幅制限
+  max-width: 720px;
+  margin: 0 auto;
 }
 
 .card-img-top {
   width: 100%;
   height: auto;
   object-fit: cover;
-  border-radius: $small-radius $small-radius 0 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+.current-image {
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: $small-radius;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
 
 // ラベル
 .form-label {
@@ -65,10 +69,10 @@
 
 // 最低限カスタム
 .form-select {
-  appearance: none;              // デフォルトの矢印を消す
+  appearance: none;
   background: $white url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23ec407a' viewBox='0 0 16 16'%3e%3cpath d='M2 5l6 6 6-6'/%3e%3c/svg%3e") 
               no-repeat right 1rem center / 1rem;
-  padding-right: 2.5rem;         // 矢印分の余白
+  padding-right: 2.5rem;
   cursor: pointer;
 }
 
@@ -128,7 +132,7 @@
   color: $text-muted;
   margin-bottom: 0.5rem;
 }
-
+ 
 .upload-subtext {
   font-size: 0.9rem;
   color: $text-gray;
@@ -160,10 +164,12 @@
 }
 
 .preview-img {
-  max-width: 100%;
-  max-height: 100%;
+  max-height: 300px;
+  width: auto;
+  height: auto;
   object-fit: contain;
   border-radius: $small-radius;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .preview-info {
@@ -246,17 +252,32 @@
   margin-top: 2rem;
 }
 
-// レスポンシブデザイン
-@media (max-width: 768px) {
-  .page-wrapper {
-    padding: 1rem;
-  }
-  
-  .app-body {
-    padding: 1rem;
-  }
-  
-  .upload-area {
-    padding: 2rem 1rem;
-  }
-}
+// // レスポンシブデザイン
+// @media (max-width: 1200px) {
+//   .card {
+//     max-width: 960px;
+//     margin: 0 auto 1.5rem; // 中央寄せ
+//   }
+// }
+
+// @media (max-width: 992px) {
+//   .card {
+//     max-width: 720px;
+//     margin: 0 auto 1.5rem;
+//   }
+// }
+
+// @media (max-width: 768px) {
+//   .card {
+//     max-width: 100%;
+//     margin: 0 1rem 1.5rem; // 横に余白を少しだけ確保
+//   }
+
+//   .upload-area {
+//     padding: 2rem 1rem;
+//   }
+
+//   .preview-wrapper {
+//     min-height: 160px; // 枠を少し小さめに
+//   }
+// }
