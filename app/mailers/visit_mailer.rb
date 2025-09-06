@@ -1,0 +1,2 @@
+class VisitMailer < ApplicationMailer
+end
