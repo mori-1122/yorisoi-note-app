@@ -23,6 +23,7 @@
 #
 
 class Visit < ApplicationRecord
+  before_validation :combine_date_and_time
   belongs_to :user
   belongs_to :department
   has_many :documents, dependent: :destroy
@@ -47,12 +48,18 @@ class Visit < ApplicationRecord
 
   private
 
+  def combine_date_and_time
+    return if visit_date.blank? || appointed_at.blank?
+
+    time_str = appointed_at.is_a?(String) ? appointed_at : appointed_at.strftime("%H:%M")
+    self.appointed_at = Time.zone.parse("#{visit_date} #{time_str}")
+  end
   # visit_date が「今日より後」かどうか
   def visit_date_cannot_be_in_the_past
     return if visit_date.blank?
 
-    if visit_date <= Time.zone.today
-      errors.add(:visit_date, "は、今日より後の日付を指定してください。")
+    if visit_date < Time.zone.today
+      errors.add(:visit_date, "は、今日以降の日付を指定してください。")
     end
   end
 
