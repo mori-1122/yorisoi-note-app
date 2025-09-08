@@ -17,8 +17,8 @@ module YorisoiNote2
     config.autoload_lib(ignore: %w[assets tasks])
     config.i18n.default_locale = :ja # #日本語にする
     config.action_dispatch.allow_browser = true
+    config.action_mailer.default_url_options = { host: "localhost", port: 5000 }
     # Configuration for the application, engines, and railties goes here.
-    #
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     config.time_zone = "Tokyo" # タイムゾーンを東京に設定 録音機能で使用
