@@ -30,7 +30,7 @@ gem "binding_of_caller"
 gem "streamio-ffmpeg", "~> 3.0", ">= 3.0.2"
 gem "active_storage_validations"
 gem "image_processing", ">= 1.2"
-
+gem "sidekiq"
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 

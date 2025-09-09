@@ -24,5 +24,6 @@ module YorisoiNote2
     config.time_zone = "Tokyo" # タイムゾーンを東京に設定 録音機能で使用
     config.active_storage.variant_processor = :mini_magick
     # config.eager_load_paths << Rails.root.join("extras")
+    config.active_job.queue_adapter = :sidekiq
   end
 end
