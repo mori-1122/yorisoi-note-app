@@ -1,5 +1,5 @@
 class NotificationMailer < ApplicationMailer
-  def reminder(notification)
+  def visit_reminder(notification)
     @notification = notification
     mail(
       to:
