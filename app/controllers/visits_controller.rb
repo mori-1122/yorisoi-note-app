@@ -27,7 +27,7 @@ class VisitsController < ApplicationController
         due_date: @visit.visit_date
       )
 
-      # メールを送信する(非同期を使用)
+      # メールを送信する(非同期を使用) 即時メール実装時に使用する
       NotificationMailer.created(notification).deliver_later
 
       # 完了したらリダイレクトする
