@@ -1,0 +1,14 @@
+<h1><%= @notification.user.name %> さん</h1>
+
+<p>明日が受診予定日ですので、ご案内いたします。</p>
+
+<ul>
+  <li>病院名： <%= @notification.title %></li>
+  <li>受診日： <%= @notification.due_date %></li>
+  <li>目的： <%= @notification.description %></li>
+</ul>
+
+<p>ログインをして詳細を確認してください：
+  <%= link_to "こちらから確認できます",
+  root_url %>
+</p>
