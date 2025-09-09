@@ -28,7 +28,7 @@ class VisitsController < ApplicationController
       )
 
       # メールを送信する(非同期を使用)
-      NotificationMailer .created(notification).deliver_later
+      NotificationMailer.created(notification).deliver_later
 
       # 完了したらリダイレクトする
       redirect_to visits_path(date: @visit.visit_date), notice: "予定を保存しました"
