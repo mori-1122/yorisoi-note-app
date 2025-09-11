@@ -3,9 +3,10 @@
 <p>明日が受診予定日ですので、ご案内いたします。</p>
 
 <ul>
-  <li>病院名： <%= @notification.title %></li>
-  <li>受診日： <%= @notification.due_date %></li>
-  <li>目的： <%= @notification.description %></li>
+  <li>病院名： <%= @visit.hospital_name %></li>
+  <li>受診日： <%= @visit.visit_date.strftime("%-m月%-d日") %></li>
+  <li>目的： <%= @visit.purpose %></li>
+  <li>時間： <%= @visit.appointed_at.strftime("%H:%M") %></li>
 </ul>
 
 <p>ログインをして詳細を確認してください：
