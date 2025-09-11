@@ -22,7 +22,6 @@ gem "jbuilder"
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 gem "devise-i18n"
-gem "annotate"
 gem "dartsass-rails"
 gem "rails-i18n"
 gem "better_errors"
@@ -31,6 +30,7 @@ gem "streamio-ffmpeg", "~> 3.0", ">= 3.0.2"
 gem "active_storage_validations"
 gem "image_processing", ">= 1.2"
 gem "sidekiq"
+gem "sidekiq-cron", "~> 2.3"
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
