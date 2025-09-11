@@ -1,0 +1,6 @@
+visit_reminder_job:
+  cron: "*/1 * * * *"
+  class: "VisitReminderJob"
+  queue: "default"
+  description: "翌日が受診予定のユーザーにリマインダーメールを送信する"
+  active_job: true
