@@ -23,8 +23,9 @@ class VisitsController < ApplicationController
       # １、通知レコードを作る
       notification = current_user.notifications.create!(
         title: "【受診予定を新規登録しました】#{@visit.hospital_name}",
-        description: "目的： #{@visit.purpose}",
-        due_date: @visit.visit_date
+        description: "日付： #{@visit.visit_date.strftime("%-m月%-d日")}\n時間：#{@visit.appointed_at.strftime("%H:%M")}\n目的：#{@visit.purpose}",
+        due_date: @visit.visit_date,
+        visit: @visit
       )
 
       # メールを送信する(非同期を使用) 即時メール実装時に使用する
