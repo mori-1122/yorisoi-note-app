@@ -30,6 +30,7 @@ class Visit < ApplicationRecord
   has_many :question_selections, dependent: :destroy
   has_one :recording, dependent: :destroy
   has_many :questions, through: :question_selections
+  has_many :notifications, dependent: :destroy # Visitごとに「即時通知」「前日リマインダー通知」と複数記録するため
 
   # 必須項目のバリデーション
   validates :visit_date, :hospital_name, :purpose, :appointed_at, presence: true
