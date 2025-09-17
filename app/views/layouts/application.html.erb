@@ -42,16 +42,16 @@
         </button>
         <p class="mb-0">ようこそ、<strong><%= current_user.name %></strong>さん</p>
       </div>
-      <%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'btn btn-pink btn-logout' %>
+      <%= button_to 'ログアウト', destroy_user_session_path, method: :delete, data: { turbo: false }, class: 'btn btn-pink btn-logout' %>
     </div>
 
     <nav id="sidebarMenu" class="sidebar">
       <div class="inner">
         <ul class="sidebar-nav">
-          <li><%= link_to "スケジュール", visits_path %></li>
-          <li><%= link_to "質問を選ぶ", "#" %></li>
-          <li><%= link_to "プロフィール", "#" %></li>
-          <li><%= link_to "設定（未実装）", "#" %></li>
+          <li><%= link_to "スケジュールを確認する", visits_path %></li>
+          <li><%= link_to "受診に関する画像を確認する", visit_documents_path(current_user.visits.last) if current_user.visits.any? %></li>
+          <li><%= link_to "プロフィールを見る", edit_profile_path %></li>
+          <li><%= link_to "パスワードを変更する", edit_user_registration_path %></li>
         </ul>
       </div>
     </nav>
