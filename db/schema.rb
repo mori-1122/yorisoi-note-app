@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_11_011641) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_16_013253) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -69,6 +69,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_11_011641) do
     t.bigint "visit_id", null: false
     t.index ["user_id"], name: "index_notifications_on_user_id"
     t.index ["visit_id"], name: "index_notifications_on_visit_id"
+  end
+
+  create_table "profiles", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.date "birthday", null: false
+    t.integer "gender", null: false
+    t.integer "height"
+    t.integer "weight"
+    t.string "blood_type", default: "不明"
+    t.text "allergy_details", default: ""
+    t.text "medical_history", default: ""
+    t.text "current_medication", default: ""
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
   create_table "question_categories", force: :cascade do |t|
@@ -148,6 +163,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_11_011641) do
   add_foreign_key "documents", "visits"
   add_foreign_key "notifications", "users"
   add_foreign_key "notifications", "visits"
+  add_foreign_key "profiles", "users"
   add_foreign_key "question_selections", "questions"
   add_foreign_key "question_selections", "users"
   add_foreign_key "question_selections", "visits"

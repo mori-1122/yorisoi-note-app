@@ -1,0 +1,74 @@
+<div class="d-flex justify-content-start">
+  <%= link_to visits_path, class: "btn btn-outline-secondary d-flex align-items-center back-button" do %>
+    <i class="bi bi-arrow-left-circle-fill me-2"></i>
+    戻る
+  <% end %>
+</div>
+
+<div class="container">
+  <div class="form-container">
+    <h2 class="form-title text-center text-pink">プロフィール</h2>
+       <p class="text-center">登録内容を変更できます</p>
+
+    <% if @profile.errors.any? %>
+      <div class="error-messages">
+        <ul>
+          <% @profile.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with(model: @profile, url: profile_path, method: :patch, local: true) do |f| %>
+      <div class="mb-3">
+        <label class="form_label">名前</label>
+        <p class="form-control-plaintext"><%= current_user.name %></p>
+      </div>
+
+      <div>
+        <%= f.label :birthday, "生年月日" %>
+        <%= f.date_field :birthday, class: 'form-control' %>
+      </div>
+
+      <div>
+        <%= f.label :gender, "性別" %>
+        <%= f.select :gender, Profile.genders.keys.map { |k, v| [ I18n.t("enums.profile.gender.#{k}"), k ] }, {}, { class: 'form-select' } %>
+      </div>
+
+      <div>
+        <%= f.label :height, "身長(cm)" %>
+        <%= f.number_field :height, class: 'form-control' %>
+      </div>
+
+      <div>
+        <%= f.label :weight, "体重(kg)" %>
+        <%= f.number_field :weight, class: 'form-control' %>
+      </div>
+
+      <div>
+        <%= f.label :blood_type, "血液型" %>
+        <%= f.select :blood_type, Profile::BLOOD_TYPES, {}, { class: 'form-select' } %>
+      </div>
+
+      <div>
+        <%= f.label :allergy_details, "アレルギー歴" %>
+        <%= f.text_area :allergy_details, class: "form-control" %>
+      </div>
+
+      <div>
+        <%= f.label :medical_history, "既往歴" %>
+        <%= f.text_area :medical_history, class: "form-control" %>
+      </div>
+
+      <div>
+        <%= f.label :current_medication, "内服薬" %>
+        <%= f.text_area :current_medication, class: "form-control" %>
+      </div>
+
+      <div class="text-center mt-4">
+        <%= f.submit "保存", class: "btn btn-outline-pink btn-lg px-5 py-3" %>
+      </div>
+    <% end %>
+  </div>
+</div>
