@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   root to: "home#index"
 
+  resource :profile, only: [ :edit, :update ]
+
   # 診察記録と紐づく予定
   resources :visits, except: [ :show ] do
     collection do
