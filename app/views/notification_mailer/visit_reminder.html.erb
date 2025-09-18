@@ -4,9 +4,10 @@
 
 <ul>
   <li>病院名： <%= @visit.hospital_name %></li>
-  <li>受診日： <%= @visit.visit_date.strftime("%-m月%-d日") %></li>
-  <li>目的： <%= @visit.purpose %></li>
-  <li>時間： <%= @visit.appointed_at.strftime("%H:%M") %></li>
+  <li>診療科： <%= @visit.department.name if @visit.department.present? %></li>
+  <li>受診日： <%= @visit.visit_date.strftime("%Y年%-m月%-d日") %></li>
+  <li>受診目的： <%= @visit.purpose %></li>
+  <li>予約時間： <%= @visit.appointed_at.strftime("%H:%M") %></li>
 </ul>
 
 <p>ログインをして詳細を確認してください：
