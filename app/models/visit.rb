@@ -18,10 +18,29 @@ class Visit < ApplicationRecord
   }
 
   validates :department_id, presence: true # #重複表示の修正
-
   validate :visit_date_cannot_be_in_the_past
-
   validate :appointed_at_cannot_be_in_the_past
+
+  # 通知に関連する
+  def create_notifications
+    # 即時通知
+    immediate = notifications.create(
+      user: user,
+      title: "【受診予定を新規登録しました】#{hospital_name}",
+      description: "日付： #{visit_date.strftime("%-m月%-d日")}\n時間：#{appointed_at.strftime("%H:%M")}\n目的：#{purpose}",
+      due_date: Date.current, # 今日
+      is_sent: false
+    )
+
+    # 前日通知
+    reminder = notifications.create(
+      user: user,
+      title: "【受診に関するリマインド】#{hospital_name}",
+      description: "明日は受診日です。\n日付： #{visit_date.strftime("%-m月%-d日")}\n時間：#{appointed_at.strftime("%H:%M")}\n目的：#{purpose}",
+      due_date: visit_date - 1.day,
+      is_sent: false
+    )
+  end
 
   private
 

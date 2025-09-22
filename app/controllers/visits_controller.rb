@@ -20,19 +20,7 @@ class VisitsController < ApplicationController
   def create # ユーザーが新しい予定（Visit）を登録したときに呼び出される
     @visit = current_user.visits.build(visit_params) # 現在ログインしているユーザー（current_user）に紐づくVisitモデルの新しいインスタンスを作成
     if @visit.save
-      # １、即時通知を作る
-      immediate_notification = current_user.notifications.create!(
-        title: "【受診予定を新規登録しました】#{@visit.hospital_name}",
-        description: "日付： #{@visit.visit_date.strftime("%-m月%-d日")}\n時間：#{@visit.appointed_at.strftime("%H:%M")}\n目的：#{@visit.purpose}",
-        due_date: Date.current, # 今日
-        visit: @visit,
-        is_sent: false
-      )
-      NotificationMailer.created(immediate_notification).deliver_later
-      immediate_notification.update!(is_sent: true)
-
-      # リマインド通知を作る 、Visitに対してNotificationが2件あるから、複数形
-      current_user.notifications.create!(title: "【受診リマインド】#{@visit.hospital_name}", description: "明日は受診日です。\n日付： #{@visit.visit_date.strftime("%-m月%-d日")}", due_date: @visit.visit_date - 1.day, visit: @visit, is_sent: false)
+      @visit.create_notifications # モデルのメソッドを呼ぶ
 
       # 完了したらリダイレクトする
       redirect_to visits_path(date: @visit.visit_date), notice: "予定を保存しました"
