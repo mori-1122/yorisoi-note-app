@@ -3,6 +3,8 @@ import "filter";
 import "question_status_toggle";
 import "recording";
 import "document_preview";
+import "bootstrap";
+import "guide_modal";
 
 // カレンダー初期化関数
 window.initCalendar = function() {
