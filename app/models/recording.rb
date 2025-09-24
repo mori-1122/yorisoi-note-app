@@ -1,23 +1,6 @@
-# == Schema Information
-#
-# Table name: recordings
-#
-#  id          :integer          not null, primary key
-#  user_id     :integer          not null
-#  visit_id    :integer          not null
-#  recorded_at :datetime         not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#
-# Indexes
-#
-#  index_recordings_on_user_id   (user_id)
-#  index_recordings_on_visit_id  (visit_id) UNIQUE
-#
-
-class Recording < ApplicationRecord # アクティブレコードを定義
-  belongs_to :user # ユーザーに属する 外部キー
-  belongs_to :visit # 受診、診察に属する 外部キー
+class Recording < ApplicationRecord
+  belongs_to :user
+  belongs_to :visit
 
   has_one_attached :audio_file # ActiveStorageを使用 ここの名前は任意で作成可能。ActiveStorageを使って音声ファイルを1つ添付できるようにしている。添付の名前はaudio_file。
   has_one_attached :converted_audio # mp３に変換 #実体はactive_storage_blobsテーブルに記録される
