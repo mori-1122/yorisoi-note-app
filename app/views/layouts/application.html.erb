@@ -42,7 +42,7 @@
         </button>
         <p class="mb-0">ようこそ、<strong><%= current_user.name %></strong>さん</p>
       </div>
-      <%= button_to 'ログアウト', destroy_user_session_path, method: :delete, data: { turbo: false }, class: 'btn btn-pink btn-logout' %>
+      <%= button_to 'ログアウト', destroy_user_session_path, method: :delete, data: { turbo: false }, class: 'btn btn-pink-override btn-logout' %>
     </div>
 
     <nav id="sidebarMenu" class="sidebar">
