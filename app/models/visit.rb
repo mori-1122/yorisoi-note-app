@@ -31,6 +31,9 @@ class Visit < ApplicationRecord
       due_date: Date.current, # 今日
       is_sent: false
     )
+    # 作成した即時通知をジョブキューに追加する
+    ImmediateNotificationJob.perform_later(immediate.id)
+
 
     # 前日通知
     reminder = notifications.create(
