@@ -38,11 +38,11 @@
           <%= button_to '削除', visit_path(visit), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "btn btn-outline-pink" %>
           <%= link_to '質問管理画面へ行く', visit_question_selections_path(visit, page: 'list'), class: "btn btn-violet" %>
           <%= link_to '診察中に録音をする', new_visit_recording_path(visit), data: { turbo: false }, class: "btn btn-green" %><%# とりあえず、ここではturboを止める %>
-          <%= link_to '画像を見る', visit_documents_path(visit), class: "btn btn-pink-override" %>
+          <%= link_to '受診に関する画像を管理する', new_visit_document_path(visit), data: { turbo: false }, class: "btn btn-pink-override" %>
         </div>
       </div>
     </div>
   <% end %>
 <% else %>
-  <p class="text-muted">予定がありません。</p> <%# 予定がない場合の表示 %>
+  <p class="text-muted text-center">予定がありません</p> <%# 予定がない場合の表示 %>
 <% end %>
