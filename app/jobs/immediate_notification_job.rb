@@ -6,7 +6,7 @@ class ImmediateNotificationJob < ApplicationJob
 
     Notification.transaction do
       # Jobそのものが非同期なので、deliver_nowを使用して即時に送る
-      NotificationMailer.immediate_notification(notification).deliver_now
+      NotificationMailer.immediate_notification(notification).deliver_now!
       notification.update!(is_sent: true)
     end
   end
