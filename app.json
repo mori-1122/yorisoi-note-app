@@ -1,0 +1,25 @@
+{
+  "name": "yorisoi-note-app",
+  "description": "A Rails 8 demo app with Sidekiq and Redis",
+  "keywords": ["rails", "heroku", "sidekiq", "redis"],
+  "website": "https://yorisoi-note-app.herokuapp.com",
+  "repository": "https://github.com/mori-1122/yorisoi-note-app",
+  "env": {
+    "RAILS_MASTER_KEY": {
+      "description": "Rails credentials master key required for production"
+    },
+    "REDIS_URL": {
+      "description": "Redis connection URL (set automatically by Heroku Redis)"
+    }
+  },
+  "addons": [
+    "heroku-postgresql:essential-0",
+    "heroku-redis:mini"
+  ],
+  "buildpacks": [
+    { "url": "heroku/ruby" }
+  ],
+  "scripts": {
+    "postdeploy": "bundle exec rake db:migrate"
+  }
+}
