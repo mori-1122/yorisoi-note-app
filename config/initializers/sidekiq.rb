@@ -1,4 +1,5 @@
-redis_url = ENV.fetch("REDIS_URL", "redis://localhost:6379")
+# REDIS_TLS_URL を優先的に利用し、なければ REDIS_URL、それもなければローカルを使う
+redis_url = ENV["REDIS_TLS_URL"] || ENV.fetch("REDIS_URL", "redis://localhost:6379")
 
 Sidekiq.configure_server do |config|
   config.redis = {
