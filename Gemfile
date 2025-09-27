@@ -72,6 +72,8 @@ group :development do
   gem "pry-rails"
   gem "letter_opener"
   gem "letter_opener_web"
+  gem "rspec-rails"
+  gem "factory_bot_rails"
 end
 
 group :test do
