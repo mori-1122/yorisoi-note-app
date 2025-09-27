@@ -61,15 +61,18 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: "example.com" }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
+  config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    domain: "gmail.com",
-    port: 587,
-    user_name: ENV["MAILER_SENDER"],
-    password: ENV["MAILER_PASSWORD"],
-    authentication: "plain",
-    enable_starttls_auto: true
-  }
+  user_name: "apikey",
+  password: ENV["SENDGRID_API_KEY"],
+  domain: "heroku.com", # 将来独自ドメイン
+  address: "smtp.sendgrid.net",
+  port: 587,
+  authentication: :plain,
+  enable_starttls_auto: true
+}
+
+  config.action_mailer.default_url_options = { host: "yorisoi-note-app.herokuapp.com", protocol: "https" }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
