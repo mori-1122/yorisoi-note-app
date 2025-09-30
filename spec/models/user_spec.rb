@@ -47,8 +47,8 @@ RSpec.describe User, type: :model do
     end
 
     context "メールアドレスが重複している場合" do
-      let!(:user1) { create(:user, email:"test@example.com") }
-      let(:user2) { build(:user, email:"test@example.com") }
+      let!(:user1) { create(:user, email: "test@example.com") }
+      let(:user2) { build(:user, email: "test@example.com") }
 
       it "無効である" do
         expect(user2.valid?).to be false
