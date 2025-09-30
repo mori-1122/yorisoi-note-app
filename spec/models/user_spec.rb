@@ -1,39 +1,76 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  # テスト対象・観点. テストしたいメソッドになることも多い
   describe "バリデーション" do
+    # 正常系
+    # context は条件を書く
+
     context "有効な場合" do
       let(:user) { build(:user) }
 
-      it "名前、メールアドレス、パスワードが入力されていれば有効である" do
-        expect(user).to be_valid
+      # it は期待値
+      it "バリデーションを通る" do
+        expect(user.valid?).to be true
       end
     end
 
-    context "登録できない場合" do
-      it "名前が空では無効である" do
-        user = build(:user, name: "")
-        user.valid?
+    # 以降、異常系
+    # context には条件を書く
+    context "名前が空の場合" do
+      let(:user) { build(:user, name: '') }
+
+      it "無効である" do
+        # create: User.create!
+        # build: User.new
+        # user = build(:user, name: "") # build は good! create は DB に保存してしまうため
+
+        # valid? はバリデーションにすべて通るかどうか？を検証している
+        expect(user.valid?).to be false
         expect(user.errors[:name]).to include("を入力してください")
       end
+    end
 
-      it "メールアドレスが空の場合は無効である" do
+    # context は極力ネストさせないのがおすすめ。やって2段階までかな...
+    context "メールアドレスが空の場合" do
+      # 上で let で user を定義しているので、以降も合わせておくといいかも
+      it "無効である" do
         user = build(:user, email: "")
-        user.valid?
+
+        expect(user.valid?).to be false
         expect(user.errors[:email]).to include("を入力してください")
       end
+    end
 
-      it "パスワードが空の場合は無効である" do
+    context 'パスワードが空の場合' do
+      it "無効である" do
         user = build(:user, password: "")
-        user.valid?
-        expect(user.errors[:password]).to include("を入力してください")
-      end
 
-      it "メールアドレスが重複している場合は無効である" do
+        expect(user.valid?).to be false
+        expect(user.errors[:password]).to include("を入力してください")
+        # 別解: エラーの検証方法の別パターン
+        # expect(user.errors).to be_of_kind(:password, :blank)
+      end
+    end
+
+    context "メールアドレスが重複している場合" do
+      it "無効である" do
         create(:user, email: "test@example.com")
         user = build(:user, email: "test@example.com")
-        user.valid?
+
+        expect(user.valid?).to be false
         expect(user.errors[:email]).to include("はすでに存在します")
+      end
+    end
+
+    # 以下の部分のテストを書く
+    # validates :email, ... format: { with: URI::MailTo::EMAIL_REGEXP }
+    context "メールアドレスの形式が不正な場合" do
+      it "無効である" do
+        user = build(:user, email: "090-1111-2222")
+
+        expect(user.valid?).to be false
+        expect(user.errors).to be_of_kind(:email, :invalid_format)
       end
     end
   end
