@@ -106,4 +106,56 @@ RSpec.describe Visit, type: :model do
       expect(reminder.is_sent).to be false
     end
   end
+
+  context "通知メールが作成された場合" do
+    let(:visit) { create(:visit, user: user, department: department, visit_date: Date.tomorrow, appointed_at: "10:00") }
+
+    it "visitとuserが紐ついて作成される" do
+      visit.create_notifications
+      notification = visit.notifications.first
+
+      expect(notification.visit).to eq(visit)
+      expect(notification.user).to eq(user)
+    end
+  end
+
+  context "通知メールの初期状態" do
+    let(:visit) { create(:visit, user: user, department: department, visit_date: Date.tomorrow, appointed_at: "10:00") }
+
+    it "is_sentがfalseである" do
+      visit.create_notifications
+      notification = visit.notifications.first
+
+      expect(notification.is_sent).to be false
+    end
+  end
+
+  context "即時通知が作成される場合" do
+    let(:visit) { create(:visit, user: user, department: department, visit_date: Date.tomorrow, appointed_at: "10:00", purpose: "検査") }
+
+    it "タイトルと内容が正しい" do
+      visit.create_notifications
+      immediate = visit.notifications.find_by(title: "【受診予定を新規登録しました】東京病院")
+
+      expect(immediate.title).to eq("【受診予定を新規登録しました】東京病院")
+      expect(immediate.description).to include("日付： #{visit.visit_date.strftime("%-m月%-d日")}")
+      expect(immediate.description).to include("時間：10:00")
+      expect(immediate.description).to include("目的：検査")
+    end
+  end
+
+  context "前日通知が作成される場合" do
+    let(:visit) { create(:visit, user: user, department: department, visit_date: Date.tomorrow, appointed_at: "10:00", purpose: "検査") }
+
+    it "タイトルと内容が正しい" do
+      visit.create_notifications
+      reminder = visit.notifications.find_by(title: "【受診に関するリマインド】東京病院")
+
+      expect(reminder.title).to eq("【受診に関するリマインド】東京病院")
+      expect(reminder.description).to include("明日は受診日です。")
+      expect(reminder.description).to include("日付： #{visit.visit_date.strftime("%-m月%-d日")}")
+      expect(reminder.description).to include("時間：10:00")
+      expect(reminder.description).to include("目的：検査")
+    end
+  end
 end
