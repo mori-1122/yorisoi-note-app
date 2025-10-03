@@ -7,7 +7,7 @@ RSpec.describe Visit, type: :model do
   context "必須項目が揃っている場合" do
     let(:visit) { build(:visit, user: user, department: department) }
 
-    it "有効である" do
+    it "受診予定を登録できる" do
       expect(visit.valid?).to be true
     end
   end
@@ -15,7 +15,7 @@ RSpec.describe Visit, type: :model do
   context "診療科がない場合" do
     let(:visit) { build(:visit, user: user, department: nil) }
 
-    it "無効である" do
+    it "診療科がないと登録できない" do
       expect(visit.valid?).to be false
       expect(visit.errors[:department]).to include("を入力してください")
     end
@@ -24,7 +24,7 @@ RSpec.describe Visit, type: :model do
   context "受診予定日が空の場合" do
     let(:visit) { build(:visit, user: user, department: department, visit_date: nil) }
 
-    it "無効である" do
+    it "受診予定日がないと登録できない" do
       expect(visit.valid?).to be false
       expect(visit.errors[:visit_date]).to include("を入力してください")
     end
@@ -33,7 +33,7 @@ RSpec.describe Visit, type: :model do
   context "受診予定日が過去の日付の場合" do
     let(:visit) { build(:visit, user: user, department: department, visit_date: Date.yesterday) }
 
-    it "無効である" do
+    it "受診予定日は今日以降でなければ登録できない" do
       expect(visit.valid?).to be false
       expect(visit.errors[:visit_date]).to include("は、今日以降の日付を指定してください。")
     end
@@ -42,7 +42,7 @@ RSpec.describe Visit, type: :model do
   context "受診予定時間が過去の場合" do
     let(:visit) { build(:visit, user: user, department: department, visit_date: Date.today, appointed_at: 1.day.ago) }
 
-    it "無効である" do
+    it "受診予定日は現時点以降でなければ登録できない" do
       expect(visit.valid?).to be false
       expect(visit.errors[:appointed_at]).to include("は、現在以降の日時を指定してください。")
     end
@@ -52,7 +52,7 @@ RSpec.describe Visit, type: :model do
     let!(:existing_visit) { create(:visit, user: user, department: department, visit_date: Date.tomorrow, appointed_at: Time.zone.parse("10:00")) }
     let(:new_visit) { build(:visit, user: user, department: department, visit_date: Date.tomorrow, appointed_at: Time.zone.parse("10:00")) }
 
-    it "無効である" do
+    it "同じ日時の受診予定は重複して登録できない" do
       expect(new_visit.valid?).to be false
       expect(new_visit.errors[:appointed_at]).to include("は、すでに他の予定と重複して登録されています。")
     end
@@ -61,7 +61,7 @@ RSpec.describe Visit, type: :model do
   context "受診日と受診予約時間が結合される場合" do
     let(:visit) { build(:visit, user: user, department: department, visit_date: Date.today, appointed_at: "10:00") }
 
-    it "有効である" do
+    it "受診日と時刻を組み合わせて登録できる" do
       expect(visit.valid?).to be true
       expect(visit.appointed_at.strftime("%H:%M")).to eq("10:00")
     end
@@ -70,7 +70,7 @@ RSpec.describe Visit, type: :model do
   context "受診予定日が今日の場合" do
     let(:visit) { build(:visit, user: user, department: department, visit_date: Date.today, appointed_at: "10:00") }
 
-    it "有効である" do
+    it "今日の受診予定を登録できる" do
       expect(visit.valid?).to be true
     end
   end
@@ -78,7 +78,7 @@ RSpec.describe Visit, type: :model do
   context "受診予定時間を現在時刻で登録した場合" do
     let(:visit) { build(:visit, user: user, department: department, visit_date: Date.today, appointed_at: Time.zone.now) }
 
-    it "無効である" do
+    it "受診予定時間が現在時刻と同じ場合は登録できない" do
       expect(visit.valid?).to be false
       expect(visit.errors[:appointed_at]).to include("は、現在以降の日時を指定してください。")
     end
