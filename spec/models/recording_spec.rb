@@ -8,7 +8,7 @@ RSpec.describe Recording, type: :model do
         build(:recording, audio_file: file)
       end
 
-      it "有効である" do
+      it "録音が保存できる" do
         expect(recording.valid?).to be true
       end
     end
@@ -16,7 +16,7 @@ RSpec.describe Recording, type: :model do
     context "ファイルが添付されていない場合" do
       let(:recording) { build(:recording, audio_file: nil) }
 
-      it "無効である" do
+      it "録音を保存できない" do
         expect(recording.valid?).to be false
         expect(recording.errors[:audio_file]).to include("を入力してください")
       end
@@ -28,7 +28,7 @@ RSpec.describe Recording, type: :model do
         build(:recording, audio_file: file)
       end
 
-      it "無効である" do
+      it "許可されていない形式として弾かれる" do
         expect(recording.valid?).to be false
         expect(recording.errors[:audio_file]).to include("のファイルタイプは許可されていません (許可されたファイルタイプは)")
       end
@@ -36,18 +36,18 @@ RSpec.describe Recording, type: :model do
   end
 
   describe "after_commitコールバック" do
-    context "webmファイルをアップロードした場合" do
+    context "正しい形式の音声ファイルを追加した場合" do
       let(:recording) do
         file = fixture_file_upload(file_fixture("sample.webm"), "audio/webm")
         create(:recording, audio_file: file, recorded_at: Time.current)
       end
 
-      it "mp3に変換されて保存される" do
+      it "mp3ファイルに変換されて保存される" do
         expect(recording.converted_audio).to be_attached
         expect(recording.converted_audio.filename.to_s).to eq("recording.mp3")
       end
 
-      it "durationがメタデータに保存される" do
+      it "音声の長さがメタデータに保存される" do
         expect(recording.audio_file.blob.metadata[:duration]).to be > 0
       end
     end
@@ -58,24 +58,24 @@ RSpec.describe Recording, type: :model do
         build(:recording, audio_file: file)
       end
 
-      it "無効である" do
+      it "サイズ超過として保存できない" do
         expect(recording.valid?).to be false
         expect(recording.errors[:audio_file]).to include("のファイルサイズは2MB未満にしてください (添付ファイルのサイズは3MB)")
       end
     end
 
-    context "content_typeが空な場合" do
+    context "ファイルの種類情報が不明な場合" do
       let(:recording) do
         # sample.webmを使いつつ、MIMEタイプをあえて不正なものにする
         file = fixture_file_upload(file_fixture("no_extension"), nil)
         build(:recording, audio_file: file)
       end
 
-      it "無効である" do
+      it "保存できない" do
         expect(recording.valid?).to be false
       end
 
-      it "audio_fileのタイプエラーが追加される" do
+      it "ファイルタイプのエラーメッセージが追加される" do
         expect(recording.valid?).to be false
         expect(recording.errors[:audio_file]).to include(a_string_starting_with("のファイルタイプは許可されていません")
         )
@@ -84,13 +84,13 @@ RSpec.describe Recording, type: :model do
   end
 
   describe "アソシエーション" do
-    context "userが紐付いていない場合" do
+    context "ユーザーが紐付いていない場合" do
       let(:recording) do
         file = fixture_file_upload(file_fixture("sample.webm"), "audio/webm")
         build(:recording, user: nil, audio_file: file)
       end
 
-      it "無効である" do
+      it "録音は保存できない" do
         expect(recording.valid?).to be false
         expect(recording.errors[:user]).to include("を入力してください")
       end
@@ -102,7 +102,7 @@ RSpec.describe Recording, type: :model do
         build(:recording, visit: nil, audio_file: file)
       end
 
-      it "無効である" do
+      it "録音は保存できない" do
         expect(recording.valid?).to be false
         expect(recording.errors[:visit]).to include("を入力してください")
       end
