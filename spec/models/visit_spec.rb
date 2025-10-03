@@ -59,16 +59,16 @@ RSpec.describe Visit, type: :model do
   end
 
   context "受診日と受診予約時間が結合される場合" do
-    let(:visit) { build(:visit, user: user, department: department, visit_date: Date.today, appointed_at: "10:00") }
+    let(:visit) { build(:visit, user: user, department: department, visit_date: Date.today, appointed_at: 1.hour.from_now) }
 
     it "有効である" do
       expect(visit.valid?).to be true
-      expect(visit.appointed_at.strftime("%H:%M")).to eq("10:00")
+      expect(visit.appointed_at.strftime("%H:%M")).to eq(1.hour.from_now.strftime("%H:%M"))
     end
   end
 
   context "受診予定日が今日の場合" do
-    let(:visit) { build(:visit, user: user, department: department, visit_date: Date.today, appointed_at: "10:00") }
+    let(:visit) { build(:visit, user: user, department: department, visit_date: Date.today, appointed_at: 1.hour.from_now) }
 
     it "有効である" do
       expect(visit.valid?).to be true
