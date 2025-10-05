@@ -10,6 +10,7 @@ module YorisoiNote2
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
+    config.autoload_paths = config.autoload_paths.dup
 
     if Rails.env.development? || Rails.env.test?
       Dotenv::Railtie.load
