@@ -57,6 +57,9 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "dotenv-rails"
   gem "factory_bot_rails"
+  gem "pry"
+  gem "pry-byebug"
+  gem "pry-rails"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
@@ -69,9 +72,6 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
   gem "erb_lint"
-  gem "pry"
-  gem "pry-byebug"
-  gem "pry-rails"
   gem "letter_opener"
   gem "letter_opener_web"
   gem "rspec-rails"
