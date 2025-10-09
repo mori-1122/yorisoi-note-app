@@ -7,9 +7,10 @@ RSpec.describe ImmediateNotificationJob, type: :job do
       notification = create(:notification)
 
       # NotificationMailerのモックを作成
-      mailer_mock = double("NotificationMailer")
+      mailer_mock = instance_double(ActionMailer::MessageDelivery)
 
-      # クラスにモックを仕込んだ後に、immediate_notificationの呼び出しを差し替えてモックする
+      # NotificationMailer.immediate_notificationが返す
+      # ActionMailer::MessageDeliveryのインスタンスダブルを作成
       allow(NotificationMailer).to receive(:immediate_notification)
         .with(notification)
         .and_return(mailer_mock)
