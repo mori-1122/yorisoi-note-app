@@ -7,8 +7,9 @@ RSpec.describe VisitReminderJob, type: :job do
       target_date = Time.zone.tomorrow
       notification = create(:notification, due_date: target_date, is_sent: false)
 
-      # NotificationMailerのモック
-      mailer_mock = double("NotificationMailer")
+      # NotificationMailer.visit_reminderが返す
+      # ActionMailer::MessageDelivery のインスタンスダブルを作成
+      mailer_mock = instance_double(ActionMailer::MessageDelivery)
 
       allow(NotificationMailer).to receive(:visit_reminder)
         .with(notification)
