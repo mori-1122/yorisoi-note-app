@@ -1,42 +1,57 @@
-# ヘルパーはモジュールと書く
+# app/helpers/recordings_helper.rb
 module RecordingsHelper
+  # 録音時間を「分秒」形式に変換して表示
   def format_duration(blob)
-    if blob&.metadata["duration"].present? # blobがnilではなく、さらに metadata["duration"] が存在しているかを確認。&. は安全ナビゲーション演算子。blobがnilも例外にならずnilを返す。
-      d = blob.metadata["duration"].to_f # なぜか+１秒されるので、小数点を四捨五入
-      seconds = d.floor
-      "#{seconds / 60}分#{seconds % 60}秒"
-    else
-      "--分--秒" # durationが存在しない場合 "--分--秒" を返すことでview崩れを防ぐ
-    end
+    # ファイルが存在しない、またはduration情報がない場合
+    return "--分--秒" if blob.nil? || blob.metadata.nil? || blob.metadata["duration"].blank?
+
+    # duration（録音時間：秒数）を整数にして分・秒に変換
+    duration_in_seconds = blob.metadata["duration"].to_f.floor
+    minutes = duration_in_seconds / 60
+    seconds = duration_in_seconds % 60
+
+    "#{minutes}分#{seconds}秒"
   end
 
-  def audio_player(recording) # Recordingモデルのインスタンス
-    return "" unless recording # viewに<audio>タグが出ないようにする 早期リターン RailsのviewヘルパーはHTMLを返すため、空文字を返せば何もレンダリングされない
+  # 録音プレイヤーを表示（<audio>タグを生成）
+  def audio_player(recording)
+    # 録音データが存在しない場合は何も表示しない
+    return "" if recording.nil?
 
-    content_tag(:audio, id: "audioPlayer", controls: true) do # HTMLタグを生成 controls: trueでブラウザの音声再生コントローラを表示
-      sources = [] # Railsで複数のタグを安全に連結する場合 safe_join を使うのが推奨
-      if recording.converted_audio.attached? # ActiveStorageのattached?メソッドでファイルがあるかを確認
-        sources << tag.source( # tag.source で <source> タグを生成
-          src: rails_blob_path(recording.converted_audio, disposition: "inline"), # disposition: "inline" により、ダウンロードではなくブラウザ内で再生可能
-          type: "audio/mpeg" # ファイルのMIMEタイプを指定
+    content_tag(:audio, id: "audioPlayer", controls: true) do
+      sources = []
+
+      # 優先順位：
+      # ① 変換済みMP3ファイルがある場合 → MP3を使用
+      # ② MP3がないが元の録音ファイルがある場合 → WebMなど元データを使用
+      # ③ どちらもない場合 → ブラウザ非対応メッセージ
+      if recording.converted_audio&.attached?
+        sources << tag.source(
+          src: rails_blob_path(recording.converted_audio, disposition: "inline"),
+          type: "audio/mpeg"
         )
-      end
 
-      if recording.audio_file.attached? # 元の録音データが添付されていれば、<source>として追加。
+      elsif recording.audio_file&.attached?
         sources << tag.source(
           src: rails_blob_path(recording.audio_file, disposition: "inline"),
-          type: recording.audio_file.content_type # アップロードされた形式に合わせて正しいMIMEタイプが埋め込まれる。
+          type: recording.audio_file.content_type
         )
+
+      else
+        sources << "お使いのブラウザではサポートされていません。"
       end
 
-      sources << "お使いのブラウザではサポートされていません。"
-      safe_join(sources) # safe_joinで配列の中身を安全に連結して返す
+      # 複数のタグを安全にHTMLとして結合して返す
+      safe_join(sources)
     end
   end
 
-  # 録音ファイルサイズを変換
+  # 録音ファイルのサイズを人が読める形式（例: "1.2 MB"）で表示
   def recording_file_size(recording)
-    return "--" unless recording&.audio_file.attached? # &.はぼっち演算子。recording が nilの場合でも例外を出さないでnilを返す。.attachedは実際にDBに紐づいているかを真偽値で返す。
-    number_to_human_size(recording.audio_file.byte_size) # ActiveStorage::Attachedオブジェクトが持つメソッド。バイト数（整数値）を返す
-  end # number_to_human_sizeは、number_to_human_size
+    # 録音データまたはファイルが存在しない場合
+    return "--" if recording.nil? || !recording.audio_file&.attached?
+
+    # ActiveStorageのヘルパーで自動的に「MB」「KB」などに変換
+    number_to_human_size(recording.audio_file.byte_size)
+  end
 end
