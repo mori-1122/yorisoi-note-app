@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbo:load', () => {
   const fileInput = document.getElementById('document-icon');
   const uploadArea = document.getElementById('upload-area');
   const fileName = document.getElementById('file-name');
