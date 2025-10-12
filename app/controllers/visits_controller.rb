@@ -54,8 +54,8 @@ class VisitsController < ApplicationController
   end
 
   def by_date
-    @visits = current_user.visits.where(visit_date: params[:date]) # #ログインユーザーの予定だけ取得
-    render partial: "visits/schedule_list", locals: { visits: @visits } # #カレンダーの下などに表示する部分テンプレートを返す
+    @visits = current_user.visits.where(visit_date: params[:date]) # ログインユーザーの予定だけ取得
+    render partial: "visits/schedule_list", locals: { visits: @visits } # カレンダーの下などに表示する部分テンプレートを返す
   end
 
   private # 安全にユーザーからの入力を処理する
@@ -64,8 +64,8 @@ class VisitsController < ApplicationController
     @visit = current_user.visits.find(params[:id])
   end
 
-  def visit_params # #通院予定（Visit）登録時に受け付けるパラメータを制限（セキュリティ対策） 情報を抜き出す
-    params.require(:visit).permit(
+  def visit_params # 通院予定（Visit）登録時に受け付けるパラメータを制限（セキュリティ対策） 情報を抜き出す
+    params.expect(visit: [
       :visit_date,
       :hospital_name,
       :appointed_at,
@@ -74,6 +74,6 @@ class VisitsController < ApplicationController
       :has_document,
       :department_id,
       :memo
-    )
+    ])
   end
 end
