@@ -22,45 +22,44 @@ class Recording < ApplicationRecord
     fixed_path = "#{path}.fixed.webm" # コピー後のWebMファイル（メタデータ修正用）。
     mp3_path   = "#{path}.mp3" # 変換後MP3ファイル。
 
-    begin
-      # WebMのdurationを補完する（ffmpegでヘッダ書き換え）
-      _stdout, stderr, status = Open3.capture3(
-        "ffmpeg", "-i", path, "-c", "copy", fixed_path,
-        "-y", "-loglevel", "quiet"
-      )
-      Rails.logger.error "ffmpeg (fix metadata) failed: #{stderr}" unless status.success?
+    # WebMのdurationを補完する（ffmpegでヘッダ書き換え）
+    _stdout, _stderr, status = Open3.capture3(
+      "ffmpeg", "-i", path, "-c", "copy", fixed_path,
+      "-y", "-loglevel", "quiet"
+    )
 
-      # ffprobe で録音時間を取得
-      stdout, stderr, status = Open3.capture3(
+    # ffprobe で録音時間を取得
+    if status.success?
+      stdout, _stderr, probe_status = Open3.capture3(
         "ffprobe", "-i", fixed_path,
         "-show_entries", "format=duration",
         "-v", "quiet", "-of", "csv=p=0"
       )
-      if status.success?
+
+      if probe_status.success?
         duration = stdout.to_f
         audio_file.blob.update(metadata: audio_file.blob.metadata.merge(duration: duration))
-      else
-        Rails.logger.error "ffprobe failed: #{stderr}"
       end
-
-      # WebM → MP3 変換
-      _stdout, stderr, status = Open3.capture3(
-        "ffmpeg", "-i", fixed_path,
-        "-ar", "44100", "-ac", "2", "-b:a", "192k",
-        mp3_path, "-y", "-loglevel", "quiet"
-      )
-      Rails.logger.error "ffmpeg (convert mp3) failed: #{stderr}" unless status.success?
-
-      if File.exist?(mp3_path)
-        converted_audio.attach(
-          io: File.open(mp3_path),
-          filename: "recording.mp3",
-          content_type: "audio/mpeg"
-        )
-      end
-    ensure # 一時ファイル（fixed.webm, output.mp3）をサーバーに残さない。
-      File.delete(fixed_path) if File.exist?(fixed_path)
-      File.delete(mp3_path)   if File.exist?(mp3_path)
     end
+
+    # WebM → MP3 変換
+    _stdout, _stderr, convert_status = Open3.capture3(
+      "ffmpeg", "-i", fixed_path,
+      "-ar", "44100", "-ac", "2", "-b:a", "192k",
+      mp3_path, "-y", "-loglevel", "quiet"
+    )
+
+    # 変換が成功し、ファイルが存在する場合のみ添付
+    if convert_status.success? && File.exist?(mp3_path)
+      converted_audio.attach(
+        io: File.open(mp3_path),
+        filename: "recording.mp3",
+        content_type: "audio/mpeg"
+      )
+    end
+
+    # 一時ファイルのクリーンアップ
+    File.delete(fixed_path) if File.exist?(fixed_path)
+    File.delete(mp3_path)   if File.exist?(mp3_path)
   end
 end
