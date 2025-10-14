@@ -66,7 +66,7 @@ RSpec.describe "Recordings", type: :request do
       end
 
       it "作成された録音には音声ファイルが添付されている" do
-        sign_in user
+        sign_in user, scope: :user
         post visit_recording_path(visit), params: { audio: audio_file }
         recording = Recording.last
         expect(recording.audio_file).to be_attached
