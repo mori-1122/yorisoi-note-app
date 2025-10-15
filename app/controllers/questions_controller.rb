@@ -1,7 +1,6 @@
 class QuestionsController < ApplicationController # 質問テンプレートを扱うコントローラ
   before_action :set_visit, only: [ :select, :search, :create ] # どの受診予定（Visit）に紐づく質問なのかを明確にして、以降の処理で使えるようにする
 
-
   def index
     redirect_to visits_path, alert: "受診予定を選択してください"
   end
@@ -19,7 +18,7 @@ class QuestionsController < ApplicationController # 質問テンプレートを�
     @department_options = [ [ "全て", "" ] ] + @departments.map { |dept| [ dept.name, dept.id ] }
     @category_options = [ [ "全て", "" ] ] + @question_categories.map { |cat| [ cat.category_name, cat.id ] }
 
-    respond_to do |format| # ページ初期表示も、Ajax更新（例: 絞り込み）にも使えるようにする
+    respond_to do |format| # ページ初期表示も、Ajax更新（例:絞り込み）にも使えるようにする
       format.html
       format.js
     end
@@ -37,55 +36,57 @@ class QuestionsController < ApplicationController # 質問テンプレートを�
     end
   end
 
-  # 質問選択の保存
   def create
-    question_ids = params[:question_ids] || [] # フォームやURLから渡された「選択された質問IDの配列」を受け取る。params[:question_ids]が存在しない場合は、空の配列[]を使う。
-    question_ids = question_ids.reject(&:blank?).map(&:to_i) # 空文字列("")、nil、スペースなどの“空っぽ”な値を除外する。to_iで各値をStringからIntegerに変換
+    # フォームから送られてきた「選択された質問IDの配列」を取り出す
+    # もし何も選ばれていなかった場合（nil）でも安全に扱えるように Array() を使う
+    question_ids = Array(params[:question_ids]).reject(&:blank?).map(&:to_i)
 
-    if question_ids.empty? # もしも、質問のIDがなかったら
-      redirect_to questions_select_path(visit_id: @visit.id), alert: "質問を選択してください" # 質問選択画面に戻して、エラーメッセージを表示する
+    # 1件も選ばれていなければ、元の画面に戻す
+    if question_ids.empty?
+      redirect_to questions_select_path(visit_id: @visit.id), alert: "質問を選択してください"
       return
     end
 
-    existing_question_ids = @visit.question_selections.pluck(:question_id) # 重複登録を防ぐためと、登録済みの質問を除外するため。@visitに紐づくすべてのquestion_selectionsからquestion_idのみを抽出して、すでに（DBに）存在している質問IDたちに格納する。
-    new_question_ids = question_ids - existing_question_ids # 新たに選択されたけど、まだ登録されていない質問IDだけを抜き出す
+    # すでに登録されている質問IDを取り出す
+    existing_question_ids = @visit.question_selections.pluck(:question_id)
 
-    success_count = 0 # 登録した質問を数える。
-    errors = [] # 登録に失敗した時の文字を入れる。配列。
+    # 新しく追加すべき質問だけを抜き出す
+    new_question_ids = question_ids - existing_question_ids
 
-    new_question_ids.each do |question_id| # 新しい質問IDを1つずつ取り出して処理する。ブロック変数question_idを使って登録処理をする。
-      question = Question.find_by(id: question_id) # モデルでuniqueness複合ユニーク制約を作っているので、組み合わせで1件だけに絞るのでfind_by
-      if question # もしも質問があったら 質問を「受診予定に対して登録する」ための処理をする
-        question_selection = @visit.question_selections.build( # @visit（受診予定）に紐づくquestion_selections（質問選択）の新しいインスタンスを作る
-          question_id: question_id, # 対象の質問IDを指定する
-          selected_at: Time.current, # 今この瞬間の日時を「選択された時刻」として記録
-          user_id: current_user.id, # ログインした人
-          asked: false # 質問できたかどうかはまだ判断しない
-        )
+    # 登録できた件数を数えるための変数
+    added_count = 0
 
-        if question_selection.save # もしも、選択した質問を保存したら
-          success_count += 1 # 成功した件数をユーザーに通知するためにカウントする。保存成功で、１件増やす。
-        else
-          errors << "質問ID #{question_id}: #{question_selection.errors.full_messages.join(', ')}" # 保存に失敗したら、その理由を文字列にする、joinで１行にまとめる。
-        end
-      else
-        errors << "質問ID #{question_id} が見つかりません"
+    # 新しい質問IDごとに繰り返し登録する
+    new_question_ids.each do |question_id|
+      # 該当する質問を探す（見つからなければスキップ）
+      question = Question.find_by(id: question_id)
+      next if question.nil?
+
+      # 受診予定（@visit）に紐づく質問選択を作成
+      question_selection = @visit.question_selections.build(
+        question_id: question_id,
+        selected_at: Time.current,
+        user_id: current_user.id,
+        asked: false
+      )
+
+      # 保存に成功したらカウントを増やす
+      if question_selection.save
+        added_count += 1
       end
     end
 
-    if success_count > 0 && errors.empty? # 登録に成功した質問が１個以上あって、エラーもなかったら
-      redirect_to visit_question_selections_path(@visit), notice: "#{success_count}件の質問が追加されました"
-    elsif success_count > 0 # 部分的に質問は登録できたけど、エラーもあった
-      redirect_to visit_question_selections_path(@visit), notice: "#{success_count}件の質問が追加されました（一部エラーあり）"
+    # 結果によってメッセージを出し分ける
+    if added_count > 0
+      redirect_to visit_question_selections_path(@visit),
+                  notice: "#{added_count}件の質問が追加されました"
     else
-      error_message = errors.any? ? errors.join(", ") : "質問の追加に失敗しました" # 三項演算子 　errorsに何か入っていればそれをjoin(", ")で連結して表示用にまとめる
-      redirect_to questions_select_path(visit_id: @visit.id), alert: error_message # 質問選択画面に戻す
+      redirect_to questions_select_path(visit_id: @visit.id),
+                  alert: "質問の追加に失敗しました"
     end
-  rescue => e # 例外処理　エラーが起きたとき
-    redirect_to questions_select_path(visit_id: @visit.id), alert: "エラーが発生しました"
   end
 
-      private
+  private
 
   def set_visit
     @visit = Visit.find_by(id: params[:visit_id]) # params[:visit_id]に該当するVisitレコードを1件探して@visitに代入する
@@ -118,7 +119,7 @@ class QuestionsController < ApplicationController # 質問テンプレートを�
     end
 
     questions
-    end
+  end
 
   def search_params
     params.permit(:department_id, :question_category_id, :keyword, :visit_id)
