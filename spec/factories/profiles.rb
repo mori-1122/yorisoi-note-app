@@ -5,6 +5,7 @@ FactoryBot.define do
     gender { :male }
     height { 180 }
     weight { 80 }
+    blood_type { "不明" }
 
     trait :no_blood_type do
       blood_type { nil }

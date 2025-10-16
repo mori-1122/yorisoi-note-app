@@ -30,8 +30,8 @@ Rails.application.routes.draw do
   # 質問テンプレを選択、検索
   resources :questions do
     collection do
-      get :select # 質問を選ぶ
-      get :search # 検索 (将来的にTurboを使用したい)
+      get :select
+      get :search
     end
   end
 

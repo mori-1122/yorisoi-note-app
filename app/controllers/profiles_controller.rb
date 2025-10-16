@@ -22,6 +22,16 @@ class ProfilesController < ApplicationController
   end
 
   def profile_params
-    params.expect(profile: [ :birthday, :gender, :height, :weight, :blood_type, :allergy_details, :medical_history, :current_medication ])
+    # expectではテストでエラーが出るため
+    params.require(:profile).permit(
+      :birthday,
+      :gender,
+      :height,
+      :weight,
+      :blood_type,
+      :allergy_details,
+      :medical_history,
+      :current_medication
+    )
   end
 end
