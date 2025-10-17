@@ -78,6 +78,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+          heroku --version
+
       - name: Deploy to Heroku
         uses: Akhileshns/heroku-deploy@v3.12.12
         with:
