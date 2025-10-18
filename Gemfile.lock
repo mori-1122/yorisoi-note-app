@@ -351,6 +351,7 @@ GEM
     raabro (1.4.0)
     racc (1.8.1)
     rack (3.2.1)
+    rack-rewrite (1.5.1)
     rack-session (2.1.1)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
@@ -578,6 +579,7 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   puma
+  rack-rewrite
   rails (~> 8.0.2)
   rails-i18n
   rspec-rails
