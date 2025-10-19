@@ -84,4 +84,3 @@ group :test do
 end
 
 gem "devise"
-gem "rack-rewrite"
