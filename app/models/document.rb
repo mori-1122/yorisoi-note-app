@@ -1,21 +1,3 @@
-# == Schema Information
-#
-# Table name: documents
-#
-#  id         :integer          not null, primary key
-#  user_id    :integer          not null
-#  visit_id   :integer          not null
-#  doc_type   :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#
-# Indexes
-#
-#  index_documents_on_user_id   (user_id)
-#  index_documents_on_visit_id  (visit_id)
-#
-
-
 # Document モデルを残している理由
 # 患者が病院から受け取る書類は多岐に渡り、紙ベースでは紛失のリスクもある。
 # 種類を明確に管理できるようdoc_typeを保持することで、

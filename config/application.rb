@@ -10,12 +10,17 @@ module YorisoiNote2
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
+    config.autoload_paths = config.autoload_paths.dup
+
+    if Rails.env.development? || Rails.env.test?
+      Dotenv::Railtie.load
+    end
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
-    config.i18n.default_locale = :ja # #日本語にする
+    config.i18n.default_locale = :ja # 日本語にする
     config.action_dispatch.allow_browser = true
     config.action_mailer.default_url_options = { host: "localhost", port: 5000 }
     # Configuration for the application, engines, and railties goes here.
