@@ -1,24 +1,146 @@
-# README
+### はじめに
+- 本リポジトリはRuby、Rails学習者の[「千葉」](https://qiita.com/Chiba_67)が作成したWebアプリに関するものです。
+- ご利用いただくことでのトラブル等は一切の責任を負いかねます。
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
 
-* Ruby version
 
-* System dependencies
+# よりそいノート（Yorisoi Note）
+「記録が、寄り添いになる。」
+受診予定や質問、診察内容の録音をまとめて管理し、あなたと医療をやさしくつなぐWebアプリです。
 
-* Configuration
+## デモ
 
-* Database creation
+**アプリURL**: [https://www.yorisoi-note.com/](https://www.yorisoi-note.com/)
 
-* Database initialization
+## 特徴
 
-* How to run the test suite
+- 📅 **受診予定の可視化**：FullCalendarで予定を一目で確認
+- ✉️ **通知機能**：受診日前日に自動リマインドメールを送信
+- 🎙 **録音機能**：診察内容やメモをブラウザ上で録音・保存・再生
+- 🧠 **質問テンプレート機能**：受診前に話したい内容を整理
+- 👤 **プロフィール**：自分の身長体重や、既往歴、内服薬などをまとめて確認・管理
+- 🏥 **家族・医療者連携を意識**：共有できるノートとして今後拡張予定
 
-* Services (job queues, cache servers, search engines, etc.)
+## 開発の背景
 
-* Deployment instructions
+現役の看護師として医療現場で働く中で、患者さんやご家族が抱える課題を間近に感じてきました。
 
-* ...
+### 医療環境が抱える問題
+
+- 少子高齢化による医療需要の増加
+- 核家族化の進行による家族支援の減少
+- 医療従事者の人手不足（特に地方や過疎地では診療体制の維持が困難）
+- 認知症の患者が一人で受診するケースの増加
+- 遠方に住む家族が、付き添いのために頻繁に来院できない現実
+- 医療費や保険料の増加による病院経営の悪化、地域医療機関の減少
+
+こうした背景から、患者さんが、平等に正しい医療を受けられるように支援したいという想いが強まりました。
+
+### 開発への想い
+
+> **「誰もが平等に、安心して医療を受けられる社会をつくりたい」**
+
+その思いを形にするために、患者・家族・医療者の距離を少しでも近づけるべく「よりそいノート」を開発しました。
+
+## 実現したい未来
+
+「よりそいノート」を通じて、
+
+- 患者が自分の生活や受診記録を簡単に残せる
+- 家族が遠方からでもその記録を共有できる
+- 医療者が患者をより深く理解できる
+
+そんな「記録を通して寄り添いが生まれる社会」を目指しています。
+
+## 主なページ
+
+| ページ | 内容 |
+|--------|------|
+| 🏠 トップページ | サービスの紹介とログイン導線 |
+| 👤 ユーザー登録 / ログイン | Deviseを使用した認証機能 |
+| 📅 カレンダー | FullCalendarで予定を管理・編集 |
+| ✉️ 通知一覧 | 登録した受診予定に基づくリマインド送信履歴 |
+| 🎙 録音ページ | MediaRecorderで録音・再生可能 |
+| ⚙️ プロフィール編集 | 名前・メール・パスワード変更、退会機能 |
+| 🧾 質問選択ページ | 受診時に聞きたいことをテンプレートから選択 |
+
+## 技術スタック
+
+| カテゴリ | 使用技術 |
+|---------|---------|
+| フレームワーク | Ruby on Rails 8 |
+| 言語 | Ruby 3.2 / JavaScript (ES6) |
+| フロントエンド | HTML / SCSS / Bootstrap Icons |
+| データベース | PostgreSQL |
+| ジョブ管理 | ActiveJob / Sidekiq |
+| メール配信 | ActionMailer + Letter Opener |
+| 録音処理 | MediaRecorder API + ffmpeg |
+| インフラ | Heroku / Cloudflare |
+| テスト | RSpec / FactoryBot |
+| その他 | Importmap  / GitHub Actions（CI/CD） |
+
+## クイックスタート
+
+### 前提条件
+
+- Ruby 3.2 以上
+- PostgreSQL 15 以上
+- Node.js 16 以上
+
+### インストール
+
+```bash
+# 1. リポジトリをクローン
+git clone https://github.com/[your-username]/yorisoi-note-app.git
+cd yorisoi-note-app
+
+# 2. 依存関係をインストール
+bundle install
+npm install
+
+# 3. データベースを作成・マイグレーション
+rails db:create db:migrate
+
+# 4. サーバー起動
+bin/dev
+```
+
+ブラウザで http://localhost:3000 を開いてください。
+
+## 使用方法
+
+1. ユーザー登録を行う
+2. カレンダーから受診予定を登録
+3. 予定に基づき通知メールが自動送信されます
+4. 診察時に録音を活用
+5. マイページで記録を振り返り
+
+## 設定
+
+### 環境変数
+
+| 変数名 | 説明 | 例 |
+|--------|------|-----|
+| `MAILER_SENDER` | 通知メール送信元 | info@yorisoi-note.com |
+| `DATABASE_URL` | DB接続URL | postgresql://localhost/yorisoi_note |
+| `REDIS_URL` | Sidekiq接続設定 | redis://localhost:6379/0 |
+
+## テスト
+
+```bash
+# テストを実行
+bundle exec rspec
+```
+
+## 貢献方法
+
+1. このリポジトリをフォーク
+2. 新しいブランチを作成
+
+```bash
+git checkout -b feature/update-readme
+```
+
+3. 変更をコミット
+4. プルリクエストを作成 🎉
