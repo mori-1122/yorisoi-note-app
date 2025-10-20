@@ -84,7 +84,7 @@ jobs:
           heroku --version
 
       - name: Deploy to Heroku
-        uses: Akhileshns/heroku-deploy@v3.12.12
+        uses: Akhileshns/heroku-deploy@v3.14.15
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "yorisoi-note-app"
