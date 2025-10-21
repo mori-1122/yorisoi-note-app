@@ -67,18 +67,18 @@
 
 ## 技術スタック
 
-| カテゴリ | 使用技術 |
-|---------|---------|
-| フレームワーク | Ruby on Rails 8 |
-| 言語 | Ruby 3.2 / JavaScript (ES6) |
-| フロントエンド | HTML / SCSS / Bootstrap Icons |
-| データベース | PostgreSQL |
-| ジョブ管理 | ActiveJob / Sidekiq |
-| メール配信 | ActionMailer + Letter Opener |
-| 録音処理 | MediaRecorder API + ffmpeg |
-| インフラ | Heroku / Cloudflare |
-| テスト | RSpec / FactoryBot |
-| その他 | Importmap  / GitHub Actions（CI/CD） |
+| カテゴリ    | 使用技術                                                |
+| :------ | :-------------------------------------------------- |
+| フレームワーク | Ruby on Rails 8                                     |
+| 言語      | Ruby 3.2 / JavaScript (ES6)                         |
+| フロントエンド | HTML / SCSS / Bootstrap Icons                       |
+| データベース  | PostgreSQL                                          |
+| ジョブ管理   | ActiveJob / Sidekiq                                 |
+| メール配信   | ActionMailer + SendGrid（本番） / Letter Opener（開発） |
+| 録音処理    | MediaRecorder API + ffmpeg                          |
+| インフラ    | Heroku / Cloudflare                                 |
+| テスト     | RSpec / FactoryBot                                  |
+| その他     | Importmap / GitHub Actions（CI/CD）                   |
 
 ## クイックスタート
 
