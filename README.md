@@ -122,7 +122,7 @@ bin/dev
 
 | 変数名 | 説明 | 例 |
 |--------|------|-----|
-| `MAILER_SENDER` | 通知メール送信元 | info@yorisoi-note.com |
+| `MAILER_SENDER` | 通知メール送信元 | noreply@yorisoi-note.com |
 | `DATABASE_URL` | DB接続URL | postgresql://localhost/yorisoi_note |
 | `REDIS_URL` | Sidekiq接続設定 | redis://localhost:6379/0 |
 
@@ -143,4 +143,4 @@ git checkout -b feature/update-readme
 ```
 
 3. 変更をコミット
-4. プルリクエストを作成 🎉
+4. プルリクエストを作成となります
