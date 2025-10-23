@@ -17,7 +17,8 @@ class Recording < ApplicationRecord
   def add_duration_and_convert
     return unless audio_file.attached?
 
-    # S3対応：ファイルを一時的にローカルに保存
+    require "open3"
+
     Tempfile.create([ "recording", ".webm" ]) do |tempfile|
       tempfile.binmode
       tempfile.write(audio_file.download)
@@ -27,14 +28,27 @@ class Recording < ApplicationRecord
       mp3_path   = "#{tempfile.path}.mp3"
 
       # duration補正
-      system("ffmpeg -i #{tempfile.path} -c copy #{fixed_path} -y -loglevel quiet")
+      system("ffmpeg", "-i", tempfile.path, "-c", "copy", fixed_path, "-y", "-loglevel", "quiet")
 
       # duration取得
-      duration = `ffprobe -i #{fixed_path} -show_entries format=duration -v quiet -of csv=p=0`.to_f
-      audio_file.blob.update(metadata: audio_file.blob.metadata.merge(duration: duration)) if duration.positive?
+      stdout, _stderr, _status = Open3.capture3(
+        "ffprobe",
+        "-i", fixed_path,
+        "-show_entries", "format=duration",
+        "-v", "quiet",
+        "-of", "csv=p=0"
+      )
+
+      duration = stdout.to_f
+      if duration.positive?
+        audio_file.blob.update(
+          metadata: audio_file.blob.metadata.merge(duration: duration)
+        )
+      end
 
       # MP3変換
-      system("ffmpeg -i #{fixed_path} -ar 44100 -ac 2 -b:a 192k #{mp3_path} -y -loglevel quiet")
+      system("ffmpeg", "-i", fixed_path, "-ar", "44100", "-ac", "2",
+             "-b:a", "192k", mp3_path, "-y", "-loglevel", "quiet")
 
       if File.exist?(mp3_path)
         converted_audio.attach(
@@ -43,7 +57,8 @@ class Recording < ApplicationRecord
           content_type: "audio/mpeg"
         )
       end
-    ensure
+
+      # 一時ファイル削除
       File.delete(fixed_path) if File.exist?(fixed_path)
       File.delete(mp3_path) if File.exist?(mp3_path)
     end
