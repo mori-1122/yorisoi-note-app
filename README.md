@@ -66,19 +66,22 @@
 | 🧾 質問選択ページ | 受診時に聞きたいことをテンプレートから選択 |
 
 ## 技術スタック
+| 分類            | 技術・ツール                                                  |
+| ------------- | ------------------------------------------------------- |
+| **フレームワーク**   | Ruby on Rails 8                                         |
+| **言語**        | Ruby 3.2 / JavaScript (ES6)                             |
+| **フロントエンド**   | HTML / SCSS / Bootstrap Icons / Turbo |
+| **データベース**    | PostgreSQL                                              |
+| **ジョブ管理**     | ActiveJob / Sidekiq / Sidekiq-Cron                      |
+| **キュー・キャッシュ** | Redis（Sidekiqのジョブキュー管理に使用）                              |
+| **メール配信**     | ActionMailer + SendGrid（本番） / Letter Opener（開発）         |
+| **録音処理**      | MediaRecorder API + ffmpeg                              |
+| **インフラ**      | Heroku / Cloudflare                                     |
+| **テスト**       | RSpec / FactoryBot                                      |
+| **CI/CD**     | GitHub Actions                                          |
+| **アセット管理**    | Importmap                                               |
+| **補足**        | Turboを一部使用（主に遷移系）／JavaScriptでUI操作を実装                |
 
-| カテゴリ    | 使用技術                                                |
-| :------ | :-------------------------------------------------- |
-| フレームワーク | Ruby on Rails 8                                     |
-| 言語      | Ruby 3.2 / JavaScript (ES6)                         |
-| フロントエンド | HTML / SCSS / Bootstrap Icons                       |
-| データベース  | PostgreSQL                                          |
-| ジョブ管理   | ActiveJob / Sidekiq                                 |
-| メール配信   | ActionMailer + SendGrid（本番） / Letter Opener（開発） |
-| 録音処理    | MediaRecorder API + ffmpeg                          |
-| インフラ    | Heroku / Cloudflare                                 |
-| テスト     | RSpec / FactoryBot                                  |
-| その他     | Importmap / GitHub Actions（CI/CD）                   |
 
 ## クイックスタート
 
