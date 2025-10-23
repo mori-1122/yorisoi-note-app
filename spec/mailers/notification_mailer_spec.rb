@@ -39,7 +39,7 @@ RSpec.describe NotificationMailer, type: :mailer do
       it "件名、宛先、送信元が正しい" do
         expect(mail.subject).to eq("【受診予定を新規登録しました】東京病院")
         expect(mail.to).to eq([ "test@example.com" ])
-        expect(mail.from).to eq([ "from@example.com" ])
+        expect(mail.from).to eq([ "no-reply@yorisoi-note.com" ])
       end
 
       it "本文にユーザー名、病院名、日時、目的が含まれている" do
@@ -72,7 +72,7 @@ RSpec.describe NotificationMailer, type: :mailer do
       let(:notification) do
         visit.notifications.create(
           user: user,
-          title: "【リマインダー】#{visit.hospital_name}の受信予定",
+          title: "【リマインダー】#{visit.hospital_name}の受診予定",
           description: "明日が受診予定日ですので、ご案内いたします。\n時間：#{visit.appointed_at.strftime("%H:%M")}\n目的：#{visit.purpose}",
           due_date: visit.visit_date - 1.day,
           is_sent: false

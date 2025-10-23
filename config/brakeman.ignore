@@ -8,19 +8,7 @@
       "message": "Possible command injection",
       "file": "app/models/recording.rb",
       "line": 82,
-      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
-      "code": "Open3.capture3(\"ffmpeg\", \"-i\", \"#{ActiveStorage::Blob.service.path_for(audio_file.key)}.fixed.webm\", \"-ar\", \"44100\", \"-ac\", \"2\", \"-b:a\", \"192k\", \"#{ActiveStorage::Blob.service.path_for(audio_file.key)}.mp3\", \"-y\", \"-loglevel\", \"quiet\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Recording",
-        "method": "add_duration_and_convert"
-      },
-      "user_input": "ActiveStorage::Blob.service.path_for(audio_file.key)",
       "confidence": "Medium",
-      "cwe_id": [
-        77
-      ],
       "note": ""
     },
     {
@@ -31,19 +19,7 @@
       "message": "Possible command injection",
       "file": "app/models/recording.rb",
       "line": 69,
-      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
-      "code": "Open3.capture3(\"ffprobe\", \"-i\", \"#{ActiveStorage::Blob.service.path_for(audio_file.key)}.fixed.webm\", \"-show_entries\", \"format=duration\", \"-v\", \"quiet\", \"-of\", \"csv=p=0\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Recording",
-        "method": "add_duration_and_convert"
-      },
-      "user_input": "ActiveStorage::Blob.service.path_for(audio_file.key)",
       "confidence": "Medium",
-      "cwe_id": [
-        77
-      ],
       "note": ""
     },
     {
@@ -54,19 +30,7 @@
       "message": "Possible command injection",
       "file": "app/models/recording.rb",
       "line": 62,
-      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
-      "code": "Open3.capture3(\"ffmpeg\", \"-i\", ActiveStorage::Blob.service.path_for(audio_file.key), \"-c\", \"copy\", \"#{ActiveStorage::Blob.service.path_for(audio_file.key)}.fixed.webm\", \"-y\", \"-loglevel\", \"quiet\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Recording",
-        "method": "add_duration_and_convert"
-      },
-      "user_input": "ActiveStorage::Blob.service.path_for(audio_file.key)",
       "confidence": "Medium",
-      "cwe_id": [
-        77
-      ],
       "note": ""
     },
     {
@@ -77,20 +41,19 @@
       "message": "Possible command injection",
       "file": "app/controllers/recordings_controller.rb",
       "line": 16,
-      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
-      "code": "`ffprobe -i \"#{ActiveStorage::Blob.service.path_for(Visit.find(params[:visit_id]).build_recording(:user => current_user, :recorded_at => Time.current).audio_file.key)}\" -show_entries format=duration -v quiet -of csv=p=0`",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "RecordingsController",
-        "method": "create"
-      },
-      "user_input": "Visit.find(params[:visit_id]).build_recording(:user => current_user, :recorded_at => Time.current)",
       "confidence": "High",
-      "cwe_id": [
-        77
-      ],
       "note": ""
+    },
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "04d6bd11178543fe6f2455ad76d440a4857e9547790563fb30c3a6800e034f31",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "app/models/recording.rb",
+      "line": 39,
+      "confidence": "Medium",
+      "note": "False positive — tempfile.path is system-generated, Open3 uses array args (no shell interpolation)"
     }
   ],
   "brakeman_version": "7.1.0"
