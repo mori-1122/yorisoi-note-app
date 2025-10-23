@@ -18,22 +18,25 @@ class Recording < ApplicationRecord
     return unless audio_file.attached?
 
     require "open3"
+    require "pathname"
 
     Tempfile.create([ "recording", ".webm" ]) do |tempfile|
       tempfile.binmode
       tempfile.write(audio_file.download)
       tempfile.flush
 
-      fixed_path = "#{tempfile.path}.fixed.webm"
-      mp3_path   = "#{tempfile.path}.mp3"
+      fixed_path = Pathname.new("#{tempfile.path}.fixed.webm")
+      mp3_path   = Pathname.new("#{tempfile.path}.mp3")
 
-      # duration補正
-      system("ffmpeg", "-i", tempfile.path, "-c", "copy", fixed_path, "-y", "-loglevel", "quiet")
+      # duration補正（ffmpegでコンテナ再構築）
+      system("ffmpeg", "-i", tempfile.path.to_s, "-c", "copy",
+             fixed_path.to_path, "-y", "-loglevel", "quiet")
 
-      # duration取得
+      # duration取得（ffprobeでメタデータ抽出）
       stdout, _stderr, _status = Open3.capture3(
+        { "LANG" => "C" },
         "ffprobe",
-        "-i", fixed_path,
+        "-i", fixed_path.to_path,
         "-show_entries", "format=duration",
         "-v", "quiet",
         "-of", "csv=p=0"
@@ -41,16 +44,16 @@ class Recording < ApplicationRecord
 
       duration = stdout.to_f
       if duration.positive?
-        audio_file.blob.update(
+        audio_file.blob.update!(
           metadata: audio_file.blob.metadata.merge(duration: duration)
         )
       end
 
       # MP3変換
-      system("ffmpeg", "-i", fixed_path, "-ar", "44100", "-ac", "2",
-             "-b:a", "192k", mp3_path, "-y", "-loglevel", "quiet")
+      system("ffmpeg", "-i", fixed_path.to_path, "-ar", "44100", "-ac", "2",
+             "-b:a", "192k", mp3_path.to_path, "-y", "-loglevel", "quiet")
 
-      if File.exist?(mp3_path)
+      if mp3_path.exist?
         converted_audio.attach(
           io: File.open(mp3_path),
           filename: "recording.mp3",
@@ -59,8 +62,7 @@ class Recording < ApplicationRecord
       end
 
       # 一時ファイル削除
-      File.delete(fixed_path) if File.exist?(fixed_path)
-      File.delete(mp3_path) if File.exist?(mp3_path)
+      [ fixed_path, mp3_path ].each { |f| f.delete if f.exist? }
     end
   end
 end
