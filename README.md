@@ -2,9 +2,6 @@
 - 本リポジトリはRuby、Rails学習者の[「千葉」](https://qiita.com/Chiba_67)が作成したWebアプリに関するものです。
 - ご利用いただくことでのトラブル等は一切の責任を負いかねます。
 
-
-
-
 # よりそいノート（Yorisoi Note）
 「記録が、寄り添いになる。」
 受診予定や質問、診察内容の録音をまとめて管理し、あなたと医療をやさしくつなぐWebアプリです。
@@ -12,6 +9,23 @@
 ## デモ
 
 **アプリURL**: [https://www.yorisoi-note.com/](https://www.yorisoi-note.com/)
+
+## デモ動画
+- カレンダーから受診予定を登録できます
+https://github.com/user-attachments/assets/5dd9f194-cbd4-4b4c-bbf1-988a4c1c82a0
+
+- 受診する診療科、薬や生活関連のカテゴリから事前に医療者に聞きたい質問を登録できます。質問したら、聞けた、聞けなかったボタンを切り替え、確認を行えます。
+https://github.com/user-attachments/assets/ec24f2d1-4426-49f0-a957-3d19aff582e6
+
+- 医療者との会話を2分録音できます。録音データは、MP3に変換されます。カレンダー下の受診予定から、聴くこともできます。医療機関によって、録音可能、不可が決まっているため、注意書きに記載があります。
+https://github.com/user-attachments/assets/8391122e-96bb-4f3b-b518-472cc07deece
+
+- 医療機関に受診すると様々な書類をもらいます。自分の端末から、画像をアップロードし、一元管理ができます。
+https://github.com/user-attachments/assets/f6f884bf-2e57-4d37-a653-f035452c161f
+
+- 
+
+
 
 ## 特徴
 
@@ -66,22 +80,20 @@
 | 🧾 質問選択ページ | 受診時に聞きたいことをテンプレートから選択 |
 
 ## 技術スタック
-| 分類            | 技術・ツール                                                  |
-| ------------- | ------------------------------------------------------- |
-| **フレームワーク**   | Ruby on Rails 8                                         |
-| **言語**        | Ruby 3.2 / JavaScript (ES6)                             |
-| **フロントエンド**   | HTML / SCSS / Bootstrap Icons / Turbo |
-| **データベース**    | PostgreSQL                                              |
-| **ジョブ管理**     | ActiveJob / Sidekiq / Sidekiq-Cron                      |
-| **キュー・キャッシュ** | Redis（Sidekiqのジョブキュー管理に使用）                              |
-| **メール配信**     | ActionMailer + SendGrid（本番） / Letter Opener（開発）         |
-| **録音処理**      | MediaRecorder API + ffmpeg                              |
-| **インフラ**      | Heroku / Cloudflare                                     |
-| **テスト**       | RSpec / FactoryBot                                      |
-| **CI/CD**     | GitHub Actions                                          |
-| **アセット管理**    | Importmap                                               |
-| **補足**        | Turboを一部使用（主に遷移系）／JavaScriptでUI操作を実装                |
-
+| 分類            | 使用技術                                                                 |
+| ------------- | -------------------------------------------------------------------- |
+| **フレームワーク**   | Ruby on Rails 8                                                      |
+| **言語**        | Ruby 3.2 / JavaScript (ES6)                                          |
+| **フロントエンド**   | HTML / SCSS / Bootstrap Icons / Turbo                                |
+| **データベース**    | PostgreSQL                                                           |
+| **非同期ジョブ**    | ActiveJob / Sidekiq / Sidekiq-Cron                                   |
+| **キャッシュ・キュー** | Redis                                                                |
+| **メール配信**     | ActionMailer + SendGrid（本番） / Letter Opener（開発）                      |
+| **録音処理**      | MediaRecorder API + ffmpeg + Open3                                   |
+| **インフラ**      | Heroku（アプリケーションホスティング） + AWS S3（ActiveStorage） + Cloudflare（SSL・CDN） |
+| **テスト**       | RSpec / FactoryBot                                                   |
+| **CI/CD**     | GitHub Actions                                                       |
+| **その他**       | Importmap管理 / Turbo部分利用                                              |
 
 ## クイックスタート
 
