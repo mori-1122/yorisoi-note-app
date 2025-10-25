@@ -6,24 +6,28 @@
 「記録が、寄り添いになる。」
 受診予定や質問、診察内容の録音をまとめて管理し、あなたと医療をやさしくつなぐWebアプリです。
 
-## デモ
+## アプリURL
 
 **アプリURL**: [https://www.yorisoi-note.com/](https://www.yorisoi-note.com/)
 
-## デモ動画
-- カレンダーから受診予定を登録できます
-https://github.com/user-attachments/assets/5dd9f194-cbd4-4b4c-bbf1-988a4c1c82a0
+# デモ動画
+## カレンダーから受診予定を登録できます
+[![demo1](https://github.com/user-attachments/assets/5dd9f194-cbd4-4b4c-bbf1-988a4c1c82a0)](https://github.com/user-attachments/assets/5dd9f194-cbd4-4b4c-bbf1-988a4c1c82a0)
 
-- 受診する診療科、薬や生活関連のカテゴリから事前に医療者に聞きたい質問を登録できます。質問したら、聞けた、聞けなかったボタンを切り替え、確認を行えます。
-https://github.com/user-attachments/assets/ec24f2d1-4426-49f0-a957-3d19aff582e6
+## 事前質問の登録・確認
+[![demo2](https://github.com/user-attachments/assets/ec24f2d1-4426-49f0-a957-3d19aff582e6)](https://github.com/user-attachments/assets/ec24f2d1-4426-49f0-a957-3d19aff582e6)
 
-- 医療者との会話を2分録音できます。録音データは、MP3に変換されます。カレンダー下の受診予定から、聴くこともできます。医療機関によって、録音可能、不可が決まっているため、注意書きに記載があります。
-https://github.com/user-attachments/assets/8391122e-96bb-4f3b-b518-472cc07deece
+## 録音機能（MP3変換・再生対応）
+[![demo3](https://github.com/user-attachments/assets/8391122e-96bb-4f3b-b518-472cc07deece)](https://github.com/user-attachments/assets/8391122e-96bb-4f3b-b518-472cc07deece)
 
-- 医療機関に受診すると様々な書類をもらいます。自分の端末から、画像をアップロードし、一元管理ができます。
-https://github.com/user-attachments/assets/f6f884bf-2e57-4d37-a653-f035452c161f
+## 書類アップロードと一元管理
+[![demo4](https://github.com/user-attachments/assets/f6f884bf-2e57-4d37-a653-f035452c161f)](https://github.com/user-attachments/assets/f6f884bf-2e57-4d37-a653-f035452c161f)
 
-- 
+## プロフィールを記入できます
+[![demo5](https://github.com/user-attachments/assets/e0f93625-fe07-43b9-99b3-6548f84b2009)](https://github.com/user-attachments/assets/e0f93625-fe07-43b9-99b3-6548f84b2009)
+
+## 受診予定を登録すると、メールに通知がきます
+<img width="935" height="394" alt="スクリーンショット 2025-10-25 22 25 55" src="https://github.com/user-attachments/assets/eece6cbd-cc74-435c-b17b-f02ad17a055d" />
 
 
 
@@ -97,31 +101,51 @@ https://github.com/user-attachments/assets/f6f884bf-2e57-4d37-a653-f035452c161f
 
 ## クイックスタート
 
-### 前提条件
+### 条件
 
-- Ruby 3.2 以上
+- Ruby 3.3.9
+- Rails 8.0.2.1
+- Node.js 18.20.6
 - PostgreSQL 15 以上
-- Node.js 16 以上
+- Redis（Sidekiq用）
+- yarn
 
-### インストール
+## セットアップ手順
 
+### 1.リポジトリのクローン
 ```bash
-# 1. リポジトリをクローン
-git clone https://github.com/[your-username]/yorisoi-note-app.git
+git clone git@github.com:mori-1122/yorisoi-note-app.git
 cd yorisoi-note-app
-
-# 2. 依存関係をインストール
-bundle install
-npm install
-
-# 3. データベースを作成・マイグレーション
-rails db:create db:migrate
-
-# 4. サーバー起動
-bin/dev
 ```
 
-ブラウザで http://localhost:3000 を開いてください。
+### 2. Ruby環境の準備
+```
+rbenv install $(cat .ruby-version)
+rbenv local $(cat .ruby-version)
+bundle install
+```
+
+### 3. JavaScript / CSS環境のセットアップ
+```
+yarn install
+```
+
+### 4. データベースのセットアップ
+```
+brew services start postgresql
+bin/rails db:create
+bin/rails db:migrate
+bin/rails db:seed
+```
+
+### 5.アプリケーションの起動
+```
+bin/dev
+```
+### 6.アクセス
+```
+ブラウザでhttp://localhost:3000を開いてください。
+```
 
 ## 使用方法
 
@@ -134,28 +158,40 @@ bin/dev
 ## 設定
 
 ### 環境変数
-
-| 変数名 | 説明 | 例 |
-|--------|------|-----|
-| `MAILER_SENDER` | 通知メール送信元 | noreply@yorisoi-note.com |
-| `DATABASE_URL` | DB接続URL | postgresql://localhost/yorisoi_note |
-| `REDIS_URL` | Sidekiq接続設定 | redis://localhost:6379/0 |
+| 変数名 | 用途 |
+|--------|------|
+| `MAILER_SENDER` | 通知メール送信元アドレス |
+| `SENDGRID_API_KEY` | SendGridのAPIキー |
+| `AWS_ACCESS_KEY_ID` | AWSのアクセスキー（本番環境のみ） |
+| `AWS_SECRET_ACCESS_KEY` | AWSのシークレットキー（本番環境のみ） |
+| `REDIS_URL` | SidekiqのRedis接続URL |
+| `HOST_NAME` | メール通知などで使用するアプリURL |
+| `S3_BUCKET_NAME` | ActiveStorageで使用するS3バケット名 |
+| `AWS_REGION` | S3リージョン（例：ap-northeast-1） |
 
 ## テスト
-
 ```bash
 # テストを実行
 bundle exec rspec
 ```
+### 制約
+- 通知メール機能は、実際の運用環境（SendGridキー設定済み）でのみ動作します。
+- 開発環境では LetterOpener によるメールプレビューが動作します。
+- 録音機能はブラウザ（MediaRecorder API）に依存しています。
+- ActiveStorage（S3アップロード）は本番環境のみ有効です。
+- ローカル環境では /storage にファイル保存されます。
+- SidekiqジョブはRedis接続が必要です。Redisが未起動の場合、通知メールは送信されません。
 
-## 貢献方法
+### 今後の実装予定
+- 共有機能の拡張
+家族・医療者とノート内容を共有できる機能を検討中。
+- セーブ・バックアップ機能
+個人データを暗号化してエクスポート・インポート可能に。
+- Sentry導入によるエラー監視
+本番環境における例外監視とパフォーマンス測定をSentryで実施予定。  
+エラーの早期検知と安定稼働を目的としています。
 
-1. このリポジトリをフォーク
-2. 新しいブランチを作成
-
-```bash
-git checkout -b feature/update-readme
-```
-
-3. 変更をコミット
-4. プルリクエストを作成となります
+## Special Thanks
+本アプリの設計・開発にあたって、メンターよりレビューをいただきました。
+丁寧なご指摘・温かいサポートに心より感謝いたします。  
+今後も改善を重ねていきます。
