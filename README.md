@@ -26,7 +26,7 @@
 ## プロフィールを記入できます
 [![demo5](https://github.com/user-attachments/assets/e0f93625-fe07-43b9-99b3-6548f84b2009)](https://github.com/user-attachments/assets/e0f93625-fe07-43b9-99b3-6548f84b2009)
 
-## 受診予定を登録すると、メールに通知がきます
+## 受診予定を登録すると、予定登録直後と、受診日前日の午前９時に、ご登録いただいたメールアドレスにお知らせ通知がきます
 <img width="935" height="394" alt="スクリーンショット 2025-10-25 22 25 55" src="https://github.com/user-attachments/assets/eece6cbd-cc74-435c-b17b-f02ad17a055d" />
 
 
