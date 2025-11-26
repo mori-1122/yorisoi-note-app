@@ -8,7 +8,7 @@
 
 ## アプリURL
 
-**アプリURL**: [https://www.yorisoi-note.com/](https://www.yorisoi-note.com/)
+**アプリURL**: ~~[https://www.yorisoi-note.com/](https://www.yorisoi-note.com/)~~
 
 # デモ動画
 ## カレンダーから受診予定を登録できます
